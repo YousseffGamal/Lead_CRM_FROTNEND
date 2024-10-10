@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography, CircularProgress, Dialog } from "@mui/material";
 import "./signupPage.css"; // Assuming external CSS for custom styles
 import Ellipse from "../../assets/images/Ellipse 1.png";
+import TopLeftImage from "../../assets/images/tapIcon.png"; // Import the top-left image
 import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
 
 const SignUpPage = () => {
@@ -32,6 +33,11 @@ const SignUpPage = () => {
       {/* Layered Image */}
       <Box className="layered-image">
         <img src={Ellipse} alt="Layered Top" />
+      </Box>
+
+      {/* Top Left Image */}
+      <Box className="top-left-image">
+        <img src={TopLeftImage} alt="Top Left" />
       </Box>
 
       {/* Sign Up Form */}
@@ -123,7 +129,6 @@ const SignUpPage = () => {
               <input type="checkbox" style={{ marginRight: "8px" }} />
               Save Login Credentials
             </label>
-     
           </Box>
 
           {/* Submit Button */}
@@ -141,7 +146,16 @@ const SignUpPage = () => {
             disabled={loading} // Disable button while loading
           >
             {loading ? (
-              <CircularProgress size={24} sx={{ position: 'absolute', left: '50%', top: '50%', marginLeft: '-12px', marginTop: '-12px' }} />
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  marginLeft: "-12px",
+                  marginTop: "-12px",
+                }}
+              />
             ) : (
               "SIGN UP"
             )}

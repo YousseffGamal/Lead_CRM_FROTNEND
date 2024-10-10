@@ -2,6 +2,7 @@ import React from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import "./LoginPage.css"; // Assuming external CSS for custom styles
 import Ellipse from "../../assets/images/Ellipse 1.png";
+import TopLeftImage from "../../assets/images/tapIcon.png"; // Import the top-left image
 
 const LoginPage = () => {
   return (
@@ -10,7 +11,10 @@ const LoginPage = () => {
       <Box className="layered-image">
         <img src={Ellipse} alt="Layered Top" />
       </Box>
-
+   {/* Top Left Image */}
+   <Box className="top-left-image">
+        <img src={TopLeftImage} alt="Top Left" />
+      </Box>
       {/* Login Form */}
       <Box className="login-box">
         <Typography
