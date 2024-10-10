@@ -1,4 +1,3 @@
-// src/components/Layout.jsx
 import React, { useState } from 'react';
 import Logo from "../../assets/images/logo.png";
 import Profile from "../../assets/images/profile.png";
@@ -15,25 +14,42 @@ import {
   CssBaseline,
   Tooltip,
   Typography,
-  Button // Import Button component
+  Button,
+  Menu, // Import Menu component
+  MenuItem // Import MenuItem component
 } from '@mui/material';
 import {
   Dashboard,
   People,
   Settings,
-  Menu,
+  Menu as MenuIcon,
   Notifications,
   Logout
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate for logout redirect
 
 const drawerWidth = 280; // Increased width of the drawer
 
 const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null); // State to manage dropdown anchor
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget); // Set anchor element for dropdown
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null); // Close dropdown menu
+  };
+
+  const handleLogout = () => {
+    // Perform logout logic here
+    navigate('/'); // Redirect to login page after logout
   };
 
   const drawer = (
@@ -93,7 +109,7 @@ const Layout = ({ children }) => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none', background: "#F1F1F1", color: "gray" } }}
           >
-            <Menu />
+            <MenuIcon />
           </IconButton>
           <Typography 
             variant="h3" 
@@ -136,6 +152,8 @@ const Layout = ({ children }) => {
                 </IconButton>
               </Tooltip>
             </Box>
+
+            {/* Profile Image with Dropdown */}
             <Box sx={{
               borderRadius: '50%',
               padding: '8px',
@@ -144,10 +162,30 @@ const Layout = ({ children }) => {
               justifyContent: 'center'
             }}>
               <Tooltip title="Profile" arrow>
-                <Link to="/profile">
-                  <img style={{ width: "77px", height: "77px" }} src={Profile} alt="" />
-                </Link>
+                <IconButton onClick={handleProfileClick}>
+                  <img style={{ width: "77px", height: "77px" }} src={Profile} alt="Profile" />
+                </IconButton>
               </Tooltip>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Link to="/profile" style={{ textDecoration: 'none', color: '#000' }}>
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
             </Box>
             <Box sx={{ textAlign: 'left', marginLeft: 1 }}>
               <Typography variant="body1" sx={{ color: '#656565', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
@@ -157,11 +195,6 @@ const Layout = ({ children }) => {
                 charlesgray@gmail.com
               </Typography>
             </Box>
-            <Tooltip title="Logout" arrow>
-              <IconButton color="inherit">
-                <Logout />
-              </IconButton>
-            </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>
