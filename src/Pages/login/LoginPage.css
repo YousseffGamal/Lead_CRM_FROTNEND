@@ -126,7 +126,7 @@ font-family: "LufgaRegular" !important;
 .top-left-image img {
     position: absolute;
     top: 60px;
-    left: 40px;
+    left: 60px;
     width: 70px; /* Adjust the size of the top-left image */
     height: auto;
 
