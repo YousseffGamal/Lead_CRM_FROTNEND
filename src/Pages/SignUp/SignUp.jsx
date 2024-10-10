@@ -22,7 +22,7 @@ const SignUpPage = () => {
 
       // Redirect to login page after 2 seconds
       setTimeout(() => {
-        navigate("/login"); // Redirect to login page using navigate
+        navigate("/"); // Redirect to login page using navigate
       }, 2000);
     }, 2000); // Simulate a 2-second loading time
   };
