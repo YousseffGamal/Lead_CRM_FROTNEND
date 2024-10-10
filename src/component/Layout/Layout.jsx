@@ -54,11 +54,11 @@ const Layout = ({ children }) => {
 
   const drawer = (
     <div>
-      <Box sx={{ textAlign: 'center', padding: '16px 0' }}>
+      <Box sx={{  padding: '16px 0' }}>
         <img
           src={Logo}
           alt="Logo"
-          style={{ width: '197.55px', height: '69px', marginBottom: "8px", marginTop: "42px" }}
+          style={{ width: '197.55px', height: '69px', marginBottom: "8px", marginTop: "42px",padding:"8px 16px" }}
         />
         <Typography variant="h4" sx={{ color: '#000000', marginTop: '85px', textAlign: "left", padding: "8px 16px" }}>
           Welcome <br /> Back, Charles!
