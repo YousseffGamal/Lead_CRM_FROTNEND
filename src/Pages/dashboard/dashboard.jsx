@@ -133,7 +133,7 @@ const clientsData = [
 
   return (
     <Layout>
-      <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '40px' }}>
+      <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
         {/* Statistics Boxes */}
         <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
           {stats.map((stat, index) => (
