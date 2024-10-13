@@ -944,27 +944,29 @@ const AddLead = () => {
   marginTop: '25px',
   width: '100%', // Full width
 }}>
-  <Button
+<Button
   className='AddLeadBtn'
-    variant="contained"
-    sx={{
-      width: '100%', // Full width
-      backgroundColor: '#191919', // Background color
-      color: '#FFFFFF', // Text color
-      fontSize: '30px', // Font size
-      borderRadius: '20px', // Rounded corners
-      padding: '15px', // Padding for better touch targets
-      '&:hover': {
-        backgroundColor: '#333333', // Darker shade on hover for effect
-      },
-    }}
-    onClick={() => {
-      // Add your click handler logic here
-      console.log('Add Lead button clicked!');
-    }}
-  >
-    Add Lead
-  </Button>
+  variant="contained"
+  sx={{
+    width: '100%', // Full width
+    backgroundColor: '#191919', // Background color
+    color: '#FFFFFF', // Text color
+    fontSize: '30px', // Font size
+    borderRadius: '20px', // Rounded corners
+    padding: '5px 15px', // Adjusted padding for smaller height (5px top/bottom, 15px left/right)
+    '&:hover': {
+      backgroundColor: '#333333', // Darker shade on hover for effect
+    },
+  }}
+  onClick={() => {
+    // Add your click handler logic here
+    console.log('Add Lead button clicked!');
+  }}
+>
+  Add Lead
+</Button>
+
+
 </Box>
 
       </Box>
