@@ -15,8 +15,8 @@ import {
   Tooltip,
   Typography,
   Button,
-  Menu, // Import Menu component
-  MenuItem // Import MenuItem component
+  Menu,
+  MenuItem
 } from '@mui/material';
 import {
   Dashboard,
@@ -26,13 +26,13 @@ import {
   Notifications,
   Logout
 } from '@mui/icons-material';
-import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate for logout redirect
+import { Link, useNavigate } from 'react-router-dom';
 
-const drawerWidth = 280; // Increased width of the drawer
+const drawerWidth = 280;
 
 const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null); // State to manage dropdown anchor
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
@@ -40,32 +40,51 @@ const Layout = ({ children }) => {
   };
 
   const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget); // Set anchor element for dropdown
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null); // Close dropdown menu
+    setAnchorEl(null);
   };
 
   const handleLogout = () => {
-    // Perform logout logic here
-    navigate('/'); // Redirect to login page after logout
+    navigate('/');
   };
 
   const drawer = (
     <div>
-      <Box sx={{  padding: '16px 0' }}>
+      <Box sx={{ padding: '16px 0' }}>
         <img
           src={Logo}
           alt="Logo"
-          style={{ width: '197.55px', height: '69px', marginBottom: "8px", marginTop: "42px",padding:"8px 16px" }}
+          style={{
+            width: '197.55px',
+            height: '69px',
+            marginBottom: '8px',
+            marginTop: '42px',
+            padding: '8px 16px'
+          }}
         />
-        <Typography variant="h4" sx={{ color: '#000000', marginTop: '85px', textAlign: "left", padding: "8px 16px" }}>
+        <Typography
+          className="Welcome"
+          variant="h4"
+          sx={{ color: '#000000', marginTop: '85px', textAlign: 'left', padding: '8px 16px' }}
+        >
           Welcome <br /> Back, Charles!
+        </Typography>
+        <Typography
+          className="About"
+          sx={{ color: '#000000', marginTop: '5px', textAlign: 'left', padding: '8px 16px' }}
+        >
+          Manage leads and track progress
         </Typography>
       </Box>
       <List>
-        <Typography variant="h6" sx={{ color: '#A3A3A3', fontSize: '17.49px', marginTop: 2, padding: "8px 16px" }}>
+        <Typography
+          className="Navigation"
+          variant="h6"
+          sx={{ color: '#A3A3A3', fontSize: '17.49px', marginTop: '85px', padding: '8px 16px' }}
+        >
           Navigation
         </Typography>
         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
@@ -73,7 +92,7 @@ const Layout = ({ children }) => {
             <ListItemIcon>
               <Dashboard style={{ color: '#656565' }} />
             </ListItemIcon>
-            <ListItemText primary="Leads Dashboard" sx={{ color: '#656565' }} />
+            <ListItemText className='NavText' primary="Leads Dashboard" sx={{ color: '#656565' }} />
           </ListItem>
         </Link>
         <Link to="/users" style={{ textDecoration: 'none' }}>
@@ -81,16 +100,15 @@ const Layout = ({ children }) => {
             <ListItemIcon>
               <People style={{ color: '#656565' }} />
             </ListItemIcon>
-            <ListItemText primary="Users" sx={{ color: '#656565' }} />
+            <ListItemText className='NavText' primary="Blogs & Articles" sx={{ color: '#656565' }} />
           </ListItem>
         </Link>
-        {/* Repeat for other links */}
       </List>
     </div>
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', minHeight: '100vh' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -101,41 +119,45 @@ const Layout = ({ children }) => {
           boxShadow: 'none',
         }}
       >
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '20px 20px' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none', background: "#F1F1F1", color: "gray" } }}
+            sx={{ mr: 2, display: { sm: 'none', background: '#F1F1F1', color: 'gray' } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography 
-            variant="h3" 
-            sx={{ 
-              color: '#656565', 
-              flexGrow: 1, 
-              fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' } 
+          <Typography
+            className="HeaderText"
+            variant="h3"
+            sx={{
+              color: '#656565',
+              flexGrow: 1,
+              fontSize: { xs: '13px', sm: '15px', md: '2.5rem' },
             }}
           >
             Leads Dashboard
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+           
+            <Link to="/addlead" style={{ textDecoration: 'none', color: '#000' }}>
             <Button
               variant="contained"
               sx={{
-                backgroundColor: '#000000',
+                backgroundColor: '#0177FB',
                 borderRadius: '27.66px',
                 color: '#ffffff',
                 padding: '8px 16px',
-                width: { xs: '100%', sm: '200px' },
-                height: { xs: '56px', sm: '71px' },
-                fontSize: { xs: '1rem', sm: '1.25rem' },
+                width: { xs: 'auto', sm: '200px' },
+                height: { xs: '45px', sm: '56px' },
+                fontSize: { xs: '0.875rem', sm: '1.25rem' },
               }}
             >
               New Lead
             </Button>
+                  </Link>
             <Box
               sx={{
                 backgroundColor: '#F1F1F1',
@@ -143,7 +165,7 @@ const Layout = ({ children }) => {
                 padding: '8px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               <Tooltip title="Notifications" arrow>
@@ -154,16 +176,18 @@ const Layout = ({ children }) => {
             </Box>
 
             {/* Profile Image with Dropdown */}
-            <Box sx={{
-              borderRadius: '50%',
-              padding: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
+            <Box
+              sx={{
+                borderRadius: '50%',
+                padding: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <Tooltip title="Profile" arrow>
                 <IconButton onClick={handleProfileClick}>
-                  <img style={{ width: "77px", height: "77px" }} src={Profile} alt="Profile" />
+                  <img style={{ width: '77px', height: '77px' }} src={Profile} alt="Profile" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -179,6 +203,17 @@ const Layout = ({ children }) => {
                   horizontal: 'right',
                 }}
               >
+               
+                <MenuItem onClick={handleClose}>
+                  <Typography className="UserName" variant="body1" sx={{ color: '#656565', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+                    Charles Gray
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Typography className="UserEmail" variant="body2" sx={{ color: '#A3A3A3', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                    charlesgray@gmail.com
+                  </Typography>
+                </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <Link to="/profile" style={{ textDecoration: 'none', color: '#000' }}>
                     Profile
@@ -186,14 +221,6 @@ const Layout = ({ children }) => {
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
-            </Box>
-            <Box sx={{ textAlign: 'left', marginLeft: 1 }}>
-              <Typography variant="body1" sx={{ color: '#656565', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
-                Charles Gray
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#A3A3A3', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-                charlesgray@gmail.com
-              </Typography>
             </Box>
           </Box>
         </Toolbar>
@@ -215,8 +242,8 @@ const Layout = ({ children }) => {
               boxSizing: 'border-box',
               width: drawerWidth,
               backgroundColor: '#ffffff',
-              boxShadow: 'none'
-            }
+              boxShadow: 'none',
+            },
           }}
         >
           {drawer}
@@ -229,8 +256,8 @@ const Layout = ({ children }) => {
               boxSizing: 'border-box',
               width: drawerWidth,
               backgroundColor: '#ffffff',
-              boxShadow: 'none'
-            }
+              boxShadow: 'none',
+            },
           }}
           open
         >
@@ -242,14 +269,12 @@ const Layout = ({ children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          backgroundColor: '#F1F1F1',
-          color: '#e0e0e0',
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          borderTopLeftRadius: '30px',
+          width: { sm: `calc(100% - ${drawerWidth}px)` }, // Adjusted to take into account the sidebar width
+          padding: { xs: 2, sm: 3, md: 5 },
+          marginTop: '64px',
+          overflowX: 'auto', // Allows for horizontal scrolling if content is too wide
         }}
       >
-        <Toolbar />
         {children}
       </Box>
     </Box>
