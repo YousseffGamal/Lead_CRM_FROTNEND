@@ -135,41 +135,52 @@ const clientsData = [
     <Layout>
       <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
         {/* Statistics Boxes */}
-        <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
-          {stats.map((stat, index) => (
-            <Box
-              key={index}
-              sx={{
-                backgroundColor: stat.bgColor,
-                padding: '16px',
-                borderRadius: '30px',
-                width: '33%',
-                textAlign: 'center',
-                height: '150px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography variant="h2" sx={{ color: stat.textColor, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '3rem' } }}>
-                {stat.value}
-              </Typography>
-              <Box
-                sx={{
-                  width: '60%',
-                  height: '1px',
-                  backgroundColor: stat.textColor,
-                  my: 1,
-                  opacity: 0.5,
-                  mx: 'auto',
-                }}
-              />
-              <Typography variant="h6" sx={{ color: stat.textColor }}>
-                {stat.title}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+        <Box sx={{ display: 'flex', gap: 2, mb: 4, flexDirection: { xs: 'column', sm: 'row' } }}>
+  {stats.map((stat, index) => (
+    <Box
+      key={index}
+      sx={{
+        backgroundColor: stat.bgColor,
+        padding: '16px',
+        borderRadius: '30px',
+        width: { xs: '100%', sm: '465px' }, // Full width on mobile, fixed width on larger screens
+        height: '195px', // Fixed height
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
+    >
+   <Typography
+  className='CardNumber'
+  variant="h1"
+  sx={{
+    color: stat.textColor,
+    fontWeight: 'bold',
+    fontSize: { xs: '2rem', sm: '3rem', md: '4rem', lg: '78px' }, // Responsive font size
+  }}
+>
+  {stat.value}
+</Typography>
+
+      <Box
+        sx={{
+          width: '60%',
+          height: '1px',
+          backgroundColor: stat.textColor,
+          my: 1,
+          opacity: 0.5,
+          mx: 'auto',
+        }}
+      />
+      <Typography className='TitleCard' variant="h6" sx={{ color: stat.textColor }}>
+        {stat.title}
+      </Typography>
+    </Box>
+  ))}
+</Box>
+
+
 
         {/* Labels, Switch, and Status Dropdown */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', mb: 2 }}>
@@ -184,7 +195,7 @@ const clientsData = [
           <Typography variant="h6" sx={{ color: activeTab === 1 ? '#0177FB' : '#000', ml: 2 }}>
             Clients
           </Typography>
-          <FormControl variant="outlined" sx={{ ml: 2, minWidth: 200 }}>
+          {/* <FormControl variant="outlined" sx={{ ml: 2, minWidth: 200 }}>
   <InputLabel id="status-select-label">Status</InputLabel>
   <Select
     labelId="status-select-label"
@@ -209,32 +220,32 @@ const clientsData = [
     <MuiMenuItem value="Active">Active</MuiMenuItem>
     <MuiMenuItem value="Inactive">Inactive</MuiMenuItem>
   </Select>
-</FormControl>
+</FormControl> */}
 
 
 
         </Box>
 
         {/* Table based on active tab */}
-        <TableContainer component={Paper} sx={{ backgroundColor: '#FFFFFF', color: '#ffffff', borderRadius: '30px', mt: 2 }}>
+        <TableContainer component={Paper} sx={{ backgroundColor: '#FFFFFF', color: '#ffffff', borderRadius: '30px', mt: 2,overflowX: 'auto' }}>
           <Table sx={{ minWidth: 650 }} aria-label="user table">
             <TableHead>
               <TableRow>
                 {activeTab === 0 ? (
                   <>
-                    <TableCell sx={{ color: '#667085' }}>Seller Name</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Date Added</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>State</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Closing Time</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Temperature</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Action</TableCell>
+                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Seller Name</TableCell>
+                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Date Added</TableCell>
+                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>State</TableCell>
+                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Closing Time</TableCell>
+                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Temperature</TableCell>
+                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Action</TableCell>
                   </>
                 ) : (
                   <>
-                    <TableCell sx={{ color: '#667085' }}>Client Name</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Date Joined</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Status</TableCell>
-                    <TableCell sx={{ color: '#667085' }}>Action</TableCell>
+                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Client Name</TableCell>
+                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Date Joined</TableCell>
+                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Status</TableCell>
+                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Action</TableCell>
                   </>
                 )}
               </TableRow>
@@ -245,11 +256,11 @@ const clientsData = [
                     const tempStyles = getTemperatureStyles(user.temperature);
                     return (
                       <TableRow key={user.id}>
-                        <TableCell sx={{ color: '#101828' }}>{user.sellerName}</TableCell>
-                        <TableCell sx={{ color: '#101828' }}>{user.dateAdded}</TableCell>
-                        <TableCell sx={{ color: '#101828' }}>{user.state}</TableCell>
-                        <TableCell sx={{ color: '#101828' }}>{user.closingTime}</TableCell>
-                        <TableCell sx={{ color: '#101828' }}>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.sellerName}</TableCell>
+                        <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.dateAdded}</TableCell>
+                        <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>{user.state}</TableCell>
+                        <TableCell className='TableDataS'  sx={{ color: '#101828' }}>{user.closingTime}</TableCell>
+                        <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>
                           <Box sx={{ ...tempStyles, padding: '8px', display: 'inline-block' }}>
                             {user.temperature}
                           </Box>
@@ -275,10 +286,10 @@ const clientsData = [
                   })
                   : clientsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((client) => (
                     <TableRow key={client.id}>
-                      <TableCell sx={{ color: '#101828' }}>{client.clientName}</TableCell>
-                      <TableCell sx={{ color: '#101828' }}>{client.dateJoined}</TableCell>
-                      <TableCell sx={{ color: '#101828' }}>{client.status}</TableCell>
-                      <TableCell sx={{ color: '#101828' }}>
+                      <TableCell className='TableData'  sx={{ color: '#101828' }}>{client.clientName}</TableCell>
+                      <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>{client.dateJoined}</TableCell>
+                      <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>{client.status}</TableCell>
+                      <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>
                         <Button
                           onClick={(event) => handleClick(event, client.id)}
                           sx={{ minWidth: '36px', padding: 0 }}
