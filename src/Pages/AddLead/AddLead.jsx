@@ -9,6 +9,7 @@ import {
 
 } from '@mui/material';
 import Layout from '../../component/Layout/Layout';
+import SuccessModal from '../../component/SuccessModal/SuccessModal'; // Adjust the import path as needed
 
 const statesList = [
   { code: 'CA', name: 'California' },
@@ -64,6 +65,15 @@ const AddLead = () => {
   const [zillowUrl, setZillowUrl] = useState('');
   const [callUrl, setCallUrl] = useState('');
   
+  const [open, setOpen] = useState(false);
+  const handleClick = () => {
+    setOpen(true); // Open the modal
+  };
+
+  const handleClose = () => {
+    setOpen(false); // Close the modal
+  };
+
   return (
     <Layout>
       <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
@@ -945,26 +955,24 @@ const AddLead = () => {
   width: '100%', // Full width
 }}>
 <Button
-  className='AddLeadBtn'
-  variant="contained"
-  sx={{
-    width: '100%', // Full width
-    backgroundColor: '#191919', // Background color
-    color: '#FFFFFF', // Text color
-    fontSize: '30px', // Font size
-    borderRadius: '20px', // Rounded corners
-    padding: '5px 15px', // Adjusted padding for smaller height (5px top/bottom, 15px left/right)
-    '&:hover': {
-      backgroundColor: '#333333', // Darker shade on hover for effect
-    },
-  }}
-  onClick={() => {
-    // Add your click handler logic here
-    console.log('Add Lead button clicked!');
-  }}
->
-  Add Lead
-</Button>
+        className='AddLeadBtn'
+        variant="contained"
+        sx={{
+          width: '100%',
+          backgroundColor: '#191919',
+          color: '#FFFFFF',
+          fontSize: '30px',
+          borderRadius: '20px',
+          padding: '5px 15px',
+          '&:hover': {
+            backgroundColor: '#333333',
+          },
+        }}
+        onClick={handleClick}
+      >
+        Add Lead
+      </Button>
+      <SuccessModal open={open} handleClose={handleClose} />
 
 
 </Box>
