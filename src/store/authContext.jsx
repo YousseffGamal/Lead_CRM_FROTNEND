@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     token: localStorage.getItem("token") || "",
-     user: JSON.parse(localStorage.getItem("user")) || null,
+     user: JSON.parse(localStorage.getItem("user") ? localStorage.getItem("user") : '') || null,
   });
 
   const login = async (cred) => {

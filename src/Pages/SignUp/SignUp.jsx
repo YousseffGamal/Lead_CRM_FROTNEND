@@ -5,7 +5,8 @@ import Ellipse from "../../assets/images/Ellipse 1.png";
 import TopLeftImage from "../../assets/images/tapIcon.png"; // Import the top-left image
 import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
 import axiosInstance from "../../axios";
-import { red } from "@mui/material/colors";
+
+
 const SignUpPage = () => {
 
   const [loading, setLoading] = useState(false);
