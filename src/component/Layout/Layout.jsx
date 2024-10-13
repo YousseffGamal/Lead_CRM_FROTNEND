@@ -26,7 +26,7 @@ import {
   Notifications,
   Logout
 } from '@mui/icons-material';
-import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 280;
 
@@ -34,7 +34,6 @@ const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Get current location
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -142,25 +141,23 @@ const Layout = ({ children }) => {
             Leads Dashboard
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {/* Conditionally render the button */}
-            {location.pathname !== '/addlead' && ( // Adjust the path as needed
-              <Link to="/addlead" style={{ textDecoration: 'none', color: '#000' }}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: '#0177FB',
-                    borderRadius: '27.66px',
-                    color: '#ffffff',
-                    padding: '8px 16px',
-                    width: { xs: 'auto', sm: '200px' },
-                    height: { xs: '45px', sm: '56px' },
-                    fontSize: { xs: '0.875rem', sm: '1.25rem' },
-                  }}
-                >
-                  New Lead
-                </Button>
-              </Link>
-            )}
+           
+            <Link to="/addlead" style={{ textDecoration: 'none', color: '#000' }}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: '#0177FB',
+                borderRadius: '27.66px',
+                color: '#ffffff',
+                padding: '8px 16px',
+                width: { xs: 'auto', sm: '200px' },
+                height: { xs: '45px', sm: '56px' },
+                fontSize: { xs: '0.875rem', sm: '1.25rem' },
+              }}
+            >
+              New Lead
+            </Button>
+                  </Link>
             <Box
               sx={{
                 backgroundColor: '#F1F1F1',
@@ -206,6 +203,7 @@ const Layout = ({ children }) => {
                   horizontal: 'right',
                 }}
               >
+               
                 <MenuItem onClick={handleClose}>
                   <Typography className="UserName" variant="body1" sx={{ color: '#656565', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
                     Charles Gray
@@ -269,7 +267,13 @@ const Layout = ({ children }) => {
 
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: '#f5f5f5', p: 3, padding: '70px 20px 20px' }}
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` }, // Adjusted to take into account the sidebar width
+          padding: { xs: 2, sm: 3, md: 5 },
+          marginTop: '64px',
+          overflowX: 'auto', // Allows for horizontal scrolling if content is too wide
+        }}
       >
         {children}
       </Box>
