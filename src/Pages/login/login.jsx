@@ -1,10 +1,58 @@
-import React from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, TextField, Button, Typography, colors } from "@mui/material";
 import "./LoginPage.css"; // Assuming external CSS for custom styles
 import Ellipse from "../../assets/images/Ellipse 1.png";
 import TopLeftImage from "../../assets/images/tapIcon.png"; // Import the top-left image
-
+import { useAuth } from '../../store/authContext';
+import { useNavigate } from 'react-router-dom';
 const LoginPage = () => {
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  
+  // State for form data, error, and success messages
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [errorMessage, setErrorMessage] = useState(''); // For error message
+  
+  // Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+  
+      const response = await login(formData); // Assuming login() returns a promise
+      if (response.success) {
+       
+       navigate('/dashboard') 
+      } else {
+        setErrorMessage(response.message); // Display error message
+       
+      }
+  };
+
+
+
+
+
+
+
+
+
+
+
   return (
     <Box className="login-container">
       {/* Layered Image */}
@@ -24,12 +72,16 @@ const LoginPage = () => {
         >
           Sign in
         </Typography>
-        <form>
+        <form onSubmit={handleSubmit} >
           {/* Email Input */}
           <TextField
             fullWidth
             variant="standard"
             label="Email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
             sx={{
               marginBottom: "52px",
               "& .MuiInputBase-root": {
@@ -51,11 +103,16 @@ const LoginPage = () => {
           />
 
           {/* Password Input */}
+
           <TextField
             fullWidth
             variant="standard"
             label="Password"
             type="password"
+               id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
             sx={{
               marginBottom: "42px",
               "& .MuiInputBase-root": {
@@ -75,7 +132,7 @@ const LoginPage = () => {
               },
             }}
           />
-
+          <span style={{color : "red"}} >   {errorMessage}</span>
           {/* Remember Me and Forget Password */}
           <Box
             sx={{
@@ -96,9 +153,10 @@ const LoginPage = () => {
               Forget Password?
             </Typography>
           </Box>
-
+         
           {/* Submit Button */}
           <Button
+          type="submit"
             fullWidth
             variant="contained"
             sx={{

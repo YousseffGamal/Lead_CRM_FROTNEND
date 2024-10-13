@@ -4,29 +4,70 @@ import "./signupPage.css"; // Assuming external CSS for custom styles
 import Ellipse from "../../assets/images/Ellipse 1.png";
 import TopLeftImage from "../../assets/images/tapIcon.png"; // Import the top-left image
 import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
-
+import axiosInstance from "../../axios";
+import { red } from "@mui/material/colors";
 const SignUpPage = () => {
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [openModal, setOpenModal] = useState(false); // State for modal visibility
   const navigate = useNavigate(); // Use useNavigate for navigation
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
+  
+  // State for form data, error, and success messages
+  const [formData, setFormData] = useState({
+    name : '',
+    phone : '',
+    email : '',
+    password : '',
+  });
 
+  const [errorMessage, setErrorMessage] = useState(''); // For error message
+  
+  // Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true); // Show loading state
-    setOpenModal(true); // Open modal
-    setTimeout(() => {
-      // Simulate an API call for user registration
-      setLoading(false); // Hide loading state
-      setSuccess(true); // Show success message
 
-      // Redirect to login page after 2 seconds
+    console.log(formData)
+    axiosInstance.post('/signupAdmin',formData)
+    .then((res) =>{
+      setFormData({
+        name : '',
+        phone : '',
+        email : '',
+        password : '',
+      })
+      setLoading(false); // Hide loading state
+
       setTimeout(() => {
         navigate("/"); // Redirect to login page using navigate
       }, 2000);
-    }, 2000); // Simulate a 2-second loading time
+    })
+    .catch((err) =>{
+      setErrorMessage(`Faild to Sign Up : ${err.response.data.message}`)
+      setLoading(false); // Hide loading state
+         
+
+    })
+ 
   };
+
+
+
+
+
+
+
 
   return (
     <Box className="login-container">
@@ -51,7 +92,7 @@ const SignUpPage = () => {
         </Typography>
         <form onSubmit={handleSubmit}>
           {/* Customized Profile Image Upload */}
-          <TextField
+          {/* <TextField
             type="file"
             fullWidth
             variant="outlined" // Use outlined variant for better styling
@@ -64,13 +105,73 @@ const SignUpPage = () => {
             InputLabelProps={{
               shrink: true,
             }}
-          />
+          /> */}
 
+          {/* Name Input */}
+          <TextField
+            fullWidth
+            variant="standard"
+            label="Name"
+             id="name"
+              name="name"
+            value={formData.name}
+            onChange={handleChange}
+            sx={{
+              marginBottom: "52px",
+              "& .MuiInputBase-root": {
+                backgroundColor: "transparent",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+                "&.Mui-focused": {
+                  backgroundColor: "transparent",
+                },
+              },
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid #000000",
+              },
+              "& .MuiInput-underline:after": {
+                borderBottom: "1px solid #000000",
+              },
+            }}
+          />
           {/* Email Input */}
           <TextField
             fullWidth
             variant="standard"
             label="Email"
+            id="email"
+            name="email"
+          value={formData.email}
+          onChange={handleChange}
+            sx={{
+              marginBottom: "52px",
+              "& .MuiInputBase-root": {
+                backgroundColor: "transparent",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+                "&.Mui-focused": {
+                  backgroundColor: "transparent",
+                },
+              },
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid #000000",
+              },
+              "& .MuiInput-underline:after": {
+                borderBottom: "1px solid #000000",
+              },
+            }}
+          />
+          {/* Phone Input */}
+          <TextField
+            fullWidth
+            variant="standard"
+            label="Phone"
+            id="phone"
+            name="phone"
+          value={formData.phone}
+          onChange={handleChange}
             sx={{
               marginBottom: "52px",
               "& .MuiInputBase-root": {
@@ -97,6 +198,10 @@ const SignUpPage = () => {
             variant="standard"
             label="Password"
             type="password"
+            id="password"
+            name="password"
+          value={formData.password}
+          onChange={handleChange}
             sx={{
               marginBottom: "42px",
               "& .MuiInputBase-root": {
@@ -116,6 +221,8 @@ const SignUpPage = () => {
               },
             }}
           />
+          <span style={{ color : "red"}}>  {errorMessage}</span>
+        
 
           {/* Remember Me */}
           <Box
