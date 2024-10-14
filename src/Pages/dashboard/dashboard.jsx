@@ -686,22 +686,7 @@ const Dashboard = () => {
                       <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.createdAt}</TableCell>
                       <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.investorCategory}</TableCell>
 
-                      {/* <TableCell className='TableDataS' sx={{ color: '#101828' }}>
-                        <Button
-                          onClick={(event) => handleClick(event, user.id)}
-                          sx={{ minWidth: '36px', padding: 0 }}
-                          aria-controls={anchorEl ? 'simple-menu' : undefined}
-                          aria-haspopup="true"
-                          aria-expanded={anchorEl ? 'true' : undefined}
-                        >
-                          <MoreVertIcon />
-                        </Button>
-                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                          <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                          <MenuItem >Edit</MenuItem>
-
-                        </Menu>
-                      </TableCell> */}
+              
                       <TableCell className='TableDataS' sx={{ color: '#101828' }}>
                       <Button
                         onClick={(event) => handleClick(event, index)}
@@ -726,13 +711,7 @@ const Dashboard = () => {
                           Delete
                         </MenuItem>
 
-                        <MenuItem onClick={() => {
-                          console.log("Clicked user:", user); // Log the clicked user here
-                          handleOpen(user);
-                          handleClose(); // Close menu after action
-                        }}>
-                          Edit
-                        </MenuItem>
+                        
                       </Menu>
                     </TableCell>
                     </TableRow>
