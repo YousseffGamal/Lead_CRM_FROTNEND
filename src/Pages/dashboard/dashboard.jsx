@@ -135,6 +135,31 @@ const Dashboard = () => {
 
 
   };
+  const handleDeleteClient = (id, index) => {
+    if (confirm('Are you sure you want to delete this item ?')) {
+      axiosInstance.delete(`deleteuser/${id}`)
+        .then((res) => {
+          setClientsData((prevClientsData) => {
+            // Create a shallow copy of the previous leads data
+            const newClientsData = [...prevClientsData];
+
+            // Use splice to remove the item at the specified index
+            newClientsData.splice(index, 1);
+
+            // Return the updated array
+            return newClientsData;
+          });
+
+          alert('item deleted successfully ')
+        })
+        .catch((res) => {
+          alert('An error happend while deleting')
+        })
+      handleClose();
+    }
+
+
+  };
 
   const getTemperatureStyles = (temperature) => {
     switch (temperature) {
@@ -655,12 +680,13 @@ const Dashboard = () => {
                       </TableRow>
                     );
                   })
-                  : clientsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
+                  : clientsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user,index) => (
                     <TableRow key={user.id}>
                       <TableCell className='TableData' sx={{ color: '#101828' }}>{user.name}</TableCell>
                       <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.createdAt}</TableCell>
                       <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.investorCategory}</TableCell>
-                      <TableCell className='TableDataS' sx={{ color: '#101828' }}>
+
+                      {/* <TableCell className='TableDataS' sx={{ color: '#101828' }}>
                         <Button
                           onClick={(event) => handleClick(event, user.id)}
                           sx={{ minWidth: '36px', padding: 0 }}
@@ -675,7 +701,40 @@ const Dashboard = () => {
                           <MenuItem >Edit</MenuItem>
 
                         </Menu>
-                      </TableCell>
+                      </TableCell> */}
+                      <TableCell className='TableDataS' sx={{ color: '#101828' }}>
+                      <Button
+                        onClick={(event) => handleClick(event, index)}
+                        sx={{ minWidth: '36px', padding: 0 }}
+                        aria-controls={anchorEl ? 'simple-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={anchorEl ? 'true' : undefined}
+                      >
+                        <MoreVertIcon />
+                      </Button>
+
+                      {/* Menu should be displayed only for the clicked row */}
+                      <Menu
+                        anchorEl={menuIndex === index ? anchorEl : null}
+                        open={menuIndex === index && Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={() => {
+                          handleDeleteClient(user._id, index);
+                          handleClose(); // Close menu after action
+                        }}>
+                          Delete
+                        </MenuItem>
+
+                        <MenuItem onClick={() => {
+                          console.log("Clicked user:", user); // Log the clicked user here
+                          handleOpen(user);
+                          handleClose(); // Close menu after action
+                        }}>
+                          Edit
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
