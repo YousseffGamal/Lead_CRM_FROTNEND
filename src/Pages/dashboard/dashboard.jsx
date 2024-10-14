@@ -27,6 +27,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Layout from '../../component/Layout/Layout';
 import axiosInstance from '../../axios';
 import { BorderClear } from '@mui/icons-material';
+import DeleteConfirmationModal from '../../component/DeleteConfirmationModal/DeleteConfirmationModal';
 
 
 
@@ -58,7 +59,9 @@ const Dashboard = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentDeleteId, setCurrentDeleteId] = useState(null);
+  const [currentDeleteIndex, setCurrentDeleteIndex] = useState(null);
   const stats = [
     { title: 'No. Of Leads', value: 150, bgColor: '#0177FB', textColor: '#fff' },
     { title: 'No. Of Clients', value: 80, bgColor: '#FFFFFF', textColor: '#000000' },
@@ -108,57 +111,61 @@ const Dashboard = () => {
     setMenuIndex(null); 
   };
 
+  const handleOpenModalLeads = (id, index) => {
+    setCurrentDeleteId(id);
+    setCurrentDeleteIndex(index);
+    setModalOpen(true);
+  };
+
+  const handleCloseModalLeads = () => {
+    setModalOpen(false);
+    setCurrentDeleteId(null);
+    setCurrentDeleteIndex(null);
+  };
+  const handleOpenModalConfirmation = (id, index) => {
+    setCurrentDeleteId(id);
+    setCurrentDeleteIndex(index);
+    setModalOpen(true);
+  };
+
+  const handleCloseModalConfirmation = () => {
+    setModalOpen(false);
+    setCurrentDeleteId(null);
+    setCurrentDeleteIndex(null);
+  };
+
   const handleDelete = (id, index) => {
-    console.log(`Deleted user with ID: ${currentUserId}`);
-    console.log(index)
-    if (confirm('Are you sure you want to delete this item ?')) {
-      axiosInstance.delete(`deleteLeadById/${id}`)
+    if (currentDeleteId !== null && currentDeleteIndex !== null) {
+      axiosInstance.delete(`deleteLeadById/${currentDeleteId}`)
         .then((res) => {
           setLeadsData((prevLeadsData) => {
-            // Create a shallow copy of the previous leads data
             const newLeadsData = [...prevLeadsData];
-
-            // Use splice to remove the item at the specified index
-            newLeadsData.splice(index, 1);
-
-            // Return the updated array
+            newLeadsData.splice(currentDeleteIndex, 1);
             return newLeadsData;
           });
-
-          alert('item deleted successfully ')
+          handleCloseModalLeads();
         })
-        .catch((res) => {
-          alert('An error happend while deleting')
+        .catch(() => {
+          alert('An error occurred while deleting');
         })
-      handleClose();
     }
-
 
   };
-  const handleDeleteClient = (id, index) => {
-    if (confirm('Are you sure you want to delete this item ?')) {
-      axiosInstance.delete(`deleteuser/${id}`)
+  const handleDeleteClient = () => {
+    if (currentDeleteId !== null && currentDeleteIndex !== null) {
+      axiosInstance.delete(`deleteuser/${currentDeleteId}`)
         .then((res) => {
-          setClientsData((prevClientsData) => {
-            // Create a shallow copy of the previous leads data
-            const newClientsData = [...prevClientsData];
-
-            // Use splice to remove the item at the specified index
-            newClientsData.splice(index, 1);
-
-            // Return the updated array
-            return newClientsData;
+          setLeadsData((prevLeadsData) => {
+            const newLeadsData = [...prevLeadsData];
+            newLeadsData.splice(currentDeleteIndex, 1);
+            return newLeadsData;
           });
-
-          alert('item deleted successfully ')
+          handleCloseModalConfirmation();
         })
-        .catch((res) => {
-          alert('An error happend while deleting')
+        .catch(() => {
+          alert('An error occurred while deleting');
         })
-      handleClose();
     }
-
-
   };
 
   const getTemperatureStyles = (temperature) => {
@@ -230,10 +237,16 @@ const Dashboard = () => {
     getStates();
     setOpen(true);
 };
+
+
+
   const handleCloseModal = () => {
     fetchLeads();
     setOpen(false)
   };
+
+
+
 
   const [formData, setFormData] = useState({
     sellersFullName: '',
@@ -264,7 +277,6 @@ const Dashboard = () => {
   };
 
   const handleSubmit = (id) => {
-    console.log('heroooo')
     axiosInstance.patch(`updateLeadById/${id}`, formData)
       .then((res) => {
 
@@ -290,6 +302,19 @@ const Dashboard = () => {
 
   return (
     <Layout>
+        <DeleteConfirmationModal
+        open={modalOpen}
+        onClose={handleCloseModalConfirmation}
+        onConfirm={handleDeleteClient}
+      />
+
+
+        <DeleteConfirmationModal
+        open={modalOpen}
+        onClose={handleCloseModalLeads}
+        onConfirm={handleDelete}
+      />
+
       <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
 
         {/* Statistics Boxes */}
@@ -661,7 +686,7 @@ const Dashboard = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={() => {
-          handleDelete(user._id, index);
+          handleOpenModalLeads(user._id, index);
           handleClose(); // Close menu after action
         }}>
           Delete
@@ -705,7 +730,7 @@ const Dashboard = () => {
                         onClose={handleClose}
                       >
                         <MenuItem onClick={() => {
-                          handleDeleteClient(user._id, index);
+                          handleOpenModalConfirmation(user._id, index);
                           handleClose(); // Close menu after action
                         }}>
                           Delete
