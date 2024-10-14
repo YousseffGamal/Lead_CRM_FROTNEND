@@ -181,11 +181,27 @@ const Dashboard = () => {
   const [states,setStates] = useState([])
   const [open, setOpen] = useState(false);
   const handleOpen = (lead) => {
-    console.log(lead)
-    setFormData(lead)
-    getStates()
-    setOpen(true)
-  };
+    console.log(lead);
+    setFormData({
+        sellersFullName: lead.sellersFullName,
+        phone: lead.phone,
+        email: lead.email,
+        bestTimeForCallback: lead.bestTimeForCallback,
+        bedCount: lead.bedCount,
+        bathCount: lead.bathCount,
+        sqft: lead.sqft,
+        occupancy: lead.occupancy,
+        condition: lead.condition,
+        motivation: lead.motivation,
+        askingPrice: lead.askingPrice,
+        state: lead.state, // Make sure this is set correctly
+        closingTime: lead.closingTime,
+        leadType: lead.leadType, // Make sure this is set correctly
+        _id: lead._id // Add this line to store the lead ID
+    });
+    getStates();
+    setOpen(true);
+};
   const handleCloseModal = () => {
     fetchLeads();
     setOpen(false)
@@ -459,8 +475,7 @@ const Dashboard = () => {
     <>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Seller Name</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center', width:'140px' }}>Phone</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Email</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Best Time for Callback</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Callback Time</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Bed Count</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Bath Count</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Sqft</TableCell>
@@ -468,7 +483,7 @@ const Dashboard = () => {
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Condition</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Motivation</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Asking Price</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Date Added</TableCell>
+
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>State</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Closing Time</TableCell>
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Temperature</TableCell>
@@ -486,13 +501,15 @@ const Dashboard = () => {
             </TableHead>
             <TableBody>
               {activeTab === 0
-                ? leadsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user,index) => {
+                // ? leadsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user,index) => {
+                ? leadsData.map((user,index) => {
                     const tempStyles = getTemperatureStyles(user.temperature);
                     return (
-                      <TableRow key={user.id}>
+                      <TableRow key={user._id}>
+                      
                         <TableCell className='TableData'  sx={{ color: '#101828', textAlign: 'center', width:'140px' }}>{user.sellersFullName}</TableCell>
                         <TableCell className='TableData'  sx={{ color: '#101828' , textAlign: 'center', width:'10px'}}>{user.phone}</TableCell>
-                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.email}</TableCell>
+
                         <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.bestTimeForCallback}</TableCell>
                         <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.bedCount}</TableCell>
                         <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.bathCount}</TableCell>
@@ -501,48 +518,29 @@ const Dashboard = () => {
                         <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.condition}</TableCell>
                         <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.motivation}</TableCell>
                         <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.askingPrice}</TableCell>
-                       
-
-
-
-
-                        <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.createdAt}</TableCell>
+                      
                         <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>{user.state.name}</TableCell>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         <TableCell className='TableDataS'  sx={{ color: '#101828' }}>{user.closingTime}</TableCell>
                         <TableCell className="TableDataS" sx={{ color: '#101828' }}>
-  <Box 
-    sx={{
-      padding: '8px', 
-      display: 'inline-block', 
-      backgroundColor: 
-        user.leadType.name === 'Cold' ? '#f0f7ff' : 
-        user.leadType.name === 'Warm' ? '#fffae6' : 
-        user.leadType.name === 'Hot' ? '#ffebed' : 'transparent',
-      borderRadius: '25.74px',
-      color: 
-        user.leadType.name === 'Cold' ? '#0466D4' : 
-        user.leadType.name === 'Warm' ? '#D0A704' : 
-        user.leadType.name === 'Hot' ? '#CB0A1D' : '#000',
-    }}
-  >
-    {user.leadType.name}
-  </Box>
-</TableCell>
+                          <Box 
+                            sx={{
+                              padding: '8px', 
+                              display: 'inline-block', 
+                              backgroundColor: 
+                                user.leadType.name === 'Cold' ? '#f0f7ff' : 
+                                user.leadType.name === 'Warm' ? '#fffae6' : 
+                                user.leadType.name === 'Hot' ? '#ffebed' : 'transparent',
+                              borderRadius: '25.74px',
+                              color: 
+                                user.leadType.name === 'Cold' ? '#0466D4' : 
+                                user.leadType.name === 'Warm' ? '#D0A704' : 
+                                user.leadType.name === 'Hot' ? '#CB0A1D' : '#000',
+                            }}
+                          >
+                            {user.leadType.name}
+                          </Box>
+                        </TableCell>
                         <TableCell sx={{ color: '#101828' }}>
                           <Button
                             onClick={(event) => handleClick(event, user.id)}
@@ -555,7 +553,12 @@ const Dashboard = () => {
                           </Button>
                           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                             <MenuItem onClick={() => handleDelete(user._id,index)}>Delete</MenuItem>
-                            <MenuItem onClick={() => handleOpen(user)}>Edit</MenuItem>
+                            <MenuItem key={user.id} onClick={() => {
+        console.log("Clicked user:", user); // Log the clicked user here
+        handleOpen(user);
+    }}>
+        Edit
+    </MenuItem>
 
                           </Menu>
                         </TableCell>
