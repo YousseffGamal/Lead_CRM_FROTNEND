@@ -30,10 +30,11 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 280;
 
-const Layout = ({ children }) => {
+const Layout = ({ children, headerText, pageType }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const [activeLink, setActiveLink] = useState('/dashboard'); // Track active link
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -49,6 +50,10 @@ const Layout = ({ children }) => {
 
   const handleLogout = () => {
     navigate('/');
+  };
+  const handleLinkClick = (path) => {
+    setActiveLink(path); // Set active link on click
+    navigate(path); // Navigate to the new path immediately
   };
 
   const drawer = (
@@ -88,21 +93,59 @@ const Layout = ({ children }) => {
           Navigation
         </Typography>
         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
-          <ListItem button>
-            <ListItemIcon>
-              <Dashboard style={{ color: '#656565' }} />
-            </ListItemIcon>
-            <ListItemText className='NavText' primary="Leads Dashboard" sx={{ color: '#656565' }} />
-          </ListItem>
-        </Link>
-        <Link to="/users" style={{ textDecoration: 'none' }}>
-          <ListItem button>
-            <ListItemIcon>
-              <People style={{ color: '#656565' }} />
-            </ListItemIcon>
-            <ListItemText className='NavText' primary="Blogs & Articles" sx={{ color: '#656565' }} />
-          </ListItem>
-        </Link>
+  <ListItem 
+    button 
+    onClick={() => handleLinkClick('/dashboard')}
+    sx={{
+      width: '90%',
+      marginBottom:"23px",
+      backgroundColor: activeLink === '/dashboard' ? '#000000' : 'transparent',
+      color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565',
+      height: '77px',
+      borderRadius: '30px',
+      '&:hover': {
+        backgroundColor: '#000000',
+        color: '#F1F1F1',
+      }
+    }}
+  >
+    <ListItemIcon>
+      <Dashboard style={{ color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565' }} />
+    </ListItemIcon>
+    <ListItemText 
+      className='NavText' 
+      primary="Leads Dashboard" 
+      sx={{ color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565' }} 
+    />
+  </ListItem>
+</Link>
+<Link to="/blogsarticles" style={{ textDecoration: 'none' }}>
+  <ListItem 
+    button 
+    onClick={() => handleLinkClick('/blogsarticles')}
+    sx={{
+      width: '90%',
+      backgroundColor: activeLink === '/blogsarticles' ? '#000000' : 'transparent',
+      color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565',
+      height: '77px',
+      borderRadius: '30px',
+      '&:hover': {
+        backgroundColor: '#000000',
+        color: '#F1F1F1',
+      }
+    }}
+  >
+    <ListItemIcon>
+      <People style={{ color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565' }} />
+    </ListItemIcon>
+    <ListItemText 
+      className='NavText' 
+      primary="Blogs & Articles" 
+      sx={{ color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565' }} 
+    />
+  </ListItem>
+</Link>
+
       </List>
     </div>
   );
@@ -138,26 +181,44 @@ const Layout = ({ children }) => {
               fontSize: { xs: '13px', sm: '15px', md: '2.5rem' },
             }}
           >
-            Leads Dashboard
+            {headerText || 'Leads Dashboard'}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-           
-            <Link to="/addlead" style={{ textDecoration: 'none', color: '#000' }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: '#0177FB',
-                borderRadius: '27.66px',
-                color: '#ffffff',
-                padding: '8px 16px',
-                width: { xs: 'auto', sm: '200px' },
-                height: { xs: '45px', sm: '56px' },
-                fontSize: { xs: '0.875rem', sm: '1.25rem' },
-              }}
-            >
-              New Lead
-            </Button>
-                  </Link>
+            {pageType === 'blogs' ? (
+              <Link to="/addblog" style={{ textDecoration: 'none', color: '#000' }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: '#0177FB',
+                    borderRadius: '27.66px',
+                    color: '#ffffff',
+                    padding: '8px 16px',
+                    width: { xs: 'auto', sm: '200px' },
+                    height: { xs: '45px', sm: '56px' },
+                    fontSize: { xs: '0.875rem', sm: '1.25rem' },
+                  }}
+                >
+                  New Blog
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/addlead" style={{ textDecoration: 'none', color: '#000' }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: '#0177FB',
+                    borderRadius: '27.66px',
+                    color: '#ffffff',
+                    padding: '8px 16px',
+                    width: { xs: 'auto', sm: '200px' },
+                    height: { xs: '45px', sm: '56px' },
+                    fontSize: { xs: '0.875rem', sm: '1.25rem' },
+                  }}
+                >
+                  New Lead
+                </Button>
+              </Link>
+            )}
             <Box
               sx={{
                 backgroundColor: '#F1F1F1',
@@ -203,14 +264,21 @@ const Layout = ({ children }) => {
                   horizontal: 'right',
                 }}
               >
-               
                 <MenuItem onClick={handleClose}>
-                  <Typography className="UserName" variant="body1" sx={{ color: '#656565', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+                  <Typography
+                    className="UserName"
+                    variant="body1"
+                    sx={{ color: '#656565', fontSize: { xs: '0.875rem', sm: '1rem' } }}
+                  >
                     Charles Gray
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <Typography className="UserEmail" variant="body2" sx={{ color: '#A3A3A3', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  <Typography
+                    className="UserEmail"
+                    variant="body2"
+                    sx={{ color: '#A3A3A3', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                  >
                     charlesgray@gmail.com
                   </Typography>
                 </MenuItem>
@@ -269,10 +337,10 @@ const Layout = ({ children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          width: { sm: `calc(100% - ${drawerWidth}px)` }, // Adjusted to take into account the sidebar width
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           padding: { xs: 2, sm: 3, md: 5 },
           marginTop: '64px',
-          overflowX: 'auto', // Allows for horizontal scrolling if content is too wide
+          overflowX: 'auto',
         }}
       >
         {children}
