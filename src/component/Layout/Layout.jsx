@@ -28,7 +28,7 @@ import {
 } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 
-const drawerWidth = 280;
+const drawerWidth = 320;
 
 const Layout = ({ children, headerText, pageType }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,7 +58,7 @@ const Layout = ({ children, headerText, pageType }) => {
 
   const drawer = (
     <div>
-      <Box sx={{ padding: '16px 0' }}>
+      <Box sx={{ padding: '16px 15px' }}>
         <img
           src={Logo}
           alt="Logo"
@@ -84,11 +84,13 @@ const Layout = ({ children, headerText, pageType }) => {
           Manage leads and track progress
         </Typography>
       </Box>
-      <List>
+      <List
+       sx={{ padding: '8px 15px' }}
+>
         <Typography
           className="Navigation"
           variant="h6"
-          sx={{ color: '#A3A3A3', fontSize: '17.49px', marginTop: '85px', padding: '8px 16px' }}
+          sx={{ color: '#A3A3A3', fontSize: '17.49px', marginTop: '85px', padding: '8px 0' }}
         >
           Navigation
         </Typography>
@@ -153,14 +155,14 @@ const Layout = ({ children, headerText, pageType }) => {
     <Box sx={{ display: 'flex', flexDirection: 'row', minHeight: '100vh' }}>
       <CssBaseline />
       <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          backgroundColor: '#ffffff',
-          boxShadow: 'none',
-        }}
-      >
+  position="fixed"
+  sx={{
+    width: { sm: `calc(100% - ${drawerWidth}px)` },
+    ml: { sm: `${drawerWidth}px` },
+    backgroundColor: '#ffffff',
+    boxShadow: 'none',
+  }}
+>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
           <IconButton
             color="inherit"
