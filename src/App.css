@@ -76,3 +76,12 @@ font-family: "LufgaLight" !important;
     font-family: "LufgaMedium" !important;
 
 }
+.CardTtile{
+    color: #000000 !important;
+    font-family: "LufgaMedium" !important;
+}
+.CardDescr{
+    font-family: "LufgaRegular" !important;
+    font-size: 12px !important;
+
+}
