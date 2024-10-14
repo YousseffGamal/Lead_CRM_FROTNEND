@@ -103,6 +103,7 @@ const Dashboard = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    setCurrentUserId(null);
   };
 
   const handleDelete = (id, index) => {
@@ -181,11 +182,27 @@ const Dashboard = () => {
   const [states, setStates] = useState([])
   const [open, setOpen] = useState(false);
   const handleOpen = (lead) => {
-    console.log(lead)
-    setFormData(lead)
-    getStates()
-    setOpen(true)
-  };
+    console.log(lead);
+    setFormData({
+        sellersFullName: lead.sellersFullName,
+        phone: lead.phone,
+        email: lead.email,
+        bestTimeForCallback: lead.bestTimeForCallback,
+        bedCount: lead.bedCount,
+        bathCount: lead.bathCount,
+        sqft: lead.sqft,
+        occupancy: lead.occupancy,
+        condition: lead.condition,
+        motivation: lead.motivation,
+        askingPrice: lead.askingPrice,
+        state: lead.state, // Make sure this is set correctly
+        closingTime: lead.closingTime,
+        leadType: lead.leadType, // Make sure this is set correctly
+        _id: lead._id // Add this line to store the lead ID
+    });
+    getStates();
+    setOpen(true);
+};
   const handleCloseModal = () => {
     fetchLeads();
     setOpen(false)
@@ -538,14 +555,14 @@ const Dashboard = () => {
                   ? leadsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
                     const tempStyles = getTemperatureStyles(user.temperature);
                     return (
-                      <TableRow key={user.id}>
+                      <TableRow key={user._id}>
                         <TableCell className='TableData' sx={{ color: '#101828', textAlign: 'center', width: '140px' }}>{user.sellersFullName}</TableCell>
                         <TableCell sx={{ color: '#101828', textAlign: 'center', width: '10px' }}>{user.phone}</TableCell>
-                        {/* <TableCell  sx={{ color: '#101828' }}>{user.email}</TableCell> */}
+                        {/* <TableCell   sx={{ color: '#101828' }}>{user.email}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.bestTimeForCallback}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.bedCount}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.bathCount}</TableCell> */}
-                        {/* <TableCell sx={{ color: '#101828' }}>{user.sqft}</TableCell> */}
+                        {/* <TableCell   sx={{ color: '#101828' }}>{user.sqft}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.occupancy}</TableCell> */}
                         <TableCell sx={{ color: '#101828' }}>{user.condition}</TableCell>
                         {/* <TableCell sx={{ color: '#101828' }}>{user.motivation}</TableCell> */}
@@ -567,14 +584,16 @@ const Dashboard = () => {
                                 user.leadType.name === 'Cold' ? '#0466D4' :
                                   user.leadType.name === 'Warm' ? '#D0A704' :
                                     user.leadType.name === 'Hot' ? '#CB0A1D' : '#000',
+
                             }}
                           >
                             {user.leadType.name}
                           </Box>
                         </TableCell>
+                      
                         <TableCell sx={{ color: '#101828' }}>
                           <Button
-                            onClick={(event) => handleClick(event, user.id)}
+                            onClick={(event) => handleClick(event, user._id)}
                             sx={{ minWidth: '36px', padding: 0 }}
                             aria-controls={anchorEl ? 'simple-menu' : undefined}
                             aria-haspopup="true"
@@ -583,11 +602,20 @@ const Dashboard = () => {
                             <MoreVertIcon />
                           </Button>
                           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                            <MenuItem onClick={() => handleDelete(user._id, index)}>Delete</MenuItem>
-                            <MenuItem onClick={() => handleOpen(user)}>Edit</MenuItem>
 
-                          </Menu>
+                            <MenuItem onClick={() => handleDelete(user._id,index)}>Delete</MenuItem>
+                            <MenuItem key={user.id} onClick={() => {
+                                  console.log("Clicked user:", user); // Log the clicked user here
+                                  handleOpen(user);
+                              }}>
+                                  Edit
+                              </MenuItem>
+
+                              {user._id}
+                          </Menu> 
+                          {user._id}
                         </TableCell>
+                      
                       </TableRow>
                     );
                   })
