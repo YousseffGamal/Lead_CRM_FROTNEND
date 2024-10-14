@@ -8,18 +8,21 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     token: localStorage.getItem("token") || "",
      role: localStorage.getItem("role")  || null,
+     user: JSON.parse(localStorage.getItem("user"))   || null,
   });
 
   const login = async (cred) => {
     try {
       const { data } = await axiosInstance.post("/signinAdmin", cred);
-      console.log(data)
+      console.log('loginData',data.user.userExist)
       setAuth({
         token: data.user.token,
         role: data.user.userExist.role,
+        user: data.user.userExist,
       });
       localStorage.setItem("token", data.user.token);
       localStorage.setItem("role", data.user.userExist.role);
+      localStorage.setItem("user", JSON.stringify(data.user.userExist));
 
       return { success: true, data };
     } catch (error) {
