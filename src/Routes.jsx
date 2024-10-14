@@ -6,6 +6,7 @@ import SignUpPage from "./Pages/SignUp/SignUp";
 import ProtectedRoute from './utiliteis/protectedRoute';
 import AddLead from "./Pages/AddLead/AddLead";
 import BlogsArticles from "./Pages/BlogsArticles/BlogsArticles"
+import AddBlog from "./Pages/AddBlog/AddBlog.JSX";
 const ProjectRoutes = () => {
   return (
     <React.Suspense fallback={<>Loading...</>}>
@@ -18,6 +19,7 @@ const ProjectRoutes = () => {
           <Route path="/" element={<LoginPage />} />
           <Route path="/signuppage" element={<SignUpPage />} />
           <Route path="/blogsarticles" element={<BlogsArticles />} />
+          <Route path="/addblog" element={<AddBlog />} />
 
 
 
