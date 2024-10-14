@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom'; // Import useLocation
 import Logo from "../../assets/images/logo.png";
 import Profile from "../../assets/images/profile.png";
 import {
@@ -35,7 +34,6 @@ const Layout = ({ children, headerText, pageType }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Get current location
   const [activeLink, setActiveLink] = useState('/dashboard'); // Track active link
 
   const handleDrawerToggle = () => {
@@ -53,7 +51,6 @@ const Layout = ({ children, headerText, pageType }) => {
   const handleLogout = () => {
     navigate('/');
   };
-
   const handleLinkClick = (path) => {
     setActiveLink(path); // Set active link on click
     navigate(path); // Navigate to the new path immediately
@@ -107,7 +104,7 @@ const Layout = ({ children, headerText, pageType }) => {
               height: '77px',
               borderRadius: '30px',
               '&:hover': {
-                backgroundColor: activeLink === '/dashboard' ? '#000000' : 'transparent',
+                backgroundColor: activeLink === '/dashboard' ? '#000000' : 'transparent', // Neutralize hover effect
                 color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565',
               },
             }}
@@ -133,7 +130,7 @@ const Layout = ({ children, headerText, pageType }) => {
               height: '77px',
               borderRadius: '30px',
               '&:hover': {
-                backgroundColor: activeLink === '/blogsarticles' ? '#000000' : 'transparent',
+                backgroundColor: activeLink === '/blogsarticles' ? '#000000' : 'transparent', // Neutralize hover effect
                 color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565',
               },
             }}
@@ -186,8 +183,8 @@ const Layout = ({ children, headerText, pageType }) => {
             {headerText || 'Leads Dashboard'}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {!(location.pathname === '/addlead' || location.pathname === '/addblog') && ( // Conditional rendering
-              <Link to={pageType === 'blogs' ? '/addblog' : '/addlead'} style={{ textDecoration: 'none', color: '#000' }}>
+            {pageType === 'blogs' ? (
+              <Link to="/addblog" style={{ textDecoration: 'none', color: '#000' }}>
                 <Button
                   variant="contained"
                   sx={{
@@ -200,7 +197,24 @@ const Layout = ({ children, headerText, pageType }) => {
                     fontSize: { xs: '0.875rem', sm: '1.25rem' },
                   }}
                 >
-                  {pageType === 'blogs' ? 'New Blog' : 'New Lead'}
+                  New Blog
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/addlead" style={{ textDecoration: 'none', color: '#000' }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: '#0177FB',
+                    borderRadius: '27.66px',
+                    color: '#ffffff',
+                    padding: '8px 16px',
+                    width: { xs: 'auto', sm: '200px' },
+                    height: { xs: '45px', sm: '56px' },
+                    fontSize: { xs: '0.875rem', sm: '1.25rem' },
+                  }}
+                >
+                  New Lead
                 </Button>
               </Link>
             )}
@@ -249,53 +263,85 @@ const Layout = ({ children, headerText, pageType }) => {
                   horizontal: 'right',
                 }}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Typography
+                    className="UserName"
+                    variant="body1"
+                    sx={{ color: '#656565', fontSize: { xs: '0.875rem', sm: '1rem' } }}
+                  >
+                    Charles Gray
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Typography
+                    className="UserEmail"
+                    variant="body2"
+                    sx={{ color: '#A3A3A3', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                  >
+                    charlesgray@gmail.com
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link to="/profile" style={{ textDecoration: 'none', color: '#000' }}>
+                    Profile
+                  </Link>
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </Box>
           </Box>
         </Toolbar>
       </AppBar>
+
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="sidebar"
       >
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': {
-              width: drawerWidth,
               boxSizing: 'border-box',
-              backgroundColor: '#F1F1F1',
+              width: drawerWidth,
+              backgroundColor: '#ffffff',
+              boxShadow: 'none',
             },
           }}
         >
           {drawer}
         </Drawer>
         <Drawer
+          variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
             '& .MuiDrawer-paper': {
-              width: drawerWidth,
               boxSizing: 'border-box',
-              backgroundColor: '#F1F1F1',
+              width: drawerWidth,
+              backgroundColor: '#ffffff',
+              boxShadow: 'none',
             },
           }}
-          variant="permanent"
           open
         >
           {drawer}
         </Drawer>
       </Box>
+
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          padding: { xs: 2, sm: 3, md: 5 },
+          marginTop: '64px',
+          overflowX: 'auto',
+        }}
       >
-        <Toolbar />
         {children}
       </Box>
     </Box>
