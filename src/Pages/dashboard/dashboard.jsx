@@ -95,15 +95,17 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-
-  const handleClick = (event, id) => {
+  const [menuIndex, setMenuIndex] = useState(null); // Keep track of which menu to open
+  const handleClick = (event, idx) => {
     setAnchorEl(event.currentTarget);
-    setCurrentUserId(id);
+    // setCurrentUserId(id);
+    setMenuIndex(idx);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setCurrentUserId(null);
+    // setCurrentUserId(null);
+    setMenuIndex(null); 
   };
 
   const handleDelete = (id, index) => {
@@ -591,7 +593,7 @@ const Dashboard = () => {
                           </Box>
                         </TableCell>
                       
-                        <TableCell sx={{ color: '#101828' }}>
+                        {/* <TableCell sx={{ color: '#101828' }}>
                           <Button
                             onClick={(event) => handleClick(event, user._id)}
                             sx={{ minWidth: '36px', padding: 0 }}
@@ -614,7 +616,41 @@ const Dashboard = () => {
                               {user._id}
                           </Menu> 
                           {user._id}
-                        </TableCell>
+                        </TableCell> */}
+
+<TableCell sx={{ color: '#101828' }}>
+      <Button
+        onClick={(event) => handleClick(event, index)}
+        sx={{ minWidth: '36px', padding: 0 }}
+        aria-controls={anchorEl ? 'simple-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={anchorEl ? 'true' : undefined}
+      >
+        <MoreVertIcon />
+      </Button>
+
+      {/* Menu should be displayed only for the clicked row */}
+      <Menu
+        anchorEl={menuIndex === index ? anchorEl : null}
+        open={menuIndex === index && Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => {
+          handleDelete(user._id, index);
+          handleClose(); // Close menu after action
+        }}>
+          Delete
+        </MenuItem>
+
+        <MenuItem onClick={() => {
+          console.log("Clicked user:", user); // Log the clicked user here
+          handleOpen(user);
+          handleClose(); // Close menu after action
+        }}>
+          Edit
+        </MenuItem>
+      </Menu>
+    </TableCell>
                       
                       </TableRow>
                     );
