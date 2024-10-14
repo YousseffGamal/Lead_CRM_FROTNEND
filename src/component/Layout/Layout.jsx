@@ -27,15 +27,17 @@ import {
   Logout
 } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../../store/authContext';
 const drawerWidth = 320;
 
 const Layout = ({ children, headerText, pageType }) => {
+
+  const { logout ,auth} = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const [activeLink, setActiveLink] = useState('/dashboard'); // Track active link
-
+  const [activeLink, setActiveLink] = useState('/dashboard');
+ 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -48,9 +50,25 @@ const Layout = ({ children, headerText, pageType }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+
+
+
+  const handleLogout = (e) => {
+
+    e.preventDefault();
+    console.log('heyuyy')
+    logout();
     navigate('/');
+
+ 
+
+
+
   };
+
+
+
+
   const handleLinkClick = (path) => {
     setActiveLink(path); // Set active link on click
     navigate(path); // Navigate to the new path immediately
@@ -271,7 +289,7 @@ const Layout = ({ children, headerText, pageType }) => {
                     variant="body1"
                     sx={{ color: '#656565', fontSize: { xs: '0.875rem', sm: '1rem' } }}
                   >
-                    Charles Gray
+                    {auth.user.name}
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
@@ -280,7 +298,7 @@ const Layout = ({ children, headerText, pageType }) => {
                     variant="body2"
                     sx={{ color: '#A3A3A3', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                   >
-                    charlesgray@gmail.com
+                  {auth.user.email}
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
