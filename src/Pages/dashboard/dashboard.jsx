@@ -103,6 +103,7 @@ const Dashboard = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    setCurrentUserId(null);
   };
 
   const handleDelete = (id, index) => {
@@ -554,14 +555,14 @@ const Dashboard = () => {
                   ? leadsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
                     const tempStyles = getTemperatureStyles(user.temperature);
                     return (
-                      <TableRow key={user.id}>
+                      <TableRow key={user._id}>
                         <TableCell className='TableData' sx={{ color: '#101828', textAlign: 'center', width: '140px' }}>{user.sellersFullName}</TableCell>
                         <TableCell sx={{ color: '#101828', textAlign: 'center', width: '10px' }}>{user.phone}</TableCell>
-                        {/* <TableCell  sx={{ color: '#101828' }}>{user.email}</TableCell> */}
+                        {/* <TableCell   sx={{ color: '#101828' }}>{user.email}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.bestTimeForCallback}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.bedCount}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.bathCount}</TableCell> */}
-                        {/* <TableCell sx={{ color: '#101828' }}>{user.sqft}</TableCell> */}
+                        {/* <TableCell   sx={{ color: '#101828' }}>{user.sqft}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.occupancy}</TableCell> */}
                         <TableCell sx={{ color: '#101828' }}>{user.condition}</TableCell>
                         <TableCell sx={{ color: '#101828' }}>{user.motivation}</TableCell>
@@ -589,9 +590,10 @@ const Dashboard = () => {
                             {user.leadType.name}
                           </Box>
                         </TableCell>
+                      
                         <TableCell sx={{ color: '#101828' }}>
                           <Button
-                            onClick={(event) => handleClick(event, user.id)}
+                            onClick={(event) => handleClick(event, user._id)}
                             sx={{ minWidth: '36px', padding: 0 }}
                             aria-controls={anchorEl ? 'simple-menu' : undefined}
                             aria-haspopup="true"
@@ -603,15 +605,17 @@ const Dashboard = () => {
 
                             <MenuItem onClick={() => handleDelete(user._id,index)}>Delete</MenuItem>
                             <MenuItem key={user.id} onClick={() => {
-        console.log("Clicked user:", user); // Log the clicked user here
-        handleOpen(user);
-    }}>
-        Edit
-    </MenuItem>
+                                  console.log("Clicked user:", user); // Log the clicked user here
+                                  handleOpen(user);
+                              }}>
+                                  Edit
+                              </MenuItem>
 
-
-                          </Menu>
+                              {user._id}
+                          </Menu> 
+                          {user._id}
                         </TableCell>
+                      
                       </TableRow>
                     );
                   })
