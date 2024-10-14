@@ -32,7 +32,7 @@ const BlogCard = ({ image, title, description }) => {
           sx={{
             fontWeight: 'bold',
             marginTop: '34px',
-            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, // Responsive font sizes
+            fontSize: { xs: '1.5rem', sm: '2rem', md: '1.8rem' }, // Responsive font sizes
           }}
         >
           {title}
