@@ -268,7 +268,7 @@ const Dashboard = () => {
       <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
 
         {/* Statistics Boxes */}
-        <Box sx={{ display: 'flex', gap: 2, mb: 4, flexDirection: { xs: 'column', sm: 'row' } }}>
+        <Box sx={{ display: 'flex', gap: 2,  flexDirection: { xs: 'column', sm: 'row' } }}>
           {stats.map((stat, index) => (
             <Box
               key={index}
@@ -466,7 +466,7 @@ const Dashboard = () => {
         </Modal>
 
 
-        <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
+        <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '35px' }}>
           {/* Statistics Boxes */}
           <Box sx={{ display: 'flex', gap: 2, mb: 4, flexDirection: { xs: 'column', sm: 'row' } }}>
 
@@ -534,7 +534,7 @@ const Dashboard = () => {
       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Sqft</TableCell> */}
                       {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Occupancy</TableCell> */}
                       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Condition</TableCell>
-                      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Motivation</TableCell>
+                      {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Motivation</TableCell> */}
                       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Asking Price</TableCell>
                       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Date Added</TableCell>
                       <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>State</TableCell>
@@ -567,7 +567,7 @@ const Dashboard = () => {
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.sqft}</TableCell> */}
                         {/* <TableCell   sx={{ color: '#101828' }}>{user.occupancy}</TableCell> */}
                         <TableCell sx={{ color: '#101828' }}>{user.condition}</TableCell>
-                        <TableCell sx={{ color: '#101828' }}>{user.motivation}</TableCell>
+                        {/* <TableCell sx={{ color: '#101828' }}>{user.motivation}</TableCell> */}
                         <TableCell sx={{ color: '#101828' }}>{user.askingPrice}</TableCell>
                         <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.createdAt}</TableCell>
                         <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.state.name}</TableCell>
