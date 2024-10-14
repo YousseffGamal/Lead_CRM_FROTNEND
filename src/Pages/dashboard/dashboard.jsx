@@ -18,13 +18,36 @@ import {
   MenuItem as MuiMenuItem, // Import MenuItem for Select
   FormControl, // Import FormControl for Select
   InputLabel, // Import InputLabel for Select
+  Modal,
+  Stack ,
+  TextField,
+
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Layout from '../../component/Layout/Layout';
 import axiosInstance from '../../axios';
+import { BorderClear } from '@mui/icons-material';
+
+
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80%', // Increased width
+  maxHeight: '80vh', // Maximum height to fit the screen
+  overflowY: 'auto', // Enable vertical scrolling
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2, // Optional: add rounded corners
+};
 
 
 const Dashboard = () => {
+
+
   // State for the active tab
   const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients
   const [statusFilter, setStatusFilter] = useState('All'); // State for status filter
@@ -82,9 +105,32 @@ const Dashboard = () => {
     setAnchorEl(null);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (id,index) => {
     console.log(`Deleted user with ID: ${currentUserId}`);
-    handleClose();
+    console.log(index)
+    if(confirm('Are you sure you want to delete this item ?')){
+      axiosInstance.delete(`deleteLeadById/${id}`)
+      .then((res) =>{
+        setLeadsData((prevLeadsData) => {
+          // Create a shallow copy of the previous leads data
+          const newLeadsData = [...prevLeadsData];
+          
+          // Use splice to remove the item at the specified index
+          newLeadsData.splice(index, 1);
+          
+          // Return the updated array
+          return newLeadsData;
+        });
+        
+        alert('item deleted successfully ')
+      })
+      .catch((res) =>{
+        alert('An error happend while deleting')
+      })
+      handleClose();
+    }
+ 
+
   };
 
   const getTemperatureStyles = (temperature) => {
@@ -129,8 +175,229 @@ const Dashboard = () => {
     }
   }, [activeTab]);
 
+
+
+
+  const [states,setStates] = useState([])
+  const [open, setOpen] = useState(false);
+  const handleOpen = (lead) => {
+    console.log(lead)
+    setFormData(lead)
+    getStates()
+    setOpen(true)
+  };
+  const handleCloseModal = () => {
+    fetchLeads();
+    setOpen(false)
+  };
+
+    const [formData, setFormData] = useState({
+      sellersFullName: '',
+      phone: '',
+      email: '',
+      bestTimeForCallback: '',
+      bedCount: '',
+      bathCount: '',
+      sqft: '',
+      occupancy: '',
+      condition: '',
+      motivation: '',
+      askingPrice: '',
+      state: '',
+      closingTime: '',
+      leadType: ''
+    });
+    
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      console.log(name,value)
+      if( name === 'state' || name === 'leadType') {
+        setFormData({ ...formData, [name]:{ _id :value} });
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
+   
+    };
+    
+    const handleSubmit = (id) => {
+      console.log('heroooo')
+      axiosInstance.patch(`updateLeadById/${id}`,formData)
+      .then((res) =>{
+  
+        handleCloseModal();
+       
+      })
+      .catch((err) =>{
+        alert(' An Error happend')
+      })
+      
+    };
+    const getStates = () =>{
+      console.log('came Hereeeeeee')
+      axiosInstance.get('getAllStates')
+      .then((res) =>{
+        setStates(res.data.states)
+        console.log(res.data.states)
+      })
+      .catch((err) =>{
+        alert(' An Error happend')
+      })
+    }
+  
   return (
     <Layout>
+       <Modal open={open} onClose={handleCloseModal}>
+      <Box sx={style}>
+        <Typography id="modal-title" variant="h6" component="h2">
+          Seller Information
+        </Typography>
+        <Stack spacing={2} sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            label="Seller Name"
+            name="sellersFullName"
+            value={formData.sellersFullName}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+         <FormControl fullWidth>
+            <InputLabel>Best Time for Callback</InputLabel>
+            <Select
+              name="bestTimeForCallback"
+              value={formData.bestTimeForCallback}
+              onChange={handleChange}
+              label="Best Time for Callback"
+            >
+              <MenuItem value="Morning">Morning</MenuItem>
+              <MenuItem value="Afternoon">Afternoon</MenuItem>
+              <MenuItem value="Evening">Evening</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            fullWidth
+            label="Bed Count"
+            name="bedCount"
+            value={formData.bedCount}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Bath Count"
+            name="bathCount"
+            value={formData.bathCount}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Sqft"
+            name="sqft"
+            value={formData.sqft}
+            onChange={handleChange}
+          />
+        
+            <FormControl fullWidth>
+            <InputLabel>Occupancy</InputLabel>
+            <Select
+              name="occupancy"
+              value={formData.occupancy}
+              onChange={handleChange}
+              label="Occupancy"
+            >
+              <MenuItem value={"Occupied by the owner"}>Occupied by the owner</MenuItem>
+              <MenuItem value="Vacant">Vacant</MenuItem>
+              <MenuItem value="Rented">Rented</MenuItem>
+            </Select>
+          </FormControl>
+
+
+
+
+
+          <TextField
+            fullWidth
+            label="Condition"
+            name="condition"
+            value={formData.condition}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Motivation"
+            name="motivation"
+            value={formData.motivation}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Asking Price"
+            name="askingPrice"
+            value={formData.askingPrice}
+            onChange={handleChange}
+          />
+       
+             <FormControl fullWidth>
+            <InputLabel>State</InputLabel>
+            <Select
+              name="state"
+              value={formData.state._id}
+              onChange={handleChange}
+              label="State"
+            >
+          {states.map((stat) => (
+            <MenuItem key={stat._id} value={stat._id}>
+              {stat.name}
+            </MenuItem>
+          ))}
+            </Select>
+          </FormControl>
+          
+          <TextField
+            fullWidth
+            label="Closing Time"
+            name="closingTime"
+            value={formData.closingTime}
+            onChange={handleChange}
+          />
+          
+            <FormControl fullWidth>
+            <InputLabel>Temperature</InputLabel>
+            <Select
+              name="leadType"
+              value={formData.leadType._id}
+              onChange={handleChange}
+              label="Temperature"
+            >
+              <MenuItem value="670bec8e0e4efa75a6485bc7">Hot</MenuItem>
+              <MenuItem value="670beca70e4efa75a6485bc8">Warm</MenuItem>
+              <MenuItem value="670becb00e4efa75a6485bc9">Cold</MenuItem>
+            </Select>
+          </FormControl>
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Button onClick={() => handleSubmit(formData._id)} variant="contained">
+              Submit
+            </Button>
+            <Button onClick={handleCloseModal} variant="outlined">
+              Cancel
+            </Button>
+          </Stack>
+        </Stack>
+      </Box>
+    </Modal>
+
+
       <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
         {/* Statistics Boxes */}
         <Box sx={{ display: 'flex', gap: 2, mb: 4, flexDirection: { xs: 'column', sm: 'row' } }}>
@@ -187,35 +454,75 @@ const Dashboard = () => {
         <TableContainer component={Paper} sx={{ backgroundColor: '#FFFFFF', color: '#ffffff', borderRadius: '30px', mt: 2,overflowX: 'auto' }}>
           <Table sx={{ minWidth: 650 }} aria-label="user table">
             <TableHead>
-              <TableRow>
-                {activeTab === 0 ? (
-                  <>
-                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Seller Name</TableCell>
-                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Date Added</TableCell>
-                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>State</TableCell>
-                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Closing Time</TableCell>
-                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Temperature</TableCell>
-                    <TableCell className='TableHeader' sx={{ color: '#667085' }}>Action</TableCell>
-                  </>
-                ) : (
-                  <>
-                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Client Name</TableCell>
-                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Date Joined</TableCell>
-                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Status</TableCell>
-                    <TableCell className='TableHeader'  sx={{ color: '#667085' }}>Action</TableCell>
-                  </>
-                )}
-              </TableRow>
+            <TableRow>
+  {activeTab === 0 ? (
+    <>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Seller Name</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center', width:'140px' }}>Phone</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Email</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Best Time for Callback</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Bed Count</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Bath Count</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Sqft</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Occupancy</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Condition</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Motivation</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Asking Price</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Date Added</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>State</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Closing Time</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Temperature</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Action</TableCell>
+    </>
+  ) : (
+    <>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Client Name</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Date Joined</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Status</TableCell>
+      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Action</TableCell>
+    </>
+  )}
+</TableRow>
             </TableHead>
             <TableBody>
               {activeTab === 0
-                ? leadsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => {
+                ? leadsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user,index) => {
                     const tempStyles = getTemperatureStyles(user.temperature);
                     return (
                       <TableRow key={user.id}>
-                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.sellersFullName}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828', textAlign: 'center', width:'140px' }}>{user.sellersFullName}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' , textAlign: 'center', width:'10px'}}>{user.phone}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.email}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.bestTimeForCallback}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.bedCount}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.bathCount}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.sqft}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.occupancy}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.condition}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.motivation}</TableCell>
+                        <TableCell className='TableData'  sx={{ color: '#101828' }}>{user.askingPrice}</TableCell>
+                       
+
+
+
+
                         <TableCell className='TableDataS' sx={{ color: '#101828' }}>{user.createdAt}</TableCell>
-                        <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>{user.state}</TableCell>
+                        <TableCell  className='TableDataS'  sx={{ color: '#101828' }}>{user.state.name}</TableCell>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <TableCell className='TableDataS'  sx={{ color: '#101828' }}>{user.closingTime}</TableCell>
                         <TableCell className="TableDataS" sx={{ color: '#101828' }}>
   <Box 
@@ -247,8 +554,8 @@ const Dashboard = () => {
                             <MoreVertIcon />
                           </Button>
                           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                            <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                            <MenuItem >Edit</MenuItem>
+                            <MenuItem onClick={() => handleDelete(user._id,index)}>Delete</MenuItem>
+                            <MenuItem onClick={() => handleOpen(user)}>Edit</MenuItem>
 
                           </Menu>
                         </TableCell>
@@ -294,6 +601,7 @@ const Dashboard = () => {
         />
       </Box>
     </Layout>
+
   );
 };
 

@@ -21,6 +21,7 @@ const SignUpPage = () => {
     phone : '',
     email : '',
     password : '',
+
   });
 
   const [errorMessage, setErrorMessage] = useState(''); // For error message

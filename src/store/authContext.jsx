@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     token: localStorage.getItem("token") || "",
-     user: JSON.parse(localStorage.getItem("user") ? localStorage.getItem("user") : '') || null,
+     role: localStorage.getItem("role")  || null,
   });
 
   const login = async (cred) => {
@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }) => {
       console.log(data)
       setAuth({
         token: data.user.token,
-        user: data.user.userExist,
+        role: data.user.userExist.role,
       });
       localStorage.setItem("token", data.user.token);
-      localStorage.setItem("user", JSON.stringify(data.user.userExist));
+      localStorage.setItem("role", data.user.userExist.role);
 
       return { success: true, data };
     } catch (error) {
@@ -32,13 +32,13 @@ export const AuthProvider = ({ children }) => {
 
      axiosInstance.post('logoutAdmin')
     .then((res) =>{
-      setAuth({ token: "", user: null,companyId:'' }); // Reset permissions state
+      setAuth({ token: "", user: "",}); // Reset permissions state
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
     })
     .catch((err) =>{
-      setAuth({ token: "", user: null,companyId:'' }); // Reset permissions state
+      setAuth({ token: "", user: ""}); // Reset permissions state
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
