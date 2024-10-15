@@ -393,8 +393,8 @@ const AddLead = () => {
         >
           <Box sx={{ flex: 1, position: "relative" }}>
             <InputField
-              fieldName={"LeadPrice"}
-              state={formData.LeadPrice}
+              fieldName={"zillowLink"}
+              state={formData.zillowLink}
               handleChange={handleChange}
             />
           </Box>
@@ -418,8 +418,8 @@ const AddLead = () => {
         >
           <Box sx={{ flex: 1, position: "relative" }}>
             <InputField
-              fieldName={"zillowLink"}
-              state={formData.zillowLink}
+              fieldName={"LeadPrice"}
+              state={formData.LeadPrice}
               handleChange={handleChange}
             />
           </Box>

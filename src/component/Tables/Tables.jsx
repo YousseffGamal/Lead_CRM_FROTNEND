@@ -29,21 +29,9 @@ import axiosInstance from "../../axios";
 import { BorderClear } from "@mui/icons-material";
 import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/DeleteConfirmationModal";
 import moment from "moment/moment";
-import Switchs from "../switch/switch"
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%", // Increased width
-  maxHeight: "80vh", // Maximum height to fit the screen
-  overflowY: "auto", // Enable vertical scrolling
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2, // Optional: add rounded corners
-};
-
+import Switchs from "../switch/switch";
+import LeadModal from "../LeadModal/LeadModal";
+s;
 const Tables = () => {
   // State for the active tab
   const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients
@@ -330,480 +318,254 @@ const Tables = () => {
         onConfirm={handleDelete}
       />
 
+      <LeadModal
+        open={open}
+        handleCloseModal={handleCloseModal}
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        states={states}
+      />
 
-
-        <Modal open={open} onClose={handleCloseModal}>
-          <Box sx={style}>
-            <Typography id="modal-title" variant="h6" component="h2">
-              Seller Information
-            </Typography>
-            <Stack spacing={2} sx={{ mt: 2 }}>
-              <TextField
-                fullWidth
-                label="Seller Name"
-                name="sellersFullName"
-                value={formData.sellersFullName}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <FormControl fullWidth>
-                <InputLabel>Best Time for Callback</InputLabel>
-                <Select
-                  name="bestTimeForCallback"
-                  value={formData.bestTimeForCallback}
-                  onChange={handleChange}
-                  label="Best Time for Callback"
-                >
-                  <MenuItem value="Morning">Morning</MenuItem>
-                  <MenuItem value="Afternoon">Afternoon</MenuItem>
-                  <MenuItem value="Evening">Evening</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                fullWidth
-                label="Bed Count"
-                name="bedCount"
-                value={formData.bedCount}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Bath Count"
-                name="bathCount"
-                value={formData.bathCount}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Sqft"
-                name="sqft"
-                value={formData.sqft}
-                onChange={handleChange}
-              />
-
-              <FormControl fullWidth>
-                <InputLabel>Occupancy</InputLabel>
-                <Select
-                  name="occupancy"
-                  value={formData.occupancy}
-                  onChange={handleChange}
-                  label="Occupancy"
-                >
-                  <MenuItem value={"Occupied by the owner"}>
-                    Occupied by the owner
-                  </MenuItem>
-                  <MenuItem value="Vacant">Vacant</MenuItem>
-                  <MenuItem value="Rented">Rented</MenuItem>
-                </Select>
-              </FormControl>
-
-              <TextField
-                fullWidth
-                label="Condition"
-                name="condition"
-                value={formData.condition}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Motivation"
-                name="motivation"
-                value={formData.motivation}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                label="Asking Price"
-                name="askingPrice"
-                value={formData.askingPrice}
-                onChange={handleChange}
-              />
-
-              <FormControl fullWidth>
-                <InputLabel>State</InputLabel>
-                <Select
-                  name="state"
-                  value={formData.state._id}
-                  onChange={handleChange}
-                  label="State"
-                >
-                  {states.map((stat) => (
-                    <MenuItem key={stat._id} value={stat._id}>
-                      {stat.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <TextField
-                fullWidth
-                label="Closing Time"
-                name="closingTime"
-                value={formData.closingTime}
-                onChange={handleChange}
-              />
-
-              <FormControl fullWidth>
-                <InputLabel>Temperature</InputLabel>
-                <Select
-                  name="leadType"
-                  value={formData.leadType._id}
-                  onChange={handleChange}
-                  label="Temperature"
-                >
-                  <MenuItem value="670bec8e0e4efa75a6485bc7">Hot</MenuItem>
-                  <MenuItem value="670beca70e4efa75a6485bc8">Warm</MenuItem>
-                  <MenuItem value="670becb00e4efa75a6485bc9">Cold</MenuItem>
-                </Select>
-              </FormControl>
-              <Stack direction="row" spacing={2} justifyContent="center">
-                <Button
-                  onClick={() => handleSubmit(formData._id)}
-                  variant="contained"
-                >
-                  Submit
-                </Button>
-                <Button onClick={handleCloseModal} variant="outlined">
-                  Cancel
-                </Button>
-              </Stack>
-            </Stack>
-          </Box>
-        </Modal>
-
+      <Box
+        sx={{
+          p: 3,
+          backgroundColor: "#F1F1F1",
+          color: "#e0e0e0",
+          marginTop: "35px",
+        }}
+      >
+        {/* Statistics Boxes */}
         <Box
           sx={{
-            p: 3,
-            backgroundColor: "#F1F1F1",
-            color: "#e0e0e0",
-            marginTop: "35px",
+            display: "flex",
+            gap: 2,
+            mb: 4,
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        ></Box>
+
+        {/* Labels, Switch, and Status Dropdown */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            mb: 2,
           }}
         >
-          {/* Statistics Boxes */}
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              mb: 4,
-              flexDirection: { xs: "column", sm: "row" },
-            }}
-          ></Box>
-
-          {/* Labels, Switch, and Status Dropdown */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
-              mb: 2,
-            }}
+          <Typography
+            variant="h6"
+            sx={{ color: activeTab === 0 ? "#0177FB" : "#000", mr: 2 }}
           >
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 0 ? "#0177FB" : "#000", mr: 2 }}
-            >
-              Leads
-            </Typography>
-            <Switch
-              checked={activeTab === 1}
-              onChange={handleSwitchChange}
-              inputProps={{ "aria-label": "Switch between Leads and Clients" }}
-            />
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 1 ? "#0177FB" : "#000", ml: 2 }}
-            >
-              Clients
-            </Typography>
-          </Box>
-
-          {/* Table based on active tab */}
-          <TableContainer
-            component={Paper}
-            sx={{
-              backgroundColor: "#FFFFFF",
-              color: "#ffffff",
-              borderRadius: "30px",
-              mt: 2,
-              overflowX: "auto",
-            }}
+            Leads
+          </Typography>
+          <Switch
+            checked={activeTab === 1}
+            onChange={handleSwitchChange}
+            inputProps={{ "aria-label": "Switch between Leads and Clients" }}
+          />
+          <Typography
+            variant="h6"
+            sx={{ color: activeTab === 1 ? "#0177FB" : "#000", ml: 2 }}
           >
-            <Table sx={{ minWidth: 650 }} aria-label="user table">
-              <TableHead>
-                <TableRow>
-                  {activeTab === 0 ? (
-                    <>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Seller Name
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{
-                          color: "#667085",
-                          textAlign: "center",
-                          width: "140px",
-                        }}
-                      >
-                        Phone
-                      </TableCell>
-                      {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Email</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Best Time for Callback</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Bed Count</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Bath Count</TableCell>
-      <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Sqft</TableCell> */}
-                      {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Occupancy</TableCell> */}
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Condition
-                      </TableCell>
-                      {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Motivation</TableCell> */}
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Asking Price
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Date Added
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        State
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Closing Time
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Temperature
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Action
-                      </TableCell>
-                    </>
-                  ) : (
-                    <>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Client Name
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Date Joined
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Status
-                      </TableCell>
-                      <TableCell
-                        className="TableHeader"
-                        sx={{ color: "#667085", textAlign: "center" }}
-                      >
-                        Action
-                      </TableCell>
-                    </>
-                  )}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {activeTab === 0
-                  ? leadsData
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((user, index) => {
-                        const tempStyles = getTemperatureStyles(
-                          user.temperature
-                        );
-                        return (
-                          <TableRow key={user._id}>
-                            <TableCell
-                              className="TableData"
-                              sx={{
-                                color: "#101828",
-                                textAlign: "center",
-                                width: "140px",
-                              }}
-                            >
-                              {user.sellersFullName}
-                            </TableCell>
-                            <TableCell
-                              sx={{
-                                color: "#101828",
-                                textAlign: "center",
-                                width: "10px",
-                              }}
-                            >
-                              
-                              {user.phone}
-                            </TableCell>
+            Clients
+          </Typography>
+        </Box>
 
-                            <TableCell sx={{ color: "#101828" }}>
-                              {user.condition}
-                            </TableCell>
-                            {/* <TableCell sx={{ color: '#101828' }}>{user.motivation}</TableCell> */}
-                            <TableCell sx={{ color: "#101828" }}>
-                              {user.askingPrice}
-                            </TableCell>
-                            <TableCell
-                              className="TableDataS"
-                              sx={{ color: "#101828" }}
-                            >
-                              {moment(user.createdAt).format("YYYY-MM-DD")}
-                            </TableCell>
-                            <TableCell
-                              className="TableDataS"
-                              sx={{ color: "#101828" }}
-                            >
-                              {user.state.name}
-                            </TableCell>
-                            <TableCell
-                              className="TableDataS"
-                              sx={{ color: "#101828" }}
-                            >
-                              {moment(user.closingTime).format("YYYY-MM-DD")}
-                            </TableCell>
-                            <TableCell
-                              className="TableDataS"
-                              sx={{ color: "#101828" }}
-                            >
-                              <Box
-                                sx={{
-                                  padding: "8px",
-                                  display: "inline-block",
-                                  backgroundColor:
-                                    user.leadType.name === "Cold"
-                                      ? "#f0f7ff"
-                                      : user.leadType.name === "Warm"
-                                      ? "#fffae6"
-                                      : user.leadType.name === "Hot"
-                                      ? "#ffebed"
-                                      : "transparent",
-                                  borderRadius: "25.74px",
-                                  color:
-                                    user.leadType.name === "Cold"
-                                      ? "#0466D4"
-                                      : user.leadType.name === "Warm"
-                                      ? "#D0A704"
-                                      : user.leadType.name === "Hot"
-                                      ? "#CB0A1D"
-                                      : "#000",
-                                }}
-                              >
-                                {user.leadType.name}
-                              </Box>
-                            </TableCell>
+        {/* Table based on active tab */}
+        <TableContainer
+          component={Paper}
+          sx={{
+            backgroundColor: "#FFFFFF",
+            color: "#ffffff",
+            borderRadius: "30px",
+            mt: 2,
+            overflowX: "auto",
+          }}
+        >
+          <Table sx={{ minWidth: 650 }} aria-label="user table">
+            <TableHead>
+              <TableRow>
+                {activeTab === 0 ? (
+                  <>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Seller Name
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{
+                        color: "#667085",
+                        textAlign: "center",
+                        width: "140px",
+                      }}
+                    >
+                      Phone
+                    </TableCell>
 
-                            <TableCell sx={{ color: "#101828" }}>
-                              <Button
-                                onClick={(event) => handleClick(event, index)}
-                                sx={{ minWidth: "36px", padding: 0 }}
-                                aria-controls={
-                                  anchorEl ? "simple-menu" : undefined
-                                }
-                                aria-haspopup="true"
-                                aria-expanded={anchorEl ? "true" : undefined}
-                              >
-                                <MoreVertIcon />
-                              </Button>
-
-                              {/* Menu should be displayed only for the clicked row */}
-                              <Menu
-                                anchorEl={menuIndex === index ? anchorEl : null}
-                                open={menuIndex === index && Boolean(anchorEl)}
-                                onClose={handleClose}
-                              >
-                                <MenuItem
-                                  onClick={() => {
-                                    handleOpenModalLeads(user._id, index);
-                                    handleClose(); // Close menu after action
-                                  }}
-                                >
-                                  Delete
-                                </MenuItem>
-
-                                <MenuItem
-                                  onClick={() => {
-                                    console.log("Clicked user:", user); // Log the clicked user here
-                                    handleOpen(user);
-                                    handleClose(); // Close menu after action
-                                  }}
-                                >
-                                  Edit
-                                </MenuItem>
-                              </Menu>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })
-                  : clientsData
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((user, index) => (
-                        <TableRow key={user.id}>
+                    {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Occupancy</TableCell> */}
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Condition
+                    </TableCell>
+                    {/* <TableCell className='TableHeader' sx={{ color: '#667085', textAlign: 'center' }}>Motivation</TableCell> */}
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Asking Price
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Date Added
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      State
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Closing Time
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Temperature
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Action
+                    </TableCell>
+                  </>
+                ) : (
+                  <>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Client Name
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Date Joined
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Status
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Action
+                    </TableCell>
+                  </>
+                )}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {activeTab === 0
+                ? leadsData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((user, index) => {
+                      const tempStyles = getTemperatureStyles(user.temperature);
+                      return (
+                        <TableRow key={user._id}>
                           <TableCell
                             className="TableData"
-                            sx={{ color: "#101828" }}
+                            sx={{
+                              color: "#101828",
+                              textAlign: "center",
+                              width: "140px",
+                            }}
                           >
-                            {user.name}
+                            {user.sellersFullName}
                           </TableCell>
                           <TableCell
-                            className="TableDataS"
-                            sx={{ color: "#101828" }}
+                            sx={{
+                              color: "#101828",
+                              textAlign: "center",
+                              width: "10px",
+                            }}
                           >
-                            {user.createdAt}
-                          </TableCell>
-                          <TableCell
-                            className="TableDataS"
-                            sx={{ color: "#101828" }}
-                          >
-                            {user.investorCategory}
+                            {user.phone}
                           </TableCell>
 
+                          <TableCell sx={{ color: "#101828" }}>
+                            {user.condition}
+                          </TableCell>
+                          {/* <TableCell sx={{ color: '#101828' }}>{user.motivation}</TableCell> */}
+                          <TableCell sx={{ color: "#101828" }}>
+                            {user.askingPrice}
+                          </TableCell>
                           <TableCell
                             className="TableDataS"
                             sx={{ color: "#101828" }}
                           >
+                            {moment(user.createdAt).format("YYYY-MM-DD")}
+                          </TableCell>
+                          <TableCell
+                            className="TableDataS"
+                            sx={{ color: "#101828" }}
+                          >
+                            {user.state.name}
+                          </TableCell>
+                          <TableCell
+                            className="TableDataS"
+                            sx={{ color: "#101828" }}
+                          >
+                            {moment(user.closingTime).format("YYYY-MM-DD")}
+                          </TableCell>
+                          <TableCell
+                            className="TableDataS"
+                            sx={{ color: "#101828" }}
+                          >
+                            <Box
+                              sx={{
+                                padding: "8px",
+                                display: "inline-block",
+                                backgroundColor:
+                                  user.leadType.name === "Cold"
+                                    ? "#f0f7ff"
+                                    : user.leadType.name === "Warm"
+                                    ? "#fffae6"
+                                    : user.leadType.name === "Hot"
+                                    ? "#ffebed"
+                                    : "transparent",
+                                borderRadius: "25.74px",
+                                color:
+                                  user.leadType.name === "Cold"
+                                    ? "#0466D4"
+                                    : user.leadType.name === "Warm"
+                                    ? "#D0A704"
+                                    : user.leadType.name === "Hot"
+                                    ? "#CB0A1D"
+                                    : "#000",
+                              }}
+                            >
+                              {user.leadType.name}
+                            </Box>
+                          </TableCell>
+
+                          <TableCell sx={{ color: "#101828" }}>
                             <Button
                               onClick={(event) => handleClick(event, index)}
                               sx={{ minWidth: "36px", padding: 0 }}
@@ -824,37 +586,103 @@ const Tables = () => {
                             >
                               <MenuItem
                                 onClick={() => {
-                                  handleOpenModalConfirmation(user._id, index);
+                                  handleOpenModalLeads(user._id, index);
                                   handleClose(); // Close menu after action
                                 }}
                               >
                                 Delete
                               </MenuItem>
+
+                              <MenuItem
+                                onClick={() => {
+                                  console.log("Clicked user:", user); // Log the clicked user here
+                                  handleOpen(user);
+                                  handleClose(); // Close menu after action
+                                }}
+                              >
+                                Edit
+                              </MenuItem>
                             </Menu>
                           </TableCell>
                         </TableRow>
-                      ))}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  {/* Pagination */}
-                  <TablePagination
-                    rowsPerPageOptions={[10, 25, 50]}
-                    component="div"
-                    count={
-                      activeTab === 0 ? leadsData.length : clientsData.length
-                    }
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </TableContainer>
-        </Box>
- </>
+                      );
+                    })
+                : clientsData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((user, index) => (
+                      <TableRow key={user.id}>
+                        <TableCell
+                          className="TableData"
+                          sx={{ color: "#101828" }}
+                        >
+                          {user.name}
+                        </TableCell>
+                        <TableCell
+                          className="TableDataS"
+                          sx={{ color: "#101828" }}
+                        >
+                          {user.createdAt}
+                        </TableCell>
+                        <TableCell
+                          className="TableDataS"
+                          sx={{ color: "#101828" }}
+                        >
+                          {user.investorCategory}
+                        </TableCell>
+
+                        <TableCell
+                          className="TableDataS"
+                          sx={{ color: "#101828" }}
+                        >
+                          <Button
+                            onClick={(event) => handleClick(event, index)}
+                            sx={{ minWidth: "36px", padding: 0 }}
+                            aria-controls={anchorEl ? "simple-menu" : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={anchorEl ? "true" : undefined}
+                          >
+                            <MoreVertIcon />
+                          </Button>
+
+                          {/* Menu should be displayed only for the clicked row */}
+                          <Menu
+                            anchorEl={menuIndex === index ? anchorEl : null}
+                            open={menuIndex === index && Boolean(anchorEl)}
+                            onClose={handleClose}
+                          >
+                            <MenuItem
+                              onClick={() => {
+                                handleOpenModalConfirmation(user._id, index);
+                                handleClose(); // Close menu after action
+                              }}
+                            >
+                              Delete
+                            </MenuItem>
+                          </Menu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                {/* Pagination */}
+                <TablePagination
+                  rowsPerPageOptions={[10, 25, 50]}
+                  component="div"
+                  count={
+                    activeTab === 0 ? leadsData.length : clientsData.length
+                  }
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      </Box>
+    </>
   );
 };
 
