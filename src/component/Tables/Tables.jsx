@@ -790,34 +790,14 @@ const Tables = () => {
   onPageChange={handleChangePage}
   onRowsPerPageChange={handleChangeRowsPerPage}
   sx={{
-    display: "flex",                // Flexbox for alignment
-    justifyContent: "flex-end",     // Align pagination to the right
-    alignItems: "center",            // Vertically center pagination buttons
-    width: "100%",                   // Ensure full width of the table
-    paddingRight: "16px",            // Adds space between pagination and table edge
-    ".MuiTablePagination-toolbar": {
-      padding: 0,                   // Remove default padding from the toolbar
-      display: "flex",               // Keep items in a single row
-      alignItems: "center",          // Vertically center items
-      minHeight: "48px",            // Set a specific height for consistency
-    },
-    ".MuiTablePagination-caption": {
-      margin: 0,                    // Remove margin from caption text
-      display: "flex",               // Keep text inline with arrows
-      alignItems: "center",          // Center text vertically
-      fontSize: "0.875rem",          // Adjust font size to match Material-UI defaults
-    },
-    ".MuiTablePagination-actions": {
-      marginLeft: "16px",            // Space between caption and actions
-      display: "flex",               // Flexbox for the actions container
-      alignItems: "center",          // Vertically center arrows
-    },
-    ".MuiPaginationItem-root": {
-      margin: 0,                    // Remove margin around pagination arrows
-      padding: "0 8px",             // Add padding to arrows for better click area
-      height: "100%",                // Ensure arrows take full height
-      display: "flex",               // Flex layout for pagination item
-      alignItems: "center",          // Vertically center arrows
+    display: "flex", // Flexbox for alignment
+    justifyContent: "flex-end", // Align pagination to the right
+    alignItems: "center", // Vertically center pagination buttons
+    width: "100%",
+    paddingRight: "16px", // Adds space between pagination and table edge
+    "& .MuiTablePagination-toolbar": {
+      margin: 0, // Remove margin from pagination text
+      padding: 0, // Optional: remove padding if needed
     },
   }}
   labelRowsPerPage="" // Empty string to hide the label
