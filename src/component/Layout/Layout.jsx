@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from "../../assets/images/logo.png";
 import Profile from "../../assets/images/profile.png";
 import {
@@ -32,12 +32,17 @@ const drawerWidth = 320;
 
 const Layout = ({ children, headerText, pageType }) => {
 
-  const { logout ,auth} = useAuth();
+  const { logout, auth } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const [activeLink, setActiveLink] = useState('/dashboard');
- 
+  const [activeLink, setActiveLink] = useState(location.pathname); // Set initial active link based on location
+
+  useEffect(() => {
+    setActiveLink(location.pathname); // Update active link on location change
+  }, [location]);
+
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -60,7 +65,7 @@ const Layout = ({ children, headerText, pageType }) => {
     logout();
     navigate('/');
 
- 
+
 
 
 
@@ -72,8 +77,8 @@ const Layout = ({ children, headerText, pageType }) => {
   const handleLinkClick = (path) => {
     setActiveLink(path); // Set active link on click
     navigate(path); // Navigate to the new path immediately
+    handleDrawerToggle(); // Close the drawer after clicking the link (if needed)
   };
-
   const drawer = (
     <div>
       <Box sx={{ padding: '16px 15px' }}>
@@ -103,8 +108,8 @@ const Layout = ({ children, headerText, pageType }) => {
         </Typography>
       </Box>
       <List
-       sx={{ padding: '8px 15px' }}
->
+        sx={{ padding: '8px 15px' }}
+      >
         <Typography
           className="Navigation"
           variant="h6"
@@ -113,8 +118,8 @@ const Layout = ({ children, headerText, pageType }) => {
           Navigation
         </Typography>
         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
-          <ListItem 
-            button 
+        <ListItem
+            button
             onClick={() => handleLinkClick('/dashboard')}
             sx={{
               width: '90%',
@@ -132,16 +137,16 @@ const Layout = ({ children, headerText, pageType }) => {
             <ListItemIcon>
               <Dashboard style={{ color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565' }} />
             </ListItemIcon>
-            <ListItemText 
-              className='NavText' 
-              primary="Leads Dashboard" 
-              sx={{ color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565' }} 
+            <ListItemText
+              className='NavText'
+              primary="Leads Dashboard"
+              sx={{ color: activeLink === '/dashboard' ? '#F1F1F1' : '#656565' }}
             />
           </ListItem>
         </Link>
         <Link to="/blogsarticles" style={{ textDecoration: 'none' }}>
-          <ListItem 
-            button 
+          <ListItem
+            button
             onClick={() => handleLinkClick('/blogsarticles')}
             sx={{
               width: '90%',
@@ -158,10 +163,10 @@ const Layout = ({ children, headerText, pageType }) => {
             <ListItemIcon>
               <People style={{ color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565' }} />
             </ListItemIcon>
-            <ListItemText 
-              className='NavText' 
-              primary="Blogs & Articles" 
-              sx={{ color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565' }} 
+            <ListItemText
+              className='NavText'
+              primary="Blogs & Articles"
+              sx={{ color: activeLink === '/blogsarticles' ? '#F1F1F1' : '#656565' }}
             />
           </ListItem>
         </Link>
@@ -173,14 +178,14 @@ const Layout = ({ children, headerText, pageType }) => {
     <Box sx={{ display: 'flex', flexDirection: 'row', minHeight: '100vh' }}>
       <CssBaseline />
       <AppBar
-  position="fixed"
-  sx={{
-    width: { sm: `calc(100% - ${drawerWidth}px)` },
-    ml: { sm: `${drawerWidth}px` },
-    backgroundColor: '#ffffff',
-    boxShadow: 'none',
-  }}
->
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+          backgroundColor: '#ffffff',
+          boxShadow: 'none',
+        }}
+      >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
           <IconButton
             color="inherit"
@@ -298,7 +303,7 @@ const Layout = ({ children, headerText, pageType }) => {
                     variant="body2"
                     sx={{ color: '#A3A3A3', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                   >
-                  {auth.user.email}
+                    {auth.user.email}
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
