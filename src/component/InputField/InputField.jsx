@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, InputLabel, TextField } from "@mui/material";
 
-const InputField = ({ state, fieldName, handleChange }) => {
+const InputField = ({ state, fieldName, handleChange, type }) => {
   return (
     <Box sx={{ flex: 1, position: "relative" }}>
       <InputLabel
@@ -24,6 +24,7 @@ const InputField = ({ state, fieldName, handleChange }) => {
         id={fieldName}
         variant="outlined"
         name={fieldName}
+        type={type ? type : ""}
         sx={{
           width: "100%",
           backgroundColor: "#FFFFFF",

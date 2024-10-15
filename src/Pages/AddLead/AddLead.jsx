@@ -9,12 +9,10 @@ import {
 } from "@mui/material";
 import Layout from "../../component/Layout/Layout";
 import SuccessModal from "../../component/SuccessModal/SuccessModal"; // Adjust the import path as needed
-import InputField from '../../component/InputField/InputField';
+import InputField from "../../component/InputField/InputField";
 import DropDown from "../../component/DropDown/DropDown";
 import axiosInstance from "../../axios";
 import { leadTemperatureOptions } from "./components/constants";
-
-
 
 const AddLead = () => {
   const [askingPrice, setAskingPrice] = useState("");
@@ -78,10 +76,9 @@ const AddLead = () => {
     axiosInstance
       .get(`getCountByStateId/${id}`)
       .then((res) => {
-        console.log(res.data) 
-      setCounties(res.data.county)
-      }
-        )
+        console.log(res.data);
+        setCounties(res.data.county);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -157,57 +154,10 @@ const AddLead = () => {
           }}
         >
           <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="asking-price"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#0177FB", // Changed background color
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#FFFFFF", // Changed text color
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!askingPrice}
-            >
-              Asking Price:
-            </InputLabel>
-            <TextField
-              id="asking-price"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#0177FB", // Changed background color
-                borderRadius: "20px",
-                height: "77px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-                "& input": {
-                  color: "#FFFFFF", // Changed input text color
-                  textAlign: "center",
-                },
-                "& input::placeholder": {
-                  color: "#FFFFFF", // Changed placeholder color
-                  opacity: 1, // Ensure placeholder is fully visible
-                },
-              }}
-              inputProps={{
-                style: { paddingTop: "15px" },
-                placeholder: "2700$", // Placeholder text
-              }}
-              value={askingPrice}
-              onChange={(e) => setAskingPrice(e.target.value)}
+            <InputField
+              fieldName={"askingPrice"}
+              state={formData.askingPrice}
+              handleChange={handleChange}
             />
           </Box>
         </Box>
@@ -226,152 +176,16 @@ const AddLead = () => {
             state={formData.firstName}
             handleChange={handleChange}
           />
-          {/* <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="first-name"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!firstName}
-            >
-              First Name:
-            </InputLabel>
-            <TextField
-              id="first-name"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="John"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </Box> */}
+
           <InputField
             fieldName={"lastName"}
             state={formData.lastName}
             handleChange={handleChange}
           />
-          {/* <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="last-name"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!lastName}
-            >
-              Last Name:
-            </InputLabel>
-            <TextField
-              id="last-name"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="Doe"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </Box> */}
         </Box>
 
         {/* New row for email input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>
-          {/* <InputLabel
-            htmlFor="email"
-            sx={{
-              position: "absolute",
-              left: "10px",
-              top: "15px",
-              backgroundColor: "#FFFFFF",
-              padding: "0 5px",
-              zIndex: 1,
-              color: "#191919",
-              fontFamily: "LufgaMedium !important",
-            }}
-            shrink={!!email}
-          >
-            Email:
-          </InputLabel>
-          <TextField
-            id="email"
-            variant="outlined"
-            sx={{
-              width: "100%",
-              backgroundColor: "#FFFFFF",
-              borderRadius: "20px",
-              height: "63px",
-              "& .MuiOutlinedInput-root": {
-                border: "none",
-                "& fieldset": {
-                  border: "none",
-                },
-                "&:hover fieldset": {
-                  border: "none",
-                },
-                "&.Mui-focused fieldset": {
-                  border: "none",
-                },
-              },
-            }}
-            inputProps={{
-              style: { textAlign: "center", paddingTop: "15px" },
-            }}
-            placeholder="example@mail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          /> */}
-
           <InputField
             fieldName={"email"}
             state={formData.email}
@@ -389,50 +203,6 @@ const AddLead = () => {
           }}
         >
           <Box sx={{ flex: 1, position: "relative" }}>
-            {/* <InputLabel
-              htmlFor="phone-number"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!phoneNumber}
-            >
-              Phone Number:
-            </InputLabel>
-            <TextField
-              id="phone-number"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="(123) 456-7890"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            /> */}
             <InputField
               fieldName={"phone"}
               state={formData.phone}
@@ -453,50 +223,6 @@ const AddLead = () => {
 
         {/* Seller Address input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>
-          {/* <InputLabel
-            htmlFor="seller-address"
-            sx={{
-              position: "absolute",
-              left: "10px",
-              top: "15px",
-              backgroundColor: "#FFFFFF",
-              padding: "0 5px",
-              zIndex: 1,
-              color: "#191919",
-              fontFamily: "LufgaMedium !important",
-            }}
-            shrink={!!sellerAddress}
-          >
-            Seller Address:
-          </InputLabel>
-          <TextField
-            id="seller-address"
-            variant="outlined"
-            sx={{
-              width: "100%",
-              backgroundColor: "#FFFFFF",
-              borderRadius: "20px",
-              height: "63px",
-              "& .MuiOutlinedInput-root": {
-                border: "none",
-                "& fieldset": {
-                  border: "none",
-                },
-                "&:hover fieldset": {
-                  border: "none",
-                },
-                "&.Mui-focused fieldset": {
-                  border: "none",
-                },
-              },
-            }}
-            inputProps={{
-              style: { textAlign: "center", paddingTop: "15px" },
-            }}
-            placeholder="123 Main St, City, State"
-            value={sellerAddress}
-            onChange={(e) => setSellerAddress(e.target.value)}
-          /> */}
           <InputField
             fieldName={"addressLine"}
             state={formData.addressLine}
@@ -519,61 +245,6 @@ const AddLead = () => {
               state={formData.city}
               handleChange={handleChange}
             />
-            {/* <InputLabel
-              htmlFor="listing"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!selectedListing}
-            >
-              Listing:
-            </InputLabel>
-            <Select
-              id="listing"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF !important",
-                borderRadius: "20px !important",
-                height: "63px",
-                "& .MuiSelect-select": {
-                  textAlign: "center",
-                  paddingTop: "15px",
-                  backgroundColor: "#FFFFFF !important",
-                },
-                "&:before, &:after": {
-                  border: "none",
-                },
-                "&.Mui-focused .MuiSelect-select": {
-                  border: "none",
-                },
-                "&:hover .MuiSelect-select": {
-                  backgroundColor: "#FFFFFF !important",
-                  border: "none",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-              }}
-              value={selectedListing}
-              onChange={(e) => setSelectedListing(e.target.value)}
-            >
-              <MenuItem value="" disabled>
-                Select Listing Type
-              </MenuItem>
-              {listingOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select> */}
           </Box>
 
           <Box sx={{ flex: 1, position: "relative" }}>
@@ -584,62 +255,6 @@ const AddLead = () => {
               list={states}
               render={renderStates}
             />
-
-            {/* <InputLabel
-              htmlFor="occupancy"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!selectedOccupancy}
-            >
-              Occupancy:
-            </InputLabel>
-            <Select
-              id="occupancy"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF !important",
-                borderRadius: "20px !important",
-                height: "63px",
-                "& .MuiSelect-select": {
-                  textAlign: "center",
-                  paddingTop: "15px",
-                  backgroundColor: "#FFFFFF !important",
-                },
-                "&:before, &:after": {
-                  border: "none",
-                },
-                "&.Mui-focused .MuiSelect-select": {
-                  border: "none",
-                },
-                "&:hover .MuiSelect-select": {
-                  backgroundColor: "#FFFFFF !important",
-                  border: "none",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-              }}
-              value={selectedOccupancy}
-              onChange={(e) => setSelectedOccupancy(e.target.value)}
-            >
-              <MenuItem value="" disabled>
-                Select Occupancy Status
-              </MenuItem>
-              {occupancyOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select> */}
           </Box>
         </Box>
 
@@ -658,61 +273,6 @@ const AddLead = () => {
               state={formData.zip}
               handleChange={handleChange}
             />
-            {/* <InputLabel
-              htmlFor="lead-temperature"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!selectedLeadTemperature}
-            >
-              Lead Temperature:
-            </InputLabel>
-            <Select
-              id="lead-temperature"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF !important",
-                borderRadius: "20px !important",
-                height: "63px",
-                "& .MuiSelect-select": {
-                  textAlign: "center",
-                  paddingTop: "15px",
-                  backgroundColor: "#FFFFFF !important",
-                },
-                "&:before, &:after": {
-                  border: "none",
-                },
-                "&.Mui-focused .MuiSelect-select": {
-                  border: "none",
-                },
-                "&:hover .MuiSelect-select": {
-                  backgroundColor: "#FFFFFF !important",
-                  border: "none",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-              }}
-              value={selectedLeadTemperature}
-              onChange={(e) => setSelectedLeadTemperature(e.target.value)}
-            >
-              <MenuItem value="" disabled>
-                Select Lead Temperature
-              </MenuItem>
-              {leadTemperatureOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select> */}
           </Box>
 
           <Box sx={{ flex: 1, position: "relative" }}>
@@ -724,61 +284,6 @@ const AddLead = () => {
               render={rendercounteis}
               disabled={disabled}
             />
-            {/* <InputLabel
-              htmlFor="closing"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!selectedClosing}
-            >
-              Closing:
-            </InputLabel>
-            <Select
-              id="closing"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF !important",
-                borderRadius: "20px !important",
-                height: "63px",
-                "& .MuiSelect-select": {
-                  textAlign: "center",
-                  paddingTop: "15px",
-                  backgroundColor: "#FFFFFF !important",
-                },
-                "&:before, &:after": {
-                  border: "none",
-                },
-                "&.Mui-focused .MuiSelect-select": {
-                  border: "none",
-                },
-                "&:hover .MuiSelect-select": {
-                  backgroundColor: "#FFFFFF !important",
-                  border: "none",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-              }}
-              value={selectedClosing}
-              onChange={(e) => setSelectedClosing(e.target.value)}
-            >
-              <MenuItem value="" disabled>
-                Select Closing Status
-              </MenuItem>
-              {closingOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select> */}
           </Box>
         </Box>
 
@@ -792,96 +297,43 @@ const AddLead = () => {
           }}
         >
           <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="zillow-estimate"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!zillowEstimate}
-            >
-              Zillow Estimate:
-            </InputLabel>
-            <TextField
-              id="zillow-estimate"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="$0.00"
-              value={zillowEstimate}
-              onChange={(e) => setZillowEstimate(e.target.value)}
+            <InputField
+              fieldName={"bedCount"}
+              state={formData.bedCount}
+              handleChange={handleChange}
             />
           </Box>
 
           <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="best-callback-time"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!bestCallbackTime}
-            >
-              Best Callback Time:
-            </InputLabel>
-            <TextField
-              id="best-callback-time"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="HH:MM AM/PM"
-              value={bestCallbackTime}
-              onChange={(e) => setBestCallbackTime(e.target.value)}
+            <InputField
+              fieldName={"bathCount"}
+              state={formData.bathCount}
+              handleChange={handleChange}
+            />
+          </Box>
+        </Box>
+        {/* New row for Zillow Estimate and Best Callback Time inputs */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: "25px",
+            flexDirection: { xs: "column", sm: "row" },
+            marginTop: "25px",
+          }}
+        >
+          <Box sx={{ flex: 1, position: "relative" }}>
+            <InputField
+              fieldName={"sqft"}
+              state={formData.sqft}
+              handleChange={handleChange}
+            />
+          </Box>
+
+          <Box sx={{ flex: 1, position: "relative" }}>
+            <InputField
+              fieldName={"occupancy"}
+              state={formData.occupancy}
+              handleChange={handleChange}
             />
           </Box>
         </Box>
@@ -897,49 +349,10 @@ const AddLead = () => {
           }}
         >
           <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="reason-for-selling"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!reasonForSelling}
-            >
-              Reason for Selling:
-            </InputLabel>
-            <TextField
-              id="reason-for-selling"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="Enter reason"
-              value={reasonForSelling}
-              onChange={(e) => setReasonForSelling(e.target.value)}
+            <InputField
+              fieldName={"motivation"}
+              state={formData.motivation}
+              handleChange={handleChange}
             />
           </Box>
         </Box>
@@ -953,96 +366,69 @@ const AddLead = () => {
           }}
         >
           <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="zillow-url"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!zillowUrl}
-            >
-              Zillow URL:
-            </InputLabel>
-            <TextField
-              id="zillow-url"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="Enter Zillow URL"
-              value={zillowUrl}
-              onChange={(e) => setZillowUrl(e.target.value)}
+            <InputField
+              fieldName={"closingTime"}
+              state={formData.closingTime}
+              handleChange={handleChange}
+              type={"date"}
             />
           </Box>
 
           <Box sx={{ flex: 1, position: "relative" }}>
-            <InputLabel
-              htmlFor="call-url"
-              sx={{
-                position: "absolute",
-                left: "10px",
-                top: "15px",
-                backgroundColor: "#FFFFFF",
-                padding: "0 5px",
-                zIndex: 1,
-                color: "#191919",
-                fontFamily: "LufgaMedium !important",
-              }}
-              shrink={!!callUrl}
-            >
-              Call URL:
-            </InputLabel>
-            <TextField
-              id="call-url"
-              variant="outlined"
-              sx={{
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "20px",
-                height: "63px",
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-              inputProps={{
-                style: { textAlign: "center", paddingTop: "15px" },
-              }}
-              placeholder="Enter Call URL"
-              value={callUrl}
-              onChange={(e) => setCallUrl(e.target.value)}
+            <InputField
+              fieldName={"bestTimeForCallback"}
+              state={formData.bestTimeForCallback}
+              handleChange={handleChange}
+            />
+          </Box>
+        </Box>
+        {/* New row for Zillow URL and Call URL inputs */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: "25px",
+            flexDirection: { xs: "column", sm: "row" },
+            marginTop: "25px",
+          }}
+        >
+          <Box sx={{ flex: 1, position: "relative" }}>
+            <InputField
+              fieldName={"LeadPrice"}
+              state={formData.LeadPrice}
+              handleChange={handleChange}
+            />
+          </Box>
+
+          <Box sx={{ flex: 1, position: "relative" }}>
+            <InputField
+              fieldName={"zillowEstimate"}
+              state={formData.zillowEstimate}
+              handleChange={handleChange}
+            />
+          </Box>
+        </Box>
+        {/* New row for Zillow URL and Call URL inputs */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: "25px",
+            flexDirection: { xs: "column", sm: "row" },
+            marginTop: "25px",
+          }}
+        >
+          <Box sx={{ flex: 1, position: "relative" }}>
+            <InputField
+              fieldName={"zillowLink"}
+              state={formData.zillowLink}
+              handleChange={handleChange}
+            />
+          </Box>
+
+          <Box sx={{ flex: 1, position: "relative" }}>
+            <InputField
+              fieldName={"additionalNotes"}
+              state={formData.additionalNotes}
+              handleChange={handleChange}
             />
           </Box>
         </Box>
