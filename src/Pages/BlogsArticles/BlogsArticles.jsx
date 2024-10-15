@@ -1,65 +1,58 @@
 // src/pages/BlogsArticles.jsx
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Box, Grid } from '@mui/material';
 import Layout from '../../component/Layout/Layout';
-import BlogCard from '../../component/Card/Card'; // Import the BlogCard component
+import BlogCard from '../../component/Card/Card';
 import First from "../../assets/images/young-woman-working-laptop-library 1.png"
+import axiosInstance from '../../axios';
+
 const BlogsArticles = () => {
-  // Array of articles
-  const articles = [
-    {
-      id: 1,
-      image: First, // Replace with your image URL
-      title: 'Lead Management Tips',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    {
-      id: 2,
-      image: First, // Replace with your image URL
-      title: 'Lead Management Tips',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    {
-      id: 3,
-      image: First, // Replace with your image URL
-      title: 'Lead Management Tips',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    {
-      id: 4,
-      image: First, // Replace with your image URL
-      title: 'Lead Management Tips',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    {
-      id: 5,
-      image: First, // Replace with your image URL
-      title: 'Lead Management Tips',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    {
-      id: 6,
-      image: First, // Replace with your image URL
-      title: 'Lead Management Tips',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    // Add more articles as needed
-  ];
+
+  // States of blogs
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Fetch blogs 
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axiosInstance.get('/getallblogs'); 
+        setBlogs(response.data.blogs);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+        setError('Failed to fetch blogs');
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
     <Layout headerText="Blogs & Articles" pageType="blogs">
       <Box sx={{ p: 3, backgroundColor: '#F1F1F1', color: '#e0e0e0', marginTop: '65px' }}>
         <Grid container spacing={2} justifyContent="center">
-          {articles.map(article => (
-            <Grid item xs={12} sm={6} md={4} key={article.id}>
-              <BlogCard 
-                image={article.image}
-                title={article.title}
-                description={article.description}
-              />
-            </Grid>
-          ))}
+          {loading ? (
+            <p>Loading blogs...</p>  
+          ) : error ? (
+            <p>{error}</p>  
+          ) : blogs?.length > 0 ? (
+            blogs.map((blog) => (
+              <Grid item xs={12} sm={6} md={4} key={blog._id}>
+                <BlogCard 
+                  image={blog.image || First}  // Use the default image if not provided
+                  title={blog.name}
+                  description={blog.description}
+                />
+              </Grid>
+            ))
+          ) : (
+            <p>No blogs available.</p> 
+          )}
         </Grid>
       </Box>
     </Layout>
