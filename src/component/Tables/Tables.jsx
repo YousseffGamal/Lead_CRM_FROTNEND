@@ -29,7 +29,7 @@ import axiosInstance from "../../axios";
 import { BorderClear } from "@mui/icons-material";
 import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/DeleteConfirmationModal";
 import moment from "moment/moment";
-import Switchs from "../../component/switch/switch"
+import Switchs from "../switch/switch"
 const style = {
   position: "absolute",
   top: "50%",
@@ -216,13 +216,25 @@ const Tables = () => {
     setPage(0);
   };
 
+  // Function to handle tab change
+  const handleSwitchChange = (event) => {
+    setActiveTab(event.target.checked ? 1 : 0); // Switch to Clients if checked, Leads if unchecked
+    setPage(0); // Reset to first page on switch change
+  };
 
   // Handle status filter change
   const handleStatusChange = (event) => {
     setStatusFilter(event.target.value);
   };
 
-
+  // Fetch data based on activeTab when the component loads or activeTab changes
+  useEffect(() => {
+    if (activeTab === 0) {
+      fetchLeads();
+    } else {
+      fetchClients();
+    }
+  }, [activeTab]);
 
   const [states, setStates] = useState([]);
   const [open, setOpen] = useState(false);
@@ -305,7 +317,7 @@ const Tables = () => {
   };
 
   return (
-    <Layout>
+    <>
       <DeleteConfirmationModal
         open={modalOpen}
         onClose={handleCloseModalConfirmation}
@@ -318,15 +330,7 @@ const Tables = () => {
         onConfirm={handleDelete}
       />
 
-      <Box
-        sx={{
-          p: 3,
-          backgroundColor: "#F1F1F1",
-          color: "#e0e0e0",
-          marginTop: "65px",
-        }}
-      >
-        {/* Statistics Boxes */}
+
 
         <Modal open={open} onClose={handleCloseModal}>
           <Box sx={style}>
@@ -507,7 +511,23 @@ const Tables = () => {
               mb: 2,
             }}
           >
-         <Switchs/>
+            <Typography
+              variant="h6"
+              sx={{ color: activeTab === 0 ? "#0177FB" : "#000", mr: 2 }}
+            >
+              Leads
+            </Typography>
+            <Switch
+              checked={activeTab === 1}
+              onChange={handleSwitchChange}
+              inputProps={{ "aria-label": "Switch between Leads and Clients" }}
+            />
+            <Typography
+              variant="h6"
+              sx={{ color: activeTab === 1 ? "#0177FB" : "#000", ml: 2 }}
+            >
+              Clients
+            </Typography>
           </Box>
 
           {/* Table based on active tab */}
@@ -834,8 +854,7 @@ const Tables = () => {
             </Table>
           </TableContainer>
         </Box>
-      </Box>
-    </Layout>
+ </>
   );
 };
 
