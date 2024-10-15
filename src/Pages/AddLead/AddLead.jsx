@@ -9,45 +9,12 @@ import {
 } from "@mui/material";
 import Layout from "../../component/Layout/Layout";
 import SuccessModal from "../../component/SuccessModal/SuccessModal"; // Adjust the import path as needed
-import InputField from "./components/InputField";
-import DropDown from "./components/DropDown";
+import InputField from '../../component/InputField/InputField';
+import DropDown from "../../component/DropDown/DropDown";
 import axiosInstance from "../../axios";
+import { leadTemperatureOptions } from "./components/constants";
 
-const statesList = [
-  { code: "CA", name: "California" },
-  { code: "NY", name: "New York" },
-  { code: "TX", name: "Texas" },
-  { code: "FL", name: "Florida" },
-  // Add more states as needed
-];
 
-const listingOptions = [
-  { value: "for_sale", label: "For Sale" },
-  { value: "for_rent", label: "For Rent" },
-  { value: "sold", label: "Sold" },
-  // Add more listing options as needed
-];
-
-const occupancyOptions = [
-  { value: "occupied", label: "Occupied" },
-  { value: "vacant", label: "Vacant" },
-  { value: "under_contract", label: "Under Contract" },
-  // Add more occupancy options as needed
-];
-
-const leadTemperatureOptions = [
-  { value: "hot", label: "Hot" },
-  { value: "warm", label: "Warm" },
-  { value: "cold", label: "Cold" },
-  // Add more temperature options as needed
-];
-
-const closingOptions = [
-  { value: "closed", label: "Closed" },
-  { value: "pending", label: "Pending" },
-  { value: "open", label: "Open" },
-  // Add more closing options as needed
-];
 
 const AddLead = () => {
   const [askingPrice, setAskingPrice] = useState("");
@@ -93,7 +60,6 @@ const AddLead = () => {
     motivation: "",
     zillowLink: "",
     zillowEstimate: "",
-    askingPrice: "",
     additionalNotes: "",
     LeadPrice: "",
   });
@@ -110,8 +76,12 @@ const AddLead = () => {
   //function to get counties by state ID
   const getCounty = (id) => {
     axiosInstance
-      .get(`getCountBy/${id}`)
-      .then((res) => setCounties(res.data.county))
+      .get(`getCountByStateId/${id}`)
+      .then((res) => {
+        console.log(res.data) 
+      setCounties(res.data.county)
+      }
+        )
       .catch((err) => console.log(err));
   };
 
