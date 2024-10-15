@@ -1,0 +1,56 @@
+import React from "react";
+import { Box, InputLabel, TextField } from "@mui/material";
+
+const InputField = ({ state, fieldName, handleChange }) => {
+  return (
+    <Box sx={{ flex: 1, position: "relative" }}>
+      <InputLabel
+        htmlFor={fieldName}
+        sx={{
+          position: "absolute",
+          left: "10px",
+          top: "15px",
+          backgroundColor: "#FFFFFF",
+          padding: "0 5px",
+          zIndex: 1,
+          color: "#191919",
+          fontFamily: "LufgaMedium !important",
+        }}
+        shrink={!!fieldName}
+      >
+        {fieldName}
+      </InputLabel>
+      <TextField
+        id={fieldName}
+        variant="outlined"
+        name={fieldName}
+        sx={{
+          width: "100%",
+          backgroundColor: "#FFFFFF",
+          borderRadius: "20px",
+          height: "63px",
+          "& .MuiOutlinedInput-root": {
+            border: "none",
+            "& fieldset": {
+              border: "none",
+            },
+            "&:hover fieldset": {
+              border: "none",
+            },
+            "&.Mui-focused fieldset": {
+              border: "none",
+            },
+          },
+        }}
+        inputProps={{
+          style: { textAlign: "center", paddingTop: "15px" },
+        }}
+        placeholder={fieldName}
+        value={state}
+        onChange={handleChange}
+      />
+    </Box>
+  );
+};
+
+export default InputField;
