@@ -1,4 +1,3 @@
-// src/pages/BlogsArticles.jsx
 
 import React, { useState } from 'react';
 import { Box, Grid, InputLabel, TextField, IconButton, Typography, Button } from '@mui/material';
@@ -26,8 +25,7 @@ const AddBlog = () => {
   };
 
   const handleAddBlog = () => {
-    // Here you can add the logic to save the blog data
-    // For demonstration purposes, we will just open the success modal
+
     setOpenModal(true);
   };
 
