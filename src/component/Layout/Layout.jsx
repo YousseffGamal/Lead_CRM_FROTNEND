@@ -91,7 +91,8 @@ const Layout = ({ children, headerText, pageType }) => {
             padding: "8px 16px",
           }}
         >
-          Welcome <br /> Back, Charles!
+          Welcome <br /> Back,                     {auth.user.name}
+          !
         </Typography>
         <Typography
           className="About"
