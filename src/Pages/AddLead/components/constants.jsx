@@ -6,9 +6,9 @@ export const listingOptions = [
 ];
 
 export const occupancyOptions = [
-  { value: "occupied", label: "Occupied" },
-  { value: "vacant", label: "Vacant" },
-  { value: "under_contract", label: "Under Contract" },
+  { value: "Occupied by the owner", label: "Occupied by the owner" },
+  { value: "Vacant", label: "Vacant" },
+  { value: "Rented", label: "URented" },
   // Add more occupancy options as needed
 ];
 

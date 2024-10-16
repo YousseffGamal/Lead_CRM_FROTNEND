@@ -509,9 +509,9 @@ const AddLead = () => {
               fieldName={"closingTime"}
               state={formData.closingTime}
               handleChange={handleChange}
-              type={"date"}
+              type={"number"}
               label={"Closing Time"}
-              placeHolder={"Closing Time"}
+              placeHolder={"Enter closing time in days "}
             />
             {errors.closingTime && (
               <span style={{ color: "red" }}>{errors.closingTime}</span>
