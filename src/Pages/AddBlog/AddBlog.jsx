@@ -284,7 +284,7 @@ const AddBlog = () => {
         }}
         onClick={handleAddBlog}
       >
-        Add Lead
+        Add Blog
       </Button>
           </Grid>
         </Grid>
