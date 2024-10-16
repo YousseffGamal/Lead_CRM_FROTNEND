@@ -86,7 +86,6 @@ const Tables = () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get("/getAllLeads");
-      console.log("Leads Data:", response.data.data);
       setLeadsData(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Error fetching leads:", error);
