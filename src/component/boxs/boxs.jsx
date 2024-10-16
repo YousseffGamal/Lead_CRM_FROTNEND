@@ -21,7 +21,6 @@ const Boxs = () => {
                         Authorization: `Bearer ${token}`, // Use the retrieved token
                     },
                 });
-                console.log("Response from clients API:", response);
                 setNumberOfClients(response.data.count); // Use response.data.count
             } catch (error) {
                 console.error("Error fetching clients:", error);
@@ -36,11 +35,9 @@ const Boxs = () => {
                         Authorization: `Bearer ${token}`, // Use the retrieved token
                     },
                 });
-                console.log("Response from leads API:", response); // Log the entire response
         
                 // Check if the response contains the expected data structure
                 if (response.data && response.data.success) {
-                    console.log("Number of Leads:", response.data.data); // Log the count
                     setNumberOfLeads(response.data.data); // Use response.data.data
                 } else {
                     console.error("Unexpected response structure:", response.data);
@@ -58,7 +55,6 @@ const Boxs = () => {
                         Authorization: `Bearer ${token}`, // Use the retrieved token
                     },
                 });
-                console.log("Response from open leads API:", response);
 
                 // Check if the response contains the expected data structure
                 if (response.data && response.data.success) {
