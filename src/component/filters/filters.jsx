@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -19,6 +20,18 @@ const FilterComponent = () => {
   const [occupancy, setOccupancy] = useState("");
   const [closing, setClosing] = useState("");
   const [temperature, setTemperature] = useState("");
+=======
+import React, { useState } from 'react';
+import { Box, FormControl, InputLabel, MenuItem, Select, TextField, IconButton } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import axios from 'axios'; // Import axios
+
+const FilterComponent = () => {
+  const [state, setState] = useState('');
+  const [occupancy, setOccupancy] = useState('');
+  const [closing, setClosing] = useState(''); // Still keeping the state
+  const [temperature, setTemperature] = useState('');
+>>>>>>> 57c629f1e4b971e7df98f9dda41bf43600412700
 
   const [states, setStates] = useState([]);
   //function to get states
@@ -124,7 +137,7 @@ const FilterComponent = () => {
         </Select>
       </FormControl>
 
-      {/* Closing Filter */}
+      {/* Closing Filter (changed to Input with same border radius) */}
       <FormControl
         sx={{
           minWidth: "185.79px",
@@ -133,16 +146,20 @@ const FilterComponent = () => {
           flex: "1 1 auto",
         }}
       >
-        <InputLabel>Closing</InputLabel>
-        <Select
+        <TextField
           value={closing}
           label="Closing"
           onChange={(event) => handleChange(event, setClosing)}
-          sx={{ height: "48.28px", borderRadius: "16.65px" }}
-        >
-          <MenuItem value="Open">Open</MenuItem>
-          <MenuItem value="Closed">Closed</MenuItem>
-        </Select>
+
+          InputProps={{
+            sx: {
+              height: '48.28px',
+              borderRadius: '16.65px', // Applying the same border radius
+            },
+          }}
+          sx={{ borderRadius: '16.65px' }} // Ensure the outer TextField component also has the borderRadius
+        />
+
       </FormControl>
 
       {/* Temperature Filter */}
