@@ -6,11 +6,12 @@ import {
 } from "@mui/material";
 
 const Boxs = () => {
-    // State to hold the number of clients and leads
+    // State to hold the number of clients, leads, and open leads
     const [numberOfClients, setNumberOfClients] = useState(0);
     const [numberOfLeads, setNumberOfLeads] = useState(0); // State for number of leads
+    const [numberOfOpenLeads, setNumberOfOpenLeads] = useState(0); // State for number of open leads
 
-    // Fetch the number of clients and leads from the backend
+    // Fetch the number of clients, leads, and open leads from the backend
     useEffect(() => {
         const fetchClients = async () => {
             try {
@@ -48,10 +49,31 @@ const Boxs = () => {
                 console.error("Error fetching leads:", error);
             }
         };
-        
+
+        const fetchOpenLeads = async () => {
+            try {
+                const token = localStorage.getItem("token"); // Replace with your token retrieval method
+                const response = await axios.get("http://localhost:4000/getAllOpenLeads", {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Use the retrieved token
+                    },
+                });
+                console.log("Response from open leads API:", response);
+
+                // Check if the response contains the expected data structure
+                if (response.data && response.data.success) {
+                    setNumberOfOpenLeads(response.data.data.length); // Count the number of open leads
+                } else {
+                    console.error("Unexpected response structure:", response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching open leads:", error);
+            }
+        };
 
         fetchClients();
         fetchLeads();
+        fetchOpenLeads(); // Call the new function to fetch open leads
     }, []); // Empty dependency array ensures this runs only once on mount
 
     const stats = [
@@ -68,8 +90,8 @@ const Boxs = () => {
             textColor: "#000000",
         },
         {
-            title: "No. Of Sold Leads",
-            value: 25,
+            title: "No. Of Open Leads",
+            value: numberOfOpenLeads, // Use the state variable for open leads
             bgColor: "#FFFFFF",
             textColor: "#000000",
         },
