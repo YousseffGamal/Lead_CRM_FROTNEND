@@ -506,22 +506,20 @@ const Tables = () => {
     alignItems: "center",
     justifyContent: "start",
     mb: 2,
-    gap: 2, // Space between elements
-    flexWrap: "wrap", // Allow wrapping for smaller screens
-    // Responsive stacking for Filters
+    gap: 2,
+    flexWrap: "wrap",
     "@media (max-width: 600px)": {
-      flexDirection: "column", // Stack the Filters below Leads, Switch, and Clients on small screens
+      flexDirection: "column",
       alignItems: "flex-start",
     },
   }}
 >
-  {/* Leads, Switch, and Clients will stay in the same row */}
   <Box
     sx={{
       display: "flex",
       alignItems: "center",
       justifyContent: "start",
-      gap: 1, // Space between Leads, Switch, and Clients
+      gap: 1,
     }}
   >
     <Typography
@@ -543,21 +541,24 @@ const Tables = () => {
     </Typography>
   </Box>
 
-  {/* Filters Component: Stacks under the above on small screens */}
-  <Box
-    sx={{
-      display: "flex",
-      flexWrap: "wrap", // Ensures Filters are responsive
-      gap: 2, // Adds space between Filters elements
-      "@media (max-width: 600px)": {
-        width: "100%", // Make Filters full width on small screens
-        flexDirection: "column", // Stack Filters vertically on small screens
-      },
-    }}
-  >
-    <Filters />
-  </Box>
+  {/* Conditionally render the Filters component based on the active tab */}
+  {activeTab === 0 && ( // Render Filters only if on Leads tab
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 2,
+        "@media (max-width: 600px)": {
+          width: "100%",
+          justifyContent: "flex-start",
+        },
+      }}
+    >
+      <Filters />
+    </Box>
+  )}
 </Box>
+
 
 
           {/* Table based on active tab */}
