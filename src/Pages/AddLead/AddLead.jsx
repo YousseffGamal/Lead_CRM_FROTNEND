@@ -599,7 +599,7 @@ const AddLead = () => {
 >
   <Typography
     variant="h6"
-    sx={{ color: activeTab === 1 ? "#191919" : "red", mr: 2 }} // Change the color here
+    sx={{ color: activeTab === 1 ? "#0177FB" : "#191919", mr: 2 }} // Change the color here
   >
     Enable bidding on the lead
   </Typography>
