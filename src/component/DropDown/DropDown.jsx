@@ -40,20 +40,27 @@ const DropDown = ({
           "& .MuiSelect-select": {
             textAlign: "center",
             paddingTop: "15px",
-            backgroundColor: "#FFFFFF !important",
           },
           "&:before, &:after": {
-            border: "none",
+            border: "none", // Remove the default underline
           },
           "&.Mui-focused .MuiSelect-select": {
-            border: "none",
+            border: "none", // Remove border when focused
           },
           "&:hover .MuiSelect-select": {
-            backgroundColor: "#FFFFFF !important",
-            border: "none",
+            border: "none", // No border on hover
           },
           "& .MuiOutlinedInput-notchedOutline": {
-            border: "none",
+            border: "none", // No outline border
+          },
+          "&:hover": {
+            backgroundColor: "#FFFFFF !important", // Maintain background color on hover
+          },
+          "&.Mui-focused": {
+            backgroundColor: "#FFFFFF !important", // Maintain background color when focused
+          },
+          "&.Mui-active": {
+            backgroundColor: "#FFFFFF !important", // Ensure background color stays when active
           },
         }}
         value={state}
