@@ -284,6 +284,8 @@ const AddLead = () => {
               state={formData.leadType}
               list={leadTemperatureOptions}
               render={renderLeadTypes}
+              label={"lead Type"}
+              placeHolder={"lead Type"}
             />
             {errors.leadType && (
               <span style={{ color: "red" }}>{errors.leadType}</span>
@@ -330,6 +332,8 @@ const AddLead = () => {
               state={formData.state}
               list={states}
               render={renderStates}
+              label={"state"}
+              placeHolder={"state"}
             />
             {errors.state && (
               <span style={{ color: "red" }}>{errors.state}</span>
@@ -365,6 +369,8 @@ const AddLead = () => {
               list={counties}
               render={rendercounteis}
               disabled={disabled}
+              label={"county"}
+              placeHolder={"county"}
             />
             {errors.county && (
               <span style={{ color: "red" }}>{errors.county}</span>
@@ -458,6 +464,8 @@ const AddLead = () => {
               state={formData.occupancy}
               list={occupancy}
               render={renderOccupancy}
+              label={"occupancy"}
+              placeHolder={"occupancy"}
             />
             {errors.occupancy && (
               <span style={{ color: "red" }}>{errors.occupancy}</span>
@@ -517,6 +525,8 @@ const AddLead = () => {
               state={formData.bestTimeForCallback}
               list={CallingBackTime}
               render={renderCallBacktime}
+              label={"Call Back Time"}
+              placeHolder={"Call Back Time"}
             />
             {errors.bestTimeForCallback && (
               <span style={{ color: "red" }}>{errors.bestTimeForCallback}</span>
@@ -590,7 +600,6 @@ const AddLead = () => {
             marginTop: "25px",
           }}
         >
-
           <Box
             sx={{
               flex: 1,
@@ -605,7 +614,7 @@ const AddLead = () => {
             <Typography
               variant="h6"
               sx={{ color: activeTab === 1 ? "#0177FB" : "#191919", mr: 2 }} // Change the color here
-              >
+            >
               Enable bidding on the lead
             </Typography>
             <Switch
@@ -614,7 +623,6 @@ const AddLead = () => {
               inputProps={{ "aria-label": "Switch between Leads and Clients" }}
             />
           </Box>
-
 
           {activeTab === 0 ? (
             <Box sx={{ flex: 1, position: "relative" }}>

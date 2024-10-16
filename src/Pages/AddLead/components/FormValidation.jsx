@@ -5,40 +5,40 @@ const FormValidation = ({ formData, isBidding }) => {
 
   // Validation logic
   if (!formData.firstName) {
-    errors.firstName = "firstName is required.";
+    errors.firstName = "First Name is required.";
   }
   if (!formData.lastName) {
-    errors.lastName = "lastName is required.";
+    errors.lastName = "Last Name is required.";
   }
   if (!formData.askingPrice) {
-    errors.askingPrice = "askingPrice is required.";
+    errors.askingPrice = "Asking Price is required.";
   }
   if (!formData.email) {
-    errors.email = "email is required.";
+    errors.email = "Email is required.";
   }
   if (!formData.phone) {
-    errors.phone = "phone is required.";
+    errors.phone = "Phone is required.";
   }
   if (!formData.addressLine) {
-    errors.addressLine = "addressLine is required.";
+    errors.addressLine = "Address Line is required.";
   }
   if (!formData.city) {
-    errors.city = "city is required.";
+    errors.city = "City is required.";
   }
   if (!formData.state) {
-    errors.state = "state is required.";
+    errors.state = "State is required.";
   }
   if (!formData.zip) {
-    errors.zip = "zip is required.";
+    errors.zip = "Zip is required.";
   }
   if (!formData.county) {
-    errors.county = "county is required.";
+    errors.county = "County is required.";
   }
   if (!formData.bedCount) {
-    errors.bedCount = "bedCount is required.";
+    errors.bedCount = "BedCount is required.";
   }
   if (!formData.bathCount) {
-    errors.bathCount = "embathCountail is required.";
+    errors.bathCount = "BathCount is required.";
   }
   if (!formData.sqft) {
     errors.sqft = "sqft is required.";
@@ -50,10 +50,10 @@ const FormValidation = ({ formData, isBidding }) => {
     errors.leadType = "leadType is required.";
   }
   if (!formData.closingTime) {
-    errors.closingTime = "closingTime is required.";
+    errors.closingTime = "Closing Time is required.";
   }
   if (!formData.bestTimeForCallback) {
-    errors.bestTimeForCallback = "bestTimeForCallback is required.";
+    errors.bestTimeForCallback = "Best Time For Callback is required.";
   }
   if (!formData.motivation) {
     errors.motivation = "motivation is required.";
@@ -62,32 +62,32 @@ const FormValidation = ({ formData, isBidding }) => {
     errors.zillowLink = "zillowLink is required.";
   }
   if (!formData.zillowEstimate) {
-    errors.zillowEstimate = "zillowEstimate is required.";
+    errors.zillowEstimate = "Zillow Estimate is required.";
   }
   if (!formData.additionalNotes) {
-    errors.additionalNotes = "additionalNotes is required.";
+    errors.additionalNotes = "Additional Notes is required.";
   }
   if (!formData.condition) {
-    errors.condition = "condition is required.";
+    errors.condition = "Condition is required.";
   }
 
   if (isBidding === true) {
     if (!formData.biddingStartingDate) {
-      errors.biddingStartingDate = "biddingStartingDate is required.";
+      errors.biddingStartingDate = "Bidding Starting Date is required.";
     }
     if (!formData.duration) {
-      errors.duration = "duration is required.";
+      errors.duration = "Duration is required.";
     }
     if (!formData.biddingIncreasePercentage) {
       errors.biddingIncreasePercentage =
-        "biddingIncreasePercentage is required.";
+        "Bidding Increase Percentage is required.";
     }
     if (!formData.intialBiddingPrice) {
-      errors.intialBiddingPrice = "intialBiddingPrice is required.";
+      errors.intialBiddingPrice = "Intial Bidding Price is required.";
     }
   } else {
     if (!formData.LeadPrice) {
-      errors.LeadPrice = "LeadPrice is required.";
+      errors.LeadPrice = "Lead Price is required.";
     }
   }
 

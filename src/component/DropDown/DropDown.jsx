@@ -8,6 +8,8 @@ const DropDown = ({
   state,
   render,
   disabled,
+  placeHolder,
+  label,
 }) => {
   return (
     <Box sx={{ flex: 1, position: "relative" }}>
@@ -25,7 +27,7 @@ const DropDown = ({
         }}
         shrink={!!state}
       >
-        {fieldName}
+        {label}
       </InputLabel>
       <Select
         disabled={disabled ? disabled : ""}
@@ -69,7 +71,7 @@ const DropDown = ({
         required
       >
         <MenuItem value="" disabled>
-          Select {fieldName}
+          Select {placeHolder}
         </MenuItem>
         {list.map((item) => render(item))}
       </Select>
