@@ -96,8 +96,8 @@ const FilterComponent = ({ setLeadsData }) => {
           onChange={(event) => handleChange(event, setState)}
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
-          <MenuItem value="" disabled>
-            Select a state
+          <MenuItem value="">
+            <em>None</em> {/* Displayed as an option to clear selection */}
           </MenuItem>
           {states.map((element) => (
             <MenuItem value={element._id}>{element.name}</MenuItem>
@@ -120,6 +120,9 @@ const FilterComponent = ({ setLeadsData }) => {
           onChange={(event) => handleChange(event, setOccupancy)}
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
+          <MenuItem value="">
+            <em>None</em> {/* Displayed as an option to clear selection */}
+          </MenuItem>
           {occupancyOptions.map((item) => (
             <MenuItem value={item.value}>{item.label}</MenuItem>
           ))}
@@ -186,6 +189,9 @@ const FilterComponent = ({ setLeadsData }) => {
           onChange={(event) => handleChange(event, setTemperature)}
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
+          <MenuItem value="">
+            <em>None</em> {/* Displayed as an option to clear selection */}
+          </MenuItem>
           {leadTemperatureOptions.map((item) => (
             <MenuItem value={item.value}>{item.label}</MenuItem>
           ))}
