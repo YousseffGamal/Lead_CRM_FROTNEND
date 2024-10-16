@@ -502,19 +502,31 @@ const Tables = () => {
                       className="TableHeader"
                       sx={{ color: "#667085", textAlign: "center" }}
                     >
-                      Client Name
+                      First Name
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Last Name
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Investor Category
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Email
                     </TableCell>
                     <TableCell
                       className="TableHeader"
                       sx={{ color: "#667085", textAlign: "center" }}
                     >
                       Date Joined
-                    </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Status
                     </TableCell>
                     <TableCell
                       className="TableHeader"
@@ -658,19 +670,31 @@ const Tables = () => {
                           className="TableData"
                           sx={{ color: "#101828" }}
                         >
-                          {user.name}
+                          {user.firstName}
+                        </TableCell>
+                        <TableCell
+                          className="TableData"
+                          sx={{ color: "#101828" }}
+                        >
+                          {user.lastName}
+                        </TableCell>
+                        <TableCell
+                          className="TableData"
+                          sx={{ color: "#101828" }}
+                        >
+                          {user.investorCategory}
+                        </TableCell>
+                        <TableCell
+                          className="TableDataS"
+                          sx={{ color: "#101828" }}
+                        >
+                          {user.email}
                         </TableCell>
                         <TableCell
                           className="TableDataS"
                           sx={{ color: "#101828" }}
                         >
                           {user.createdAt}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.investorCategory}
                         </TableCell>
                         <TableCell
                           className="TableDataS"
