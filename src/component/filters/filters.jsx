@@ -16,8 +16,9 @@ import {
 } from "../../Pages/AddLead/components/constants";
 import axiosInstance from "../../axios";
 
-const FilterComponent = () => {
+const FilterComponent = ({ setLeadsData }) => {
   const [state, setState] = useState("");
+  const [askingPrice, setAskingPrice] = useState("");
   const [occupancy, setOccupancy] = useState("");
   const [closing, setClosing] = useState(""); // Still keeping the state
   const [temperature, setTemperature] = useState("");
@@ -46,23 +47,23 @@ const FilterComponent = () => {
       const queryParams = {
         state,
         occupancy,
-        closingTime: closing === "Open" ? new Date() : undefined, // Example condition based on the state of the closing filter
-        askingPrice: temperature === "Hot" ? 100000 : undefined, // Example condition based on temperature filter
+        closing,
+        leadType: temperature,
+        askingPrice,
       };
-
       // Make the API request
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         "http://localhost:4000/getLeadsFiltered",
         { params: queryParams }
       );
 
       // Handle the response data
       console.log("Filtered leads:", response.data.data);
+      setLeadsData(response.data.data);
     } catch (error) {
       console.error("Error fetching filtered leads:", error);
     }
   };
-
   return (
     <Box
       sx={{
@@ -103,7 +104,6 @@ const FilterComponent = () => {
           ))}
         </Select>
       </FormControl>
-
       {/* Occupancy Filter */}
       <FormControl
         sx={{
@@ -125,7 +125,6 @@ const FilterComponent = () => {
           ))}
         </Select>
       </FormControl>
-
       {/* Closing Filter (changed to Input with same border radius) */}
       <FormControl
         sx={{
@@ -149,7 +148,28 @@ const FilterComponent = () => {
           sx={{ borderRadius: "16.65px" }} // Ensure the outer TextField component also has the borderRadius
         />
       </FormControl>
-
+      <FormControl
+        sx={{
+          minWidth: "185.79px",
+          height: "48.28px",
+          borderRadius: "16.65px",
+          flex: "1 1 auto",
+        }}
+      >
+        <TextField
+          value={askingPrice}
+          label="Asking Price"
+          onChange={(event) => handleChange(event, setAskingPrice)}
+          InputProps={{
+            sx: {
+              height: "48.28px",
+              borderRadius: "16.65px", // Applying the same border radius
+            },
+          }}
+          type="number"
+          sx={{ borderRadius: "16.65px" }} // Ensure the outer TextField component also has the borderRadius
+        />
+      </FormControl>
       {/* Temperature Filter */}
       <FormControl
         sx={{
@@ -159,7 +179,7 @@ const FilterComponent = () => {
           flex: "1 1 auto",
         }}
       >
-        <InputLabel>Temperature</InputLabel>
+        <InputLabel>lead Type</InputLabel>
         <Select
           value={temperature}
           label="Temperature"
@@ -171,7 +191,6 @@ const FilterComponent = () => {
           ))}
         </Select>
       </FormControl>
-
       {/* Icon Filter Button */}
       <IconButton
         sx={{

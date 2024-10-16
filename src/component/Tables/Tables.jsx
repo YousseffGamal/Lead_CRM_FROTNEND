@@ -410,7 +410,7 @@ const Tables = () => {
                 },
               }}
             >
-              <Filters />
+              <Filters setLeadsData={setLeadsData} />
             </Box>
           )}
         </Box>
