@@ -11,28 +11,48 @@ const DropDown = ({
 }) => {
   return (
     <Box sx={{ flex: 1, position: "relative" }}>
-      <InputLabel
-        htmlFor={fieldName}
-        sx={{
-          position: "absolute",
-          left: "10px",
-          top: "15px",
-          backgroundColor: "#FFFFFF",
-          padding: "0 5px",
-          zIndex: 1,
-          color: "#191919",
-          fontFamily: "LufgaMedium !important",
-        }}
-        shrink={!!state}
-      >
-        {fieldName}
-      </InputLabel>
+     <InputLabel
+  htmlFor={fieldName}
+  sx={{
+    color: "rgba(0, 0, 0, 0.6)",
+    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+    fontWeight: 400,
+    fontSize: "1rem",
+    lineHeight: "1.4375em",
+    letterSpacing: "0.00938em",
+    padding: 0,
+    position: "absolute",
+    left: "10px",
+    top: "20px",
+    backgroundColor: "#FFFFFF",
+    padding: "0 5px",
+    zIndex: 1,
+    display: "block",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "100%",
+    transformOrigin: "top left",
+    transform: "translate(0, -1.5px) scale(0.75)",
+    maxWidth: "133%",
+    transition: "color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
+    WebkitTransform: "translate(0, -1.5px) scale(0.75)",
+    MozTransform: "translate(0, -1.5px) scale(0.75)",
+    MsTransform: "translate(0, -1.5px) scale(0.75)",
+    color: "#191919"
+  }}
+  shrink={!!state}
+>
+  {fieldName}
+</InputLabel>
+
       <Select
         disabled={disabled ? disabled : ""}
         id={fieldName}
         variant="outlined"
         name={fieldName}
         sx={{
+          opacity:"0.6",
           width: "100%",
           backgroundColor: "#FFFFFF !important",
           borderRadius: "20px !important",

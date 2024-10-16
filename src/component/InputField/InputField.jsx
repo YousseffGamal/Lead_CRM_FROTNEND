@@ -17,7 +17,7 @@ const InputField = ({
         sx={{
           position: "absolute",
           left: "10px",
-          top: "15px",
+          top: "20px",
           backgroundColor: "#FFFFFF",
           padding: "0 5px",
           zIndex: 1,
