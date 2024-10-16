@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select, IconButton } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList'; // Import the filter icon
+import FilterListIcon from '@mui/icons-material/FilterList';
+import axios from 'axios'; // Import axios
 
 const FilterComponent = () => {
   const [state, setState] = useState('');
   const [occupancy, setOccupancy] = useState('');
-  const [listing, setListing] = useState('');
   const [closing, setClosing] = useState('');
   const [temperature, setTemperature] = useState('');
 
@@ -13,9 +13,24 @@ const FilterComponent = () => {
     setter(event.target.value);
   };
 
-  const handleFilter = () => {
-    // Add your filter logic here
-    console.log('Filter applied with:', { state, occupancy, listing, closing, temperature });
+  const handleFilter = async () => {
+    try {
+      // Prepare the query parameters
+      const queryParams = {
+        state,
+        occupancy,
+        closingTime: closing === 'Open' ? new Date() : undefined, // Example condition based on the state of the closing filter
+        askingPrice: temperature === 'Hot' ? 100000 : undefined, // Example condition based on temperature filter
+      };
+
+      // Make the API request
+      const response = await axios.get('http://localhost:4000/getLeadsFiltered', { params: queryParams });
+      
+      // Handle the response data
+      console.log('Filtered leads:', response.data.data);
+    } catch (error) {
+      console.error('Error fetching filtered leads:', error);
+    }
   };
 
   return (
@@ -24,10 +39,10 @@ const FilterComponent = () => {
         position: 'relative',
         top: '10px',
         display: 'flex',
-        gap: 2, // Adds space between the selects
-        flexWrap: 'wrap', // Ensures responsive behavior
+        gap: 2,
+        flexWrap: 'wrap',
         marginBottom: 2,
-        alignItems: 'center', // Aligns items vertically in the center
+        alignItems: 'center',
         justifyContent: 'flex-start',
         '@media (max-width: 600px)': {
           width: '100%',
@@ -37,10 +52,10 @@ const FilterComponent = () => {
       {/* State Filter */}
       <FormControl
         sx={{
-          minWidth: '185.79px', // Ensures consistent size
+          minWidth: '185.79px',
           height: '48.28px',
           borderRadius: '16.65px',
-          flex: '1 1 auto', // Allow each filter to grow/shrink
+          flex: '1 1 auto',
         }}
       >
         <InputLabel>State</InputLabel>
@@ -73,27 +88,6 @@ const FilterComponent = () => {
         >
           <MenuItem value="Full">Full</MenuItem>
           <MenuItem value="Partial">Partial</MenuItem>
-        </Select>
-      </FormControl>
-
-      {/* Listing Filter */}
-      <FormControl
-        sx={{
-          minWidth: '185.79px',
-          height: '48.28px',
-          borderRadius: '16.65px',
-          flex: '1 1 auto',
-        }}
-      >
-        <InputLabel>Listing</InputLabel>
-        <Select
-          value={listing}
-          label="Listing"
-          onChange={(event) => handleChange(event, setListing)}
-          sx={{ height: '48.28px', borderRadius: '16.65px' }}
-        >
-          <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="Inactive">Inactive</MenuItem>
         </Select>
       </FormControl>
 
@@ -146,11 +140,11 @@ const FilterComponent = () => {
           borderRadius: '16.65px',
           color: '#FFFFFF',
           height: '48.28px',
-          width: '48.28px', // Make it a square
+          width: '48.28px',
           '&:hover': {
-            backgroundColor: '#333333', // Slightly lighter on hover
+            backgroundColor: '#333333',
           },
-          flex: '0 0 auto', // Ensure button doesn't stretch
+          flex: '0 0 auto',
         }}
         onClick={handleFilter}
       >
