@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Box, Grid, InputLabel, TextField, IconButton, Typography, Button } from '@mui/material';
 import Layout from '../../component/Layout/Layout';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'; // Icon for upload
-import First from "../../assets/images/young-woman-working-laptop-library 1.png"; // Default image
-import SuccessModal from '../../component/SuccessModal/BlogModal'; // Import the SuccessModal
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'; 
+import First from "../../assets/images/young-woman-working-laptop-library 1.png"; 
+import SuccessModal from '../../component/SuccessModal/BlogModal'; 
 import axiosInstance from '../../axios';
 import InputField from '../../component/InputField/InputField';
 
 const AddBlog = () => {
   const [name, setName] = useState(''); 
   const [previewText, setPreviewText] = useState('');
-  const [content, setContent] = useState(''); // New state for content
-  const [thumbnail, setThumbnail] = useState(First); // Set the default image here
-  const [openModal, setOpenModal] = useState(false); // State for modal visibility
+  const [description, setDescription] = useState(''); 
+  const [thumbnail, setThumbnail] = useState(First); 
+  const [openModal, setOpenModal] = useState(false); 
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
     name: "", 
@@ -44,7 +44,7 @@ const AddBlog = () => {
     try {
       const blogData = {
         name: formData.name,  
-        description: content,
+        description: formData.description, 
         previewText: formData.previewText,
         images: thumbnail,
       };
@@ -148,53 +148,20 @@ const AddBlog = () => {
             </Box>
           </Grid>
 
-          {/* New Row for Content Text Area */}
+          {/* New Row for Description Text Area */}
           <Grid item xs={12}>
             <Box sx={{ position: 'relative' }}>
-              <InputLabel
-                htmlFor="content"
-                sx={{
-                  position: 'absolute',
-                  left: '10px',
-                  top: '15px',
-                  backgroundColor: '#FFFFFF',
-                  padding: '0 5px',
-                  zIndex: 1,
-                  color: '#191919',
-                  fontFamily: 'LufgaMedium !important',
-                }}
-                shrink={!!content}
-              >
-                Content:
-              </InputLabel>
-              <TextField
-                id="content"
+              <InputField
+                fieldName={"description"} 
+                state={formData.description} 
+                label={"Description"} 
+                placeHolder={"What Are Non-Core Business Activities?"}
+                type={"string"}
+                handleChange={handleChange}  
+                multiline={true}  
+                minRows={6}      
+                fullWidth
                 variant="outlined"
-                multiline
-                minRows={6} 
-                sx={{
-                  width: '100%',
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '20px',
-                  '& .MuiOutlinedInput-root': {
-                    border: 'none',
-                    '& fieldset': {
-                      border: 'none',
-                    },
-                    '&:hover fieldset': {
-                      border: 'none',
-                    },
-                    '&.Mui-focused fieldset': {
-                      border: 'none',
-                    },
-                  },
-                }}
-                inputProps={{
-                  style: { padding: '15px', textAlign: 'center' }, // Center the text and add padding
-                }}
-                placeholder="What Are Non-Core Business Activities?"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
               />
             </Box>
           </Grid>
