@@ -59,6 +59,7 @@ const DropDown = ({
         value={state}
         onChange={handleChange}
         displayEmpty
+        required
       >
         <MenuItem value="" disabled>
           Select {fieldName}

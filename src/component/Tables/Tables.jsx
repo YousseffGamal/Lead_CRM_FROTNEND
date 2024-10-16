@@ -31,7 +31,7 @@ import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/Del
 import moment from "moment/moment";
 import Switchs from "../switch/switch";
 import LeadModal from "../LeadModal/LeadModal";
-s;
+
 const Tables = () => {
   // State for the active tab
   const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients

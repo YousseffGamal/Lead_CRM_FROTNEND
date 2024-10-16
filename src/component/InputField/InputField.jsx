@@ -1,7 +1,15 @@
 import React from "react";
 import { Box, InputLabel, TextField } from "@mui/material";
 
-const InputField = ({ state, fieldName, handleChange, type }) => {
+const InputField = ({
+  state,
+  fieldName,
+  handleChange,
+  type,
+  label,
+  placeHolder,
+  required,
+}) => {
   return (
     <Box sx={{ flex: 1, position: "relative" }}>
       <InputLabel
@@ -18,7 +26,7 @@ const InputField = ({ state, fieldName, handleChange, type }) => {
         }}
         shrink={!!fieldName}
       >
-        {fieldName}
+        {label}
       </InputLabel>
       <TextField
         id={fieldName}
@@ -46,9 +54,10 @@ const InputField = ({ state, fieldName, handleChange, type }) => {
         inputProps={{
           style: { textAlign: "center", paddingTop: "15px" },
         }}
-        placeholder={fieldName}
+        placeholder={placeHolder}
         value={state}
         onChange={handleChange}
+        required={required}
       />
     </Box>
   );

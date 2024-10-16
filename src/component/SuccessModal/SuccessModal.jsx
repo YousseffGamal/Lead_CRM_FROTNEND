@@ -1,18 +1,18 @@
 // SuccessModal.js
-import React, { useEffect, useState } from 'react';
-import { Modal, Box, Typography, Fade, CircularProgress } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { Modal, Box, Typography, Fade, CircularProgress } from "@mui/material";
 
 const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 300,
-  bgcolor: 'background.paper',
-  borderRadius: '10px',
+  bgcolor: "background.paper",
+  borderRadius: "10px",
   boxShadow: 24,
   p: 4,
-  textAlign: 'center',
+  textAlign: "center",
 };
 
 const SuccessModal = ({ open, handleClose }) => {
@@ -23,11 +23,11 @@ const SuccessModal = ({ open, handleClose }) => {
       setLoading(true);
       const loadingTimer = setTimeout(() => {
         setLoading(false); // Change loading state after 3 seconds
-      }, 3000);
+      }, 2000);
 
       const closeTimer = setTimeout(() => {
         handleClose(); // Close the modal after an additional 3 seconds
-      }, 6000); // 3 seconds for loading + 3 seconds for success message
+      }, 3000); // 3 seconds for loading + 3 seconds for success message
 
       return () => {
         clearTimeout(loadingTimer);
