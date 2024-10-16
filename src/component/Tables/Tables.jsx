@@ -242,7 +242,8 @@ const Tables = () => {
   const handleOpen = (lead) => {
     console.log(lead);
     setFormData({
-      sellersFullName: lead.sellersFullName,
+      firstName: lead.firstName,
+      lastName: lead.lastName,
       phone: lead.phone,
       email: lead.email,
       bestTimeForCallback: lead.bestTimeForCallback,
@@ -268,7 +269,8 @@ const Tables = () => {
   };
 
   const [formData, setFormData] = useState({
-    sellersFullName: "",
+    firstName: "",
+    lastName: "",
     phone: "",
     email: "",
     bestTimeForCallback: "",
@@ -305,7 +307,6 @@ const Tables = () => {
       });
   };
   const getStates = () => {
-    console.log("came Hereeeeeee");
     axiosInstance
       .get("getAllStates")
       .then((res) => {
@@ -434,7 +435,13 @@ const Tables = () => {
                       className="TableHeader"
                       sx={{ color: "#667085", textAlign: "center" }}
                     >
-                      Seller Name
+                      Seller First Name
+                    </TableCell>
+                    <TableCell
+                      className="TableHeader"
+                      sx={{ color: "#667085", textAlign: "center" }}
+                    >
+                      Seller second Name
                     </TableCell>
                     <TableCell
                       className="TableHeader"
@@ -533,7 +540,17 @@ const Tables = () => {
                             width: "140px",
                           }}
                         >
-                          {user.sellersFullName}
+                          {user.firstName}
+                        </TableCell>
+                        <TableCell
+                          className="TableData"
+                          sx={{
+                            color: "#101828",
+                            textAlign: "center",
+                            width: "140px",
+                          }}
+                        >
+                          {user.lastName}
                         </TableCell>
                         <TableCell
                           sx={{

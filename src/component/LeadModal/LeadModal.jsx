@@ -43,9 +43,16 @@ const LeadModal = ({
         <Stack spacing={2} sx={{ mt: 2 }}>
           <TextField
             fullWidth
-            label="Seller Name"
-            name="sellersFullName"
-            value={formData.sellersFullName}
+            label="First Name"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="last Name"
+            name="lastName"
+            value={formData.lastName}
             onChange={handleChange}
           />
           <TextField
