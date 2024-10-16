@@ -6,10 +6,11 @@ import {
 } from "@mui/material";
 
 const Boxs = () => {
-    // State to hold the number of clients
+    // State to hold the number of clients and leads
     const [numberOfClients, setNumberOfClients] = useState(0);
+    const [numberOfLeads, setNumberOfLeads] = useState(0); // State for number of leads
 
-    // Fetch the number of clients from the backend
+    // Fetch the number of clients and leads from the backend
     useEffect(() => {
         const fetchClients = async () => {
             try {
@@ -19,23 +20,44 @@ const Boxs = () => {
                         Authorization: `Bearer ${token}`, // Use the retrieved token
                     },
                 });
-                console.log("Response from API:", response);
-
-                // Set the state using the correct property from the response
+                console.log("Response from clients API:", response);
                 setNumberOfClients(response.data.count); // Use response.data.count
             } catch (error) {
                 console.error("Error fetching clients:", error);
-                // Optionally handle unauthorized access here, e.g. redirect to login
             }
         };
 
+        const fetchLeads = async () => {
+            try {
+                const token = localStorage.getItem("token"); // Replace with your token retrieval method
+                const response = await axios.get("http://localhost:4000/countLeads", {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Use the retrieved token
+                    },
+                });
+                console.log("Response from leads API:", response); // Log the entire response
+        
+                // Check if the response contains the expected data structure
+                if (response.data && response.data.success) {
+                    console.log("Number of Leads:", response.data.data); // Log the count
+                    setNumberOfLeads(response.data.data); // Use response.data.data
+                } else {
+                    console.error("Unexpected response structure:", response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching leads:", error);
+            }
+        };
+        
+
         fetchClients();
+        fetchLeads();
     }, []); // Empty dependency array ensures this runs only once on mount
 
     const stats = [
         {
             title: "No. Of Leads",
-            value: 150,
+            value: numberOfLeads, // Use the state variable for leads
             bgColor: "#0177FB",
             textColor: "#fff",
         },
