@@ -70,9 +70,7 @@ const FormValidation = ({ formData, isBidding }) => {
   if (!formData.condition) {
     errors.condition = "condition is required.";
   }
-  if (!formData.LeadPrice) {
-    errors.LeadPrice = "LeadPrice is required.";
-  }
+
   if (isBidding === true) {
     if (!formData.biddingStartingDate) {
       errors.biddingStartingDate = "biddingStartingDate is required.";
@@ -86,6 +84,10 @@ const FormValidation = ({ formData, isBidding }) => {
     }
     if (!formData.intialBiddingPrice) {
       errors.intialBiddingPrice = "intialBiddingPrice is required.";
+    }
+  } else {
+    if (!formData.LeadPrice) {
+      errors.LeadPrice = "LeadPrice is required.";
     }
   }
 
