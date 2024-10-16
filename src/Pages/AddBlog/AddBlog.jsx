@@ -5,6 +5,9 @@ import Layout from '../../component/Layout/Layout';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'; // Icon for upload
 import First from "../../assets/images/young-woman-working-laptop-library 1.png"; // Default image
 import SuccessModal from '../../component/SuccessModal/BlogModal'; // Import the SuccessModal
+import axios from 'axios'; 
+import axiosInstance from '../../axios';
+
 
 const AddBlog = () => {
   const [title, setTitle] = useState('');
@@ -12,6 +15,8 @@ const AddBlog = () => {
   const [content, setContent] = useState(''); // New state for content
   const [thumbnail, setThumbnail] = useState(First); // Set the default image here
   const [openModal, setOpenModal] = useState(false); // State for modal visibility
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   const handleThumbnailChange = (event) => {
     const file = event.target.files[0];
@@ -24,10 +29,33 @@ const AddBlog = () => {
     }
   };
 
-  const handleAddBlog = () => {
 
-    setOpenModal(true);
+
+  // Function to handle the Add Blog button click and send data to the API
+  const handleAddBlog = async () => {
+    try {
+      
+      const blogData = {
+        name: title,
+        description: content,
+        previewText: previewText,
+        images: thumbnail,  
+      };
+
+     
+      const response = await axiosInstance.post('/createblog', blogData); 
+
+      if (response.data.success) {
+        setOpenModal(true); 
+      } else {
+        setErrorMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error('Failed to create blog', error);
+      setErrorMessage('Failed to create blog. Please try again.');
+    }
   };
+
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -260,6 +288,12 @@ const AddBlog = () => {
       </Button>
           </Grid>
         </Grid>
+         {/* Error Message */}
+         {errorMessage && (
+          <Typography color="error" sx={{ textAlign: 'center', marginTop: '20px' }}>
+            {errorMessage}
+          </Typography>
+        )}
       </Box>
 
       {/* Success Modal */}
