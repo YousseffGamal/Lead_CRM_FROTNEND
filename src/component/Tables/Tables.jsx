@@ -29,7 +29,7 @@ import axiosInstance from "../../axios";
 import { BorderClear } from "@mui/icons-material";
 import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/DeleteConfirmationModal";
 import moment from "moment/moment";
-import Switchs from "../switch/switch"
+import Filters from "../filters/filters"
 const style = {
   position: "absolute",
   top: "50%",
@@ -492,43 +492,73 @@ const Tables = () => {
             marginTop: "35px",
           }}
         >
-          {/* Statistics Boxes */}
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               gap: 2,
               mb: 4,
               flexDirection: { xs: "column", sm: "row" },
             }}
-          ></Box>
+          ></Box> */}
+<Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "start",
+    mb: 2,
+    gap: 2, // Space between elements
+    flexWrap: "wrap", // Allow wrapping for smaller screens
+    // Responsive stacking for Filters
+    "@media (max-width: 600px)": {
+      flexDirection: "column", // Stack the Filters below Leads, Switch, and Clients on small screens
+      alignItems: "flex-start",
+    },
+  }}
+>
+  {/* Leads, Switch, and Clients will stay in the same row */}
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "start",
+      gap: 1, // Space between Leads, Switch, and Clients
+    }}
+  >
+    <Typography
+      variant="h6"
+      sx={{ color: activeTab === 0 ? "#0177FB" : "#000", mr: 2 }}
+    >
+      Leads
+    </Typography>
+    <Switch
+      checked={activeTab === 1}
+      onChange={handleSwitchChange}
+      inputProps={{ "aria-label": "Switch between Leads and Clients" }}
+    />
+    <Typography
+      variant="h6"
+      sx={{ color: activeTab === 1 ? "#0177FB" : "#000", ml: 2 }}
+    >
+      Clients
+    </Typography>
+  </Box>
 
-          {/* Labels, Switch, and Status Dropdown */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
-              mb: 2,
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 0 ? "#0177FB" : "#000", mr: 2 }}
-            >
-              Leads
-            </Typography>
-            <Switch
-              checked={activeTab === 1}
-              onChange={handleSwitchChange}
-              inputProps={{ "aria-label": "Switch between Leads and Clients" }}
-            />
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 1 ? "#0177FB" : "#000", ml: 2 }}
-            >
-              Clients
-            </Typography>
-          </Box>
+  {/* Filters Component: Stacks under the above on small screens */}
+  <Box
+    sx={{
+      display: "flex",
+      flexWrap: "wrap", // Ensures Filters are responsive
+      gap: 2, // Adds space between Filters elements
+      "@media (max-width: 600px)": {
+        width: "100%", // Make Filters full width on small screens
+        flexDirection: "column", // Stack Filters vertically on small screens
+      },
+    }}
+  >
+    <Filters />
+  </Box>
+</Box>
+
 
           {/* Table based on active tab */}
           <TableContainer
