@@ -1,14 +1,34 @@
-import React, { useState } from "react"; // Import useState for managing state
+import React, { useState, useEffect } from "react"; // Import useState and useEffect for managing state and side effects
+import axios from "axios"; // Import axios for making HTTP requests
 import {
     Typography,
     Box,
-    Switch,
-    MenuItem as MuiMenuItem, // Import MenuItem for Select
 } from "@mui/material";
 
-
 const Boxs = () => {
+    // State to hold the number of clients
+    const [numberOfClients, setNumberOfClients] = useState(0);
 
+    // Fetch the number of clients from the backend
+    useEffect(() => {
+        const fetchClients = async () => {
+            try {
+                const response = await axios.get("http://localhost:4000/countclients", {
+                    headers: {
+                        Authorization: `Bearer YOUR_JWT_TOKEN`, // Add your JWT token for authentication
+                    },
+                });
+                console.log("Response from API:", response);
+
+                // Set the state using the correct property from the response
+                setNumberOfClients(response.data.count); // Change from response.data.numberOfClients to response.data.count
+            } catch (error) {
+                console.error("Error fetching clients:", error);
+            }
+        };
+
+        fetchClients();
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     const stats = [
         {
@@ -19,7 +39,7 @@ const Boxs = () => {
         },
         {
             title: "No. Of Clients",
-            value: 80,
+            value: numberOfClients, // Use the state variable for clients
             bgColor: "#FFFFFF",
             textColor: "#000000",
         },
@@ -87,8 +107,6 @@ const Boxs = () => {
                     </Box>
                 ))}
             </Box>
-
-       
         </>
     );
 };
