@@ -13,17 +13,19 @@ const Boxs = () => {
     useEffect(() => {
         const fetchClients = async () => {
             try {
+                const token = localStorage.getItem("token"); // Replace with your token retrieval method
                 const response = await axios.get("http://localhost:4000/countclients", {
                     headers: {
-                        Authorization: `Bearer YOUR_JWT_TOKEN`, // Add your JWT token for authentication
+                        Authorization: `Bearer ${token}`, // Use the retrieved token
                     },
                 });
                 console.log("Response from API:", response);
 
                 // Set the state using the correct property from the response
-                setNumberOfClients(response.data.count); // Change from response.data.numberOfClients to response.data.count
+                setNumberOfClients(response.data.count); // Use response.data.count
             } catch (error) {
                 console.error("Error fetching clients:", error);
+                // Optionally handle unauthorized access here, e.g. redirect to login
             }
         };
 
