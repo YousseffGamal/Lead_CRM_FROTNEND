@@ -8,14 +8,14 @@ import axiosInstance from '../../axios';
 import InputField from '../../component/InputField/InputField';
 
 const AddBlog = () => {
-  const [name, setName] = useState(''); // Changed title to name
+  const [name, setName] = useState(''); 
   const [previewText, setPreviewText] = useState('');
   const [content, setContent] = useState(''); // New state for content
   const [thumbnail, setThumbnail] = useState(First); // Set the default image here
   const [openModal, setOpenModal] = useState(false); // State for modal visibility
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
-    name: "", // Changed title to name
+    name: "", 
     previewText: "",
     description: "",
   });
@@ -43,7 +43,7 @@ const AddBlog = () => {
   const handleAddBlog = async () => {
     try {
       const blogData = {
-        name: formData.name,  // Changed title to name
+        name: formData.name,  
         description: content,
         previewText: formData.previewText,
         images: thumbnail,
@@ -125,10 +125,10 @@ const AddBlog = () => {
               {/* Name Input */}
               <Box sx={{ position: 'relative' }}>
                 <InputField
-                  fieldName={"name"}  // Changed title to name
-                  state={formData.name}  // Changed title to name
-                  label={"Name"}  // Updated label to "Name"
-                  placeHolder={"Name"}  // Updated placeholder to "Name"
+                  fieldName={"name"}
+                  state={formData.name}  
+                  label={"Name"} 
+                  placeHolder={"Name"}  
                   type={"string"}
                   handleChange={handleChange}
                 />
@@ -171,7 +171,7 @@ const AddBlog = () => {
                 id="content"
                 variant="outlined"
                 multiline
-                minRows={6} // Set minimum rows for the textarea
+                minRows={6} 
                 sx={{
                   width: '100%',
                   backgroundColor: '#FFFFFF',
