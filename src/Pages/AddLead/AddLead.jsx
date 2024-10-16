@@ -131,6 +131,7 @@ const AddLead = () => {
 
   const [open, setOpen] = useState(false);
   const handleClick = () => {
+    console.log("heyyy1");
     setErrors({});
     setErrorMessage("");
     const newErrors = FormValidation({
@@ -139,9 +140,12 @@ const AddLead = () => {
     });
     setOpen(true); // Open the modal
     if (Object.keys(newErrors).length > 0) {
+      console.log("heyyy3");
+      console.log(newErrors);
       setErrors(newErrors); // Set the errors if validation fails
       handleClose();
     } else {
+      console.log("heyyy2");
       axiosInstance
         .post("createLead", formData)
         .then((res) => {
@@ -586,29 +590,29 @@ const AddLead = () => {
             marginTop: "25px",
           }}
         >
-         <Box
-  sx={{
-    flex: 1,
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 5,
-    bgcolor: "white",
-  }}
->
-  <Typography
-    variant="h6"
-    sx={{ color: activeTab === 1 ? "#191919" : "red", mr: 2 }} // Change the color here
-  >
-    Enable bidding on the lead
-  </Typography>
-  <Switch
-    checked={activeTab === 1}
-    onChange={handleSwitchChange}
-    inputProps={{ "aria-label": "Switch between Leads and Clients" }}
-  />
-</Box>
+          <Box
+            sx={{
+              flex: 1,
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 5,
+              bgcolor: "white",
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ color: activeTab === 1 ? "#191919" : "red", mr: 2 }} // Change the color here
+            >
+              Enable bidding on the lead
+            </Typography>
+            <Switch
+              checked={activeTab === 1}
+              onChange={handleSwitchChange}
+              inputProps={{ "aria-label": "Switch between Leads and Clients" }}
+            />
+          </Box>
 
           {activeTab === 0 ? (
             <Box sx={{ flex: 1, position: "relative" }}>
