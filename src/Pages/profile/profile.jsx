@@ -46,19 +46,20 @@ const Profile = () => {
           />
           {/* Edit Icon */}
           <IconButton
-            onClick={handleEditClick}
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              backgroundColor: "#fff",
-              "&:hover": {
-                backgroundColor: "#e0e0e0",
-              },
-            }}
-          >
-            <Edit sx={{ color: "#757575" }} />
-          </IconButton>
+  onClick={handleEditClick}
+  sx={{
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: "#000000", // Set background to #000000
+    "&:hover": {
+      backgroundColor: "#333333", // Optional hover effect, slightly lighter
+    },
+  }}
+>
+  <Edit sx={{ color: "#F1F1F1" }} /> {/* Set icon color to #F1F1F1 */}
+</IconButton>
+
 
           {/* Hidden File Input */}
           <input
