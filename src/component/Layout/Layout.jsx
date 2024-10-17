@@ -29,9 +29,10 @@ import {
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/authContext";
+import axiosInstance from "../../axios";
 const drawerWidth = 320;
 
-const Layout = ({ children, headerText, pageType }) => {
+const Layout = ({ children, headerText, pageType, BlogId }) => {
   const { logout, auth, hasPermissions } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -56,7 +57,6 @@ const Layout = ({ children, headerText, pageType }) => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    console.log("heyuyy");
     logout();
 
     navigate("/");
@@ -66,6 +66,16 @@ const Layout = ({ children, headerText, pageType }) => {
     setActiveLink(path); // Set active link on click
     navigate(path); // Navigate to the new path immediately
     handleDrawerToggle(); // Close the drawer after clicking the link (if needed)
+  };
+  const handleBlogDelete = () => {
+    axiosInstance
+      .delete(`/deleteBlog/${BlogId}`)
+      .then((res) => {
+        navigate("/blogsarticles");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const drawer = (
     <div>
@@ -91,8 +101,7 @@ const Layout = ({ children, headerText, pageType }) => {
             padding: "8px 16px",
           }}
         >
-          Welcome <br /> Back,                     {auth.user.name}
-          !
+          Welcome <br /> Back, {auth.user.name}!
         </Typography>
         <Typography
           className="About"
@@ -245,45 +254,70 @@ const Layout = ({ children, headerText, pageType }) => {
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             {pageType === "blogs" ? (
-              <Link
-                to="/addblog"
-                style={{ textDecoration: "none", color: "#000" }}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0177FB",
-                    borderRadius: "27.66px",
-                    color: "#ffffff",
-                    padding: "8px 16px",
-                    width: { xs: "auto", sm: "200px" },
-                    height: { xs: "45px", sm: "56px" },
-                    fontSize: { xs: "0.875rem", sm: "1.25rem" },
-                  }}
-                >
-                  New Blog
-                </Button>
-              </Link>
+              <>
+                {hasPermissions(["Marketer"]) && (
+                  <Link
+                    to="/addblog"
+                    style={{ textDecoration: "none", color: "#000" }}
+                  >
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#0177FB",
+                        borderRadius: "27.66px",
+                        color: "#ffffff",
+                        padding: "8px 16px",
+                        width: { xs: "auto", sm: "200px" },
+                        height: { xs: "45px", sm: "56px" },
+                        fontSize: { xs: "0.875rem", sm: "1.25rem" },
+                      }}
+                    >
+                      New Blog
+                    </Button>
+                  </Link>
+                )}
+              </>
             ) : (
-              <Link
-                to="/addlead"
-                style={{ textDecoration: "none", color: "#000" }}
+              <>
+                {hasPermissions(["Admin"]) && (
+                  <Link
+                    to="/addlead"
+                    style={{ textDecoration: "none", color: "#000" }}
+                  >
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#0177FB",
+                        borderRadius: "27.66px",
+                        color: "#ffffff",
+                        padding: "8px 16px",
+                        width: { xs: "auto", sm: "200px" },
+                        height: { xs: "45px", sm: "56px" },
+                        fontSize: { xs: "0.875rem", sm: "1.25rem" },
+                      }}
+                    >
+                      New Lead
+                    </Button>
+                  </Link>
+                )}
+              </>
+            )}
+            {pageType === "delete" && (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "red",
+                  borderRadius: "27.66px",
+                  color: "#ffffff",
+                  padding: "8px 16px",
+                  width: { xs: "auto", sm: "200px" },
+                  height: { xs: "45px", sm: "56px" },
+                  fontSize: { xs: "0.875rem", sm: "1.25rem" },
+                }}
+                onClick={handleBlogDelete}
               >
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0177FB",
-                    borderRadius: "27.66px",
-                    color: "#ffffff",
-                    padding: "8px 16px",
-                    width: { xs: "auto", sm: "200px" },
-                    height: { xs: "45px", sm: "56px" },
-                    fontSize: { xs: "0.875rem", sm: "1.25rem" },
-                  }}
-                >
-                  New Lead
-                </Button>
-              </Link>
+                Delete
+              </Button>
             )}
             <Box
               sx={{

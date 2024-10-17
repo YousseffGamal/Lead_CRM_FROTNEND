@@ -19,8 +19,10 @@ const ProjectRoutes = () => {
           <Route
             element={<ProtectedRoute redirectTo="/" roles={["Marketer"]} />}
           >
+            <Route path="/addblog/:id" element={<AddBlog />} />
             <Route path="/addblog" element={<AddBlog />} />
           </Route>
+
           <Route
             element={
               <ProtectedRoute redirectTo="/" roles={["Marketer", "Admin"]} />
