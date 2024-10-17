@@ -17,6 +17,10 @@ body{
     font-family: "LufgaMedium";
     src: url("./assets/Fonts/Lufga/LufgaMedium.ttf");
 }
+@font-face {
+    font-family: "LufgaLight";
+    src: url("./assets/Fonts/Lufga/LufgaLight.ttf");
+}
 .HeaderText{
 font-family: "LufgaLight" !important;
 }
@@ -90,4 +94,16 @@ td{
 }
 .css-11cfq65-MuiTablePagination-displayedRows {
   margin: 0 !important;
+}
+.ProfileName{
+    color: #000000 !important;
+    font-size: 46px !important;
+    font-family: "LufgaSemiBold" !important;
+    margin-top: 48px !important;
+    margin-bottom: 17px !important;
+}
+.ProfileInfo{
+    color: #000000 !important;
+    font-size: 28px !important;
+    font-family: "LufgaLight" !important;
 }
