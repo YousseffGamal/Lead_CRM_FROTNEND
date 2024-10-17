@@ -1,22 +1,24 @@
-
 import React, { useState } from 'react';
 import { Box, Grid, InputLabel, TextField, IconButton, Typography, Button } from '@mui/material';
 import Layout from '../../component/Layout/Layout';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'; // Icon for upload
-import First from "../../assets/images/young-woman-working-laptop-library 1.png"; // Default image
-import SuccessModal from '../../component/SuccessModal/BlogModal'; // Import the SuccessModal
-import axios from 'axios'; 
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'; 
+import First from "../../assets/images/young-woman-working-laptop-library 1.png"; 
+import SuccessModal from '../../component/SuccessModal/BlogModal'; 
 import axiosInstance from '../../axios';
-
+import InputField from '../../component/InputField/InputField';
 
 const AddBlog = () => {
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState(''); 
   const [previewText, setPreviewText] = useState('');
-  const [content, setContent] = useState(''); // New state for content
-  const [thumbnail, setThumbnail] = useState(First); // Set the default image here
-  const [openModal, setOpenModal] = useState(false); // State for modal visibility
+  const [description, setDescription] = useState(''); 
+  const [thumbnail, setThumbnail] = useState(First); 
+  const [openModal, setOpenModal] = useState(false); 
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [formData, setFormData] = useState({
+    name: "", 
+    previewText: "",
+    description: "",
+  });
 
   const handleThumbnailChange = (event) => {
     const file = event.target.files[0];
@@ -29,24 +31,28 @@ const AddBlog = () => {
     }
   };
 
-
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   // Function to handle the Add Blog button click and send data to the API
   const handleAddBlog = async () => {
     try {
-      
       const blogData = {
-        name: title,
-        description: content,
-        previewText: previewText,
-        images: thumbnail,  
+        name: formData.name,  
+        description: formData.description, 
+        previewText: formData.previewText,
+        images: thumbnail,
       };
 
-     
-      const response = await axiosInstance.post('/createblog', blogData); 
+      const response = await axiosInstance.post('/createblog', blogData);
 
       if (response.data.success) {
-        setOpenModal(true); 
+        setOpenModal(true);
       } else {
         setErrorMessage(response.data.message);
       }
@@ -55,7 +61,6 @@ const AddBlog = () => {
       setErrorMessage('Failed to create blog. Please try again.');
     }
   };
-
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -83,7 +88,7 @@ const AddBlog = () => {
                 alt="Thumbnail"
                 style={{ width: '100%', height: '100%', borderRadius: '10px', objectFit: 'cover' }}
               />
-              
+
               {/* Centered Upload Button */}
               <IconButton
                 component="label"
@@ -117,179 +122,75 @@ const AddBlog = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {/* Title Input */}
+              {/* Name Input */}
               <Box sx={{ position: 'relative' }}>
-                <InputLabel
-                  htmlFor="title"
-                  sx={{
-                    position: 'absolute',
-                    left: '10px',
-                    top: '15px',
-                    backgroundColor: '#FFFFFF',
-                    padding: '0 5px',
-                    zIndex: 1,
-                    color: '#191919',
-                    fontFamily: 'LufgaMedium !important',
-                  }}
-                  shrink={!!title}
-                >
-                  Title:
-                </InputLabel>
-                <TextField
-                  id="title"
-                  variant="outlined"
-                  sx={{
-                    width: '100%',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    height: '63px',
-                    '& .MuiOutlinedInput-root': {
-                      border: 'none',
-                      '& fieldset': {
-                        border: 'none',
-                      },
-                      '&:hover fieldset': {
-                        border: 'none',
-                      },
-                      '&.Mui-focused fieldset': {
-                        border: 'none',
-                      },
-                    },
-                  }}
-                  inputProps={{
-                    style: { textAlign: 'center', paddingTop: '15px' },
-                  }}
-                  placeholder="Enter title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                <InputField
+                  fieldName={"name"}
+                  state={formData.name}  
+                  label={"Name"} 
+                  placeHolder={"Name"}  
+                  type={"string"}
+                  handleChange={handleChange}
                 />
               </Box>
 
               {/* Preview Text Input */}
               <Box sx={{ position: 'relative' }}>
-                <InputLabel
-                  htmlFor="preview-text"
-                  sx={{
-                    position: 'absolute',
-                    left: '10px',
-                    top: '15px',
-                    backgroundColor: '#FFFFFF',
-                    padding: '0 5px',
-                    zIndex: 1,
-                    color: '#191919',
-                    fontFamily: 'LufgaMedium !important',
-                  }}
-                  shrink={!!previewText}
-                >
-                  Preview Text:
-                </InputLabel>
-                <TextField
-                  id="preview-text"
-                  variant="outlined"
-                  sx={{
-                    width: '100%',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    height: '204px',
-                    '& .MuiOutlinedInput-root': {
-                      border: 'none',
-                      '& fieldset': {
-                        border: 'none',
-                      },
-                      '&:hover fieldset': {
-                        border: 'none',
-                      },
-                      '&.Mui-focused fieldset': {
-                        border: 'none',
-                      },
-                    },
-                  }}
-                  inputProps={{
-                    style: { textAlign: 'center', paddingTop: '15px' },
-                  }}
-                  placeholder="Enter preview text"
-                  value={previewText}
-                  onChange={(e) => setPreviewText(e.target.value)}
+                <InputField
+                  fieldName={"previewText"}
+                  state={formData.previewText}
+                  label={"Preview Text"}
+                  placeHolder={"Preview Text"}
+                  type={"string"}
+                  handleChange={handleChange}
                 />
               </Box>
             </Box>
           </Grid>
 
-          {/* New Row for Content Text Area */}
+          {/* New Row for Description Text Area */}
           <Grid item xs={12}>
             <Box sx={{ position: 'relative' }}>
-              <InputLabel
-                htmlFor="content"
-                sx={{
-                  position: 'absolute',
-                  left: '10px',
-                  top: '15px',
-                  backgroundColor: '#FFFFFF',
-                  padding: '0 5px',
-                  zIndex: 1,
-                  color: '#191919',
-                  fontFamily: 'LufgaMedium !important',
-                }}
-                shrink={!!content}
-              >
-                Content:
-              </InputLabel>
-              <TextField
-                id="content"
+              <InputField
+                fieldName={"description"} 
+                state={formData.description} 
+                label={"Description"} 
+                placeHolder={"What Are Non-Core Business Activities?"}
+                type={"string"}
+                handleChange={handleChange}  
+                multiline={true}  
+                minRows={6}      
+                fullWidth
                 variant="outlined"
-                multiline
-                minRows={6} // Set minimum rows for the textarea
-                sx={{
-                  width: '100%',
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '20px',
-                  '& .MuiOutlinedInput-root': {
-                    border: 'none',
-                    '& fieldset': {
-                      border: 'none',
-                    },
-                    '&:hover fieldset': {
-                      border: 'none',
-                    },
-                    '&.Mui-focused fieldset': {
-                      border: 'none',
-                    },
-                  },
-                }}
-                inputProps={{
-                  style: { padding: '15px', textAlign: 'center' }, // Center the text and add padding
-                }}
-                placeholder="What Are Non-Core Business Activities?"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
               />
             </Box>
           </Grid>
 
           {/* Button to Add Blog */}
           <Grid item xs={12}>
-          <Button
-        className='AddLeadBtn'
-        variant="contained"
-        sx={{
-          width: '100%',
-          backgroundColor: '#191919',
-          color: '#FFFFFF',
-          fontSize: '30px',
-          borderRadius: '20px',
-          padding: '5px 15px',
-          '&:hover': {
-            backgroundColor: '#333333',
-          },
-        }}
-        onClick={handleAddBlog}
-      >
-        Add Blog
-      </Button>
+            <Button
+              className='AddLeadBtn'
+              variant="contained"
+              sx={{
+                width: '100%',
+                backgroundColor: '#191919',
+                color: '#FFFFFF',
+                fontSize: '30px',
+                borderRadius: '20px',
+                padding: '5px 15px',
+                '&:hover': {
+                  backgroundColor: '#333333',
+                },
+              }}
+              onClick={handleAddBlog}
+            >
+              Add Blog
+            </Button>
           </Grid>
         </Grid>
-         {/* Error Message */}
-         {errorMessage && (
+
+        {/* Error Message */}
+        {errorMessage && (
           <Typography color="error" sx={{ textAlign: 'center', marginTop: '20px' }}>
             {errorMessage}
           </Typography>
