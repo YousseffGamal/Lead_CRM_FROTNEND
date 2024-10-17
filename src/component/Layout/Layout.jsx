@@ -393,12 +393,12 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <Link
-                    to="/profile"
-                    style={{ textDecoration: "none", color: "#000" }}
-                  >
-                    Profile
-                  </Link>
+                <Link
+    to="/profile"
+    style={{ textDecoration: "none", color: "#000", width: "100%" }} // Ensure full width for click area
+  >
+    Profile
+  </Link>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
