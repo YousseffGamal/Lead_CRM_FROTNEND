@@ -31,6 +31,7 @@ import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/Del
 import moment from "moment/moment";
 import Boxs from "../../component/boxs/boxs"
 import Tables from "../../component/Tables/Tables"
+import ClientTable from "../ClientsPage/ClientsPage";
 const style = {
   position: "absolute",
   top: "50%",
@@ -48,7 +49,6 @@ const style = {
 const Dashboard = () => {
   return (
     <Layout>
-
       <Box
         sx={{
           p: 3,
@@ -59,6 +59,13 @@ const Dashboard = () => {
       >
         <Boxs />
         <Tables />
+
+        <Box mt={4}>
+          <Typography variant="h6" sx={{ color: "#333", mb: 2 }}>
+            Clients
+          </Typography>
+          <ClientTable /> {/* Include the ClientTable component */}
+        </Box>
       </Box>
     </Layout>
   );

@@ -166,6 +166,45 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
             </ListItem>
           </Link>
         )}
+
+          {hasPermissions(["Admin"]) && (
+          <Link to="/clientPage" style={{ textDecoration: "none" }}>
+            <ListItem
+              button
+              onClick={() => handleLinkClick("/clients")}
+              sx={{
+                width: "90%",
+                marginBottom: "23px",
+                backgroundColor:
+                  activeLink === "/clients" ? "#000000" : "transparent",
+                color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                height: "77px",
+                borderRadius: "30px",
+                "&:hover": {
+                  backgroundColor:
+                    activeLink === "/clients" ? "#000000" : "transparent", // Neutralize hover effect
+                  color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                },
+              }}
+            >
+              <ListItemIcon>
+                <Dashboard
+                  style={{
+                    color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                className="NavText"
+                primary="Clients Dashboard"
+                sx={{
+                  color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                }}
+              />
+            </ListItem>
+          </Link>
+        )}
+
         {hasPermissions(["Admin", "Marketer"]) && (
           <Link to="/blogsarticles" style={{ textDecoration: "none" }}>
             <ListItem
