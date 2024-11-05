@@ -60,12 +60,7 @@ const Dashboard = () => {
         <Boxs />
         <Tables />
 
-        <Box mt={4}>
-          <Typography variant="h6" sx={{ color: "#333", mb: 2 }}>
-            Clients
-          </Typography>
-          <ClientTable /> {/* Include the ClientTable component */}
-        </Box>
+        
       </Box>
     </Layout>
   );
