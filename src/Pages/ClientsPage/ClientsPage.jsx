@@ -12,13 +12,15 @@ import {
   TableFooter,
   CircularProgress,
   Typography,
+  Menu,
+  MenuItem,
 } from "@mui/material";
-import moment from "moment";
 import { Box } from "@mui/material";
+import moment from "moment";
 import Layout from "../../component/Layout/Layout";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
 import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/DeleteConfirmationModal";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const ClientTable = () => {
   const [clients, setClients] = useState([]);
@@ -28,20 +30,15 @@ const ClientTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [menuIndex, setMenuIndex] = useState(null);
 
   useEffect(() => {
     const fetchClients = async () => {
       try {
         const response = await axiosInstance.get("/getallusers");
-        console.log("API response:", response);
         const clientData = response?.data?.Allusers || [];
-        console.log("clientData:", clientData);
-
-        if (Array.isArray(clientData)) {
-          setClients(clientData);
-        } else {
-          setClients([]);
-        }
+        setClients(clientData);
       } catch (err) {
         console.error("Error fetching clients:", err);
         setError("Failed to load clients");
@@ -60,7 +57,7 @@ const ClientTable = () => {
 
   const handleDelete = async (clientId) => {
     try {
-      await axiosInstance.delete(`/getallusers/${clientId}`);
+      await axiosInstance.delete(`/deleteuser/${clientId}`);
       setClients((prevClients) => prevClients.filter((client) => client._id !== clientId));
       setDeleteModalOpen(false);
     } catch (err) {
@@ -77,6 +74,16 @@ const ClientTable = () => {
   const closeDeleteModal = () => {
     setDeleteModalOpen(false);
     setSelectedClient(null);
+  };
+
+  const handleClick = (event, index) => {
+    setAnchorEl(event.currentTarget);
+    setMenuIndex(index);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setMenuIndex(null);
   };
 
   if (loading) return <CircularProgress />;
@@ -98,8 +105,8 @@ const ClientTable = () => {
             backgroundColor: "#FFFFFF",
             borderRadius: "30px",
             mt: 2,
-            overflowX: "auto", // Ensure horizontal scrolling if needed
-            boxShadow: "none", // Optional: Adjust shadow if needed
+            overflowX: "auto",
+            boxShadow: "none",
           }}
         >
           <Table sx={{ minWidth: 650 }} aria-label="client table">
@@ -117,20 +124,37 @@ const ClientTable = () => {
               {clients.length > 0 ? (
                 clients
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((client) => (
+                  .map((client, index) => (
                     <TableRow key={client._id}>
                       <TableCell>{client.firstName}</TableCell>
                       <TableCell>{client.lastName}</TableCell>
                       <TableCell>{client.email}</TableCell>
                       <TableCell>{client.phone}</TableCell>
+                      <TableCell>{moment(client.createdAt).format("MM/DD/YYYY")}</TableCell>
                       <TableCell>
-                        {moment(client.createdAt).format("MM/DD/YYYY")}
-                      </TableCell>
-                      <TableCell>
-                       
-                        <Button color="error" onClick={() => openDeleteModal(client)}>
-                          Delete
+                        <Button
+                          onClick={(event) => handleClick(event, index)}
+                          sx={{ minWidth: "36px", padding: 0 }}
+                          aria-controls={anchorEl ? "simple-menu" : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={anchorEl ? "true" : undefined}
+                        >
+                          <MoreVertIcon />
                         </Button>
+                        <Menu
+                          anchorEl={menuIndex === index ? anchorEl : null}
+                          open={menuIndex === index && Boolean(anchorEl)}
+                          onClose={handleClose}
+                        >
+                          <MenuItem
+                            onClick={() => {
+                              openDeleteModal(client);
+                              handleClose();
+                            }}
+                          >
+                            Delete
+                          </MenuItem>
+                        </Menu>
                       </TableCell>
                     </TableRow>
                   ))
