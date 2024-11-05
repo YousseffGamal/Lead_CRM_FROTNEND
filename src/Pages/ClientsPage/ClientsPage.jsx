@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import Layout from "../../component/Layout/Layout";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
@@ -33,31 +33,38 @@ const ClientTable = () => {
     const fetchClients = async () => {
       try {
         const response = await axiosInstance.get("/getallusers");
-        console.log("API response:", response)
-        const clientData = response?.data?.data;
-      if (Array.isArray(clientData)) {
-        setClients(clientData);
-      } else {
-        setClients([]); 
+        console.log("API response:", response);
+        const clientData = response?.data?.Allusers || [];
+        console.log("clientData:", clientData);
+
+        if (Array.isArray(clientData)) {
+          setClients(clientData);
+        } else {
+          setClients([]);
+        }
+      } catch (err) {
+        console.error("Error fetching clients:", err);
+        setError("Failed to load clients");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError("Failed to load clients");
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchClients();
-}, []);
+    };
+    fetchClients();
+  }, []);
 
   const handlePageChange = (event, newPage) => setPage(newPage);
-  const handleRowsPerPageChange = (event) => setRowsPerPage(+event.target.value);
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const handleDelete = async (clientId) => {
     try {
       await axiosInstance.delete(`/getallusers/${clientId}`);
-      setClients(clients.filter((client) => client.id !== clientId));
+      setClients((prevClients) => prevClients.filter((client) => client._id !== clientId));
       setDeleteModalOpen(false);
     } catch (err) {
+      console.error("Error deleting client:", err);
       setError("Failed to delete client");
     }
   };
@@ -76,7 +83,7 @@ const ClientTable = () => {
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-<Layout headerText="Blogs & Articles" pageType="blogs">
+    <Layout headerText="Clients" pageType="clients">
       <Box
         sx={{
           p: 3,
@@ -85,69 +92,79 @@ const ClientTable = () => {
           marginTop: "65px",
         }}
       >
+        <TableContainer
+          component={Paper}
+          sx={{
+            backgroundColor: "#FFFFFF",
+            borderRadius: "30px",
+            mt: 2,
+            overflowX: "auto", // Ensure horizontal scrolling if needed
+            boxShadow: "none", // Optional: Adjust shadow if needed
+          }}
+        >
+          <Table sx={{ minWidth: 650 }} aria-label="client table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>First Name</TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Last Name</TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Email</TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Phone</TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Date Joined</TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clients.length > 0 ? (
+                clients
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((client) => (
+                    <TableRow key={client._id}>
+                      <TableCell>{client.firstName}</TableCell>
+                      <TableCell>{client.lastName}</TableCell>
+                      <TableCell>{client.email}</TableCell>
+                      <TableCell>{client.phone}</TableCell>
+                      <TableCell>
+                        {moment(client.createdAt).format("MM/DD/YYYY")}
+                      </TableCell>
+                      <TableCell>
+                       
+                        <Button color="error" onClick={() => openDeleteModal(client)}>
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">
+                    No clients available
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[10, 25, 50]}
+                  count={clients.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handleRowsPerPageChange}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
 
-    
-    <TableContainer component={Paper}>
-      <Table aria-label="client table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Phone</TableCell>
-            <TableCell>Date Joined</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-  {Array.isArray(clients) && clients.length > 0 ? (
-    clients
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((client) => (
-        <TableRow key={client.id}>
-          <TableCell>{client.name}</TableCell>
-          <TableCell>{client.email}</TableCell>
-          <TableCell>{client.phone}</TableCell>
-          <TableCell>
-            {moment(client.dateJoined).format("MM/DD/YYYY")}
-          </TableCell>
-          <TableCell>
-            <Button>View</Button>
-            <Button>Edit</Button>
-            <Button color="error" onClick={() => openDeleteModal(client)}>
-              Delete
-            </Button>
-          </TableCell>
-        </TableRow>
-      ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={5}>No clients available</TableCell>
-    </TableRow>
-  )}
-</TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 50]}
-              count={clients.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmationModal
-        open={deleteModalOpen}
-        onClose={closeDeleteModal}
-        onConfirm={() => handleDelete(selectedClient?.id)}
-        message={`Are you sure you want to delete ${selectedClient?.name}?`}
-      />
-    </TableContainer>
-    </Box>
+          {/* Delete Confirmation Modal */}
+          <DeleteConfirmationModal
+            open={deleteModalOpen}
+            onClose={closeDeleteModal}
+            onConfirm={() => handleDelete(selectedClient?._id)}
+            message={`Are you sure you want to delete ${selectedClient?.firstName} ${selectedClient?.lastName}?`}
+          />
+        </TableContainer>
+      </Box>
     </Layout>
   );
 };
