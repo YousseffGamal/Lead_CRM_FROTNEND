@@ -32,6 +32,7 @@ import moment from "moment/moment";
 
 import Filters from "../filters/filters";
 import LeadModal from "../LeadModal/LeadModal";
+import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
   top: "50%",
@@ -47,6 +48,8 @@ const style = {
 };
 
 const Tables = () => {
+  const navigate = useNavigate();
+
   // State for the active tab
   const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients
   const [statusFilter, setStatusFilter] = useState("All"); // State for status filter
@@ -60,6 +63,7 @@ const Tables = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDeleteId, setCurrentDeleteId] = useState(null);
   const [currentDeleteIndex, setCurrentDeleteIndex] = useState(null);
+
   const stats = [
     {
       title: "No. Of Leads",
@@ -263,6 +267,11 @@ const Tables = () => {
     setOpen(true);
   };
 
+  const handleApprove = (user) => {
+    navigate(`/addlead/${user}`);
+    console.log("herooooo");
+  };
+
   const handleCloseModal = () => {
     fetchLeads();
     setOpen(false);
@@ -306,11 +315,13 @@ const Tables = () => {
         alert(" An Error happend");
       });
   };
+
   const getStates = () => {
     axiosInstance
       .get("getAllStates")
       .then((res) => {
         setStates(res.data.states);
+
         console.log(res.data.states);
       })
       .catch((err) => {
@@ -657,6 +668,17 @@ const Tables = () => {
                               }}
                             >
                               Edit
+                            </MenuItem>
+
+                            <MenuItem
+                              onClick={() => {
+                                // handleOpen(user);
+                                // handleClose();
+
+                                handleApprove(user._id);
+                              }}
+                            >
+                              Approve
                             </MenuItem>
                           </Menu>
                         </TableCell>

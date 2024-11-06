@@ -19,6 +19,7 @@ import {
   CallingBackTime,
 } from "./components/constants";
 import FormValidation from "./components/FormValidation";
+import { useParams } from "react-router-dom";
 
 const AddLead = () => {
   const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients
@@ -57,8 +58,54 @@ const AddLead = () => {
     duration: "",
     biddingIncreasePercentage: "",
     intialBiddingPrice: "",
+    isApproved: true,
   };
+  const { id } = useParams();
   const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    if (id) {
+      axiosInstance.get(`/getLeadById/${id}`).then((res) => {
+        console.log(res.data);
+        console.log("counting");
+        setFormData({
+          ...formData,
+          askingPrice: res.data.data.askingPrice,
+          firstName: res.data.data.firstName,
+          lastName: res.data.data.lastName,
+          email: res.data.data.email,
+          phone: res.data.data.phone,
+          addressLine: res.data.data.additionalNotes,
+          city: res.data.data.city,
+          county: res.data.data.county,
+          state: res.data.data.state,
+          zip: res.data.data.zip,
+          bedCount: res.data.data.bedCount,
+          bathCount: res.data.data.bathCount,
+          sqft: res.data.data.sqft,
+          occupancy: res.data.data.occupancy,
+          leadType: res.data.data.leadType._id,
+          closingTime: res.data.data.closingTime,
+          bestTimeForCallback: res.data.data.bestTimeForCallback,
+          motivation: res.data.data.motivation,
+          zillowLink: res.data.data.zillowLink,
+          zillowEstimate: res.data.data.zillowEstimate,
+          additionalNotes: res.data.data.additionalNotes,
+          condition: res.data.data.condition,
+          isBidding: false,
+          LeadPrice: "",
+          biddingStartingDate: "",
+          duration: "",
+          biddingIncreasePercentage: "",
+          intialBiddingPrice: "",
+          leadId: id,
+        });
+        getCounty(res.data.data.state);
+      });
+      setDisabled(false);
+    }
+  }, []);
+
   //function to get states
   const getStates = () => {
     axiosInstance
@@ -174,6 +221,16 @@ const AddLead = () => {
     setActiveTab(event.target.checked ? 1 : 0); // Switch to Clients if checked, Leads if unchecked
   };
 
+  const handleApprove = async () => {
+    console.log("heyyy1");
+    axiosInstance
+      .post(`approveLead`, formData)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Layout>
       <Box
@@ -194,6 +251,7 @@ const AddLead = () => {
             marginTop: "25px",
           }}
         >
+          {id}
           <Box sx={{ flex: 1, position: "relative" }}>
             <InputField
               fieldName={"askingPrice"}
@@ -591,138 +649,144 @@ const AddLead = () => {
             )}
           </Box>
         </Box>
-        {/* New row for Zillow URL and Call URL inputs */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: "25px",
-            flexDirection: { xs: "column", sm: "row" },
-            marginTop: "25px",
-          }}
-        >
-          <Box
-            sx={{
-              flex: 1,
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 5,
-              bgcolor: "white",
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 1 ? "#0177FB" : "#191919", mr: 2 }} // Change the color here
+
+        {id && (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "25px",
+                flexDirection: { xs: "column", sm: "row" },
+                marginTop: "25px",
+              }}
             >
-              Enable bidding on the lead
-            </Typography>
-            <Switch
-              checked={activeTab === 1}
-              onChange={handleSwitchChange}
-              inputProps={{ "aria-label": "Switch between Leads and Clients" }}
-            />
-          </Box>
-
-          {activeTab === 0 ? (
-            <Box sx={{ flex: 1, position: "relative" }}>
-              <InputField
-                fieldName={"LeadPrice"}
-                state={formData.LeadPrice}
-                handleChange={handleChange}
-                label={"Lead Price"}
-                placeHolder={"Lead Price"}
-                type={"number"}
-              />
-              {errors.LeadPrice && (
-                <span style={{ color: "red" }}>{errors.LeadPrice}</span>
-              )}
-            </Box>
-          ) : (
-            <>
-              <Box sx={{ flex: 1, position: "relative" }}>
-                <InputField
-                  fieldName={"intialBiddingPrice"}
-                  state={formData.intialBiddingPrice}
-                  handleChange={handleChange}
-                  label={"Starting Bid Price"}
-                  placeHolder={"Starting Bid Price"}
-                  type={"number"}
+              <Box
+                sx={{
+                  flex: 1,
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 5,
+                  bgcolor: "white",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ color: activeTab === 1 ? "#0177FB" : "#191919", mr: 2 }} // Change the color here
+                >
+                  Enable bidding on the lead
+                </Typography>
+                <Switch
+                  checked={activeTab === 1}
+                  onChange={handleSwitchChange}
+                  inputProps={{
+                    "aria-label": "Switch between Leads and Clients",
+                  }}
                 />
-                {errors.intialBiddingPrice && (
-                  <span style={{ color: "red" }}>
-                    {errors.intialBiddingPrice}
-                  </span>
-                )}
               </Box>
-            </>
-          )}
-        </Box>
-        {activeTab === 1 && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "25px",
-              flexDirection: { xs: "column", sm: "row" },
-              marginTop: "25px",
-            }}
-          >
-            <Box sx={{ flex: 1, position: "relative" }}>
-              <InputField
-                fieldName={"biddingStartingDate"}
-                state={formData.biddingStartingDate}
-                handleChange={handleChange}
-                label={"Bid Opening Date"}
-                placeHolder={"Bid Opening Date"}
-                type={"datetime-local"}
-              />
-              {errors.biddingStartingDate && (
-                <span style={{ color: "red" }}>
-                  {errors.biddingStartingDate}
-                </span>
-              )}
-            </Box>
-          </Box>
-        )}
-        {activeTab === 1 && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "25px",
-              flexDirection: { xs: "column", sm: "row" },
-              marginTop: "25px",
-            }}
-          >
-            <Box sx={{ flex: 1, position: "relative" }}>
-              <InputField
-                fieldName={"duration"}
-                state={formData.duration}
-                handleChange={handleChange}
-                label={"Duration"}
-                placeHolder={"Enter duration in minutes"}
-                type={"number"}
-              />
-              {errors.duration && (
-                <span style={{ color: "red" }}>{errors.duration}</span>
-              )}
-            </Box>
 
-            <Box sx={{ flex: 1, position: "relative" }}>
-              <InputField
-                fieldName={"biddingIncreasePercentage"}
-                state={formData.biddingIncreasePercentage}
-                handleChange={handleChange}
-                label={"Minimum Increase Rate"}
-                placeHolder={"Minimum Increase Rate (%)"}
-                type={"number"}
-              />
-              {errors.biddingIncreasePercentage && (
-                <span style={{ color: "red" }}>
-                  {errors.biddingIncreasePercentage}
-                </span>
+              {activeTab === 0 ? (
+                <Box sx={{ flex: 1, position: "relative" }}>
+                  <InputField
+                    fieldName={"LeadPrice"}
+                    state={formData.LeadPrice}
+                    handleChange={handleChange}
+                    label={"Lead Price"}
+                    placeHolder={"Lead Price"}
+                    type={"number"}
+                  />
+                  {errors.LeadPrice && (
+                    <span style={{ color: "red" }}>{errors.LeadPrice}</span>
+                  )}
+                </Box>
+              ) : (
+                <>
+                  <Box sx={{ flex: 1, position: "relative" }}>
+                    <InputField
+                      fieldName={"intialBiddingPrice"}
+                      state={formData.intialBiddingPrice}
+                      handleChange={handleChange}
+                      label={"Starting Bid Price"}
+                      placeHolder={"Starting Bid Price"}
+                      type={"number"}
+                    />
+                    {errors.intialBiddingPrice && (
+                      <span style={{ color: "red" }}>
+                        {errors.intialBiddingPrice}
+                      </span>
+                    )}
+                  </Box>
+                </>
               )}
             </Box>
-          </Box>
+            {activeTab === 1 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "25px",
+                  flexDirection: { xs: "column", sm: "row" },
+                  marginTop: "25px",
+                }}
+              >
+                <Box sx={{ flex: 1, position: "relative" }}>
+                  <InputField
+                    fieldName={"biddingStartingDate"}
+                    state={formData.biddingStartingDate}
+                    handleChange={handleChange}
+                    label={"Bid Opening Date"}
+                    placeHolder={"Bid Opening Date"}
+                    type={"datetime-local"}
+                  />
+                  {errors.biddingStartingDate && (
+                    <span style={{ color: "red" }}>
+                      {errors.biddingStartingDate}
+                    </span>
+                  )}
+                </Box>
+              </Box>
+            )}
+            {activeTab === 1 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "25px",
+                  flexDirection: { xs: "column", sm: "row" },
+                  marginTop: "25px",
+                }}
+              >
+                <Box sx={{ flex: 1, position: "relative" }}>
+                  <InputField
+                    fieldName={"duration"}
+                    state={formData.duration}
+                    handleChange={handleChange}
+                    label={"Duration"}
+                    placeHolder={"Enter duration in minutes"}
+                    type={"number"}
+                  />
+                  {errors.duration && (
+                    <span style={{ color: "red" }}>{errors.duration}</span>
+                  )}
+                </Box>
+
+                <Box sx={{ flex: 1, position: "relative" }}>
+                  <InputField
+                    fieldName={"biddingIncreasePercentage"}
+                    state={formData.biddingIncreasePercentage}
+                    handleChange={handleChange}
+                    label={"Minimum Increase Rate"}
+                    placeHolder={"Minimum Increase Rate (%)"}
+                    type={"number"}
+                  />
+                  {errors.biddingIncreasePercentage && (
+                    <span style={{ color: "red" }}>
+                      {errors.biddingIncreasePercentage}
+                    </span>
+                  )}
+                </Box>
+              </Box>
+            )}
+          </>
         )}
 
         <Box
@@ -745,24 +809,46 @@ const AddLead = () => {
             width: "100%", // Full width
           }}
         >
-          <Button
-            className="AddLeadBtn"
-            variant="contained"
-            sx={{
-              width: "100%",
-              backgroundColor: "#191919",
-              color: "#FFFFFF",
-              fontSize: "30px",
-              borderRadius: "20px",
-              padding: "5px 15px",
-              "&:hover": {
-                backgroundColor: "#333333",
-              },
-            }}
-            onClick={handleClick}
-          >
-            Add Lead
-          </Button>
+          {id ? (
+            <Button
+              className="AddLeadBtn"
+              variant="contained"
+              sx={{
+                width: "100%",
+                backgroundColor: "#191919",
+                color: "#FFFFFF",
+                fontSize: "30px",
+                borderRadius: "20px",
+                padding: "5px 15px",
+                "&:hover": {
+                  backgroundColor: "#333333",
+                },
+              }}
+              onClick={handleApprove}
+            >
+              Approve Lead
+            </Button>
+          ) : (
+            <Button
+              className="AddLeadBtn"
+              variant="contained"
+              sx={{
+                width: "100%",
+                backgroundColor: "#191919",
+                color: "#FFFFFF",
+                fontSize: "30px",
+                borderRadius: "20px",
+                padding: "5px 15px",
+                "&:hover": {
+                  backgroundColor: "#333333",
+                },
+              }}
+              onClick={handleClick}
+            >
+              Add Lead
+            </Button>
+          )}
+
           <SuccessModal open={open} handleClose={handleClose} />
         </Box>
       </Box>

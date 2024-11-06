@@ -8,7 +8,7 @@ import AddLead from "./Pages/AddLead/AddLead";
 import BlogsArticles from "./Pages/BlogsArticles/BlogsArticles";
 import AddBlog from "./Pages/AddBlog/AddBlog";
 
-import Profile from "./Pages/profile/profile"
+import Profile from "./Pages/profile/profile";
 
 const ProjectRoutes = () => {
   return (
@@ -18,6 +18,9 @@ const ProjectRoutes = () => {
           <Route element={<ProtectedRoute redirectTo="/" roles={["Admin"]} />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/addlead" element={<AddLead />} />
+            <Route path="/addlead/:id" element={<AddLead />} />
+
+            {/* <Route path="/addlead" element={<AddLead />} /> */}
           </Route>
           <Route
             element={<ProtectedRoute redirectTo="/" roles={["Marketer"]} />}

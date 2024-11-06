@@ -40,9 +40,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("user");
       })
       .catch((err) => {
-        setAuth({ token: "", user: "" }); // Reset permissions state
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        console.log(err);
       });
   };
 
