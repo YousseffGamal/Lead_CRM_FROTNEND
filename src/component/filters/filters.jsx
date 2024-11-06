@@ -9,34 +9,33 @@ import {
   IconButton,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import axios from "axios"; // Import axios
+import axiosInstance from "../../axios";
 import {
   occupancyOptions,
   leadTemperatureOptions,
 } from "../../Pages/AddLead/components/constants";
-import axiosInstance from "../../axios";
 
 const FilterComponent = ({ setLeadsData }) => {
   const [state, setState] = useState("");
   const [askingPrice, setAskingPrice] = useState("");
   const [occupancy, setOccupancy] = useState("");
-  const [closing, setClosing] = useState(""); // Still keeping the state
+  const [startClosing, setStartClosing] = useState(""); // Start time for closing
+  const [endClosing, setEndClosing] = useState("");     // End time for closing
   const [temperature, setTemperature] = useState("");
-
   const [states, setStates] = useState([]);
-  //function to get states
+
+  // Fetch states function
   const getStates = () => {
     axiosInstance
       .get("getAllStates")
-      .then((res) => {
-        console.log("from here", res.data.states);
-        setStates(res.data.states);
-      })
+      .then((res) => setStates(res.data.states))
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     getStates();
   }, []);
+
   const handleChange = (event, setter) => {
     setter(event.target.value);
   };
@@ -47,10 +46,11 @@ const FilterComponent = ({ setLeadsData }) => {
       const queryParams = {
         state,
         occupancy,
-        closing,
         leadType: temperature,
         askingPrice,
+        closing: `${startClosing}-${endClosing}`, // Combine start and end times
       };
+
       // Make the API request
       const response = await axiosInstance.get(
         "http://localhost:4000/getLeadsFiltered",
@@ -58,12 +58,12 @@ const FilterComponent = ({ setLeadsData }) => {
       );
 
       // Handle the response data
-      console.log("Filtered leads:", response.data.data);
       setLeadsData(response.data.data);
     } catch (error) {
       console.error("Error fetching filtered leads:", error);
     }
   };
+
   return (
     <Box
       sx={{
@@ -97,13 +97,16 @@ const FilterComponent = ({ setLeadsData }) => {
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
           <MenuItem value="">
-            <em>None</em> {/* Displayed as an option to clear selection */}
+            <em>None</em>
           </MenuItem>
           {states.map((element) => (
-            <MenuItem value={element._id}>{element.name}</MenuItem>
+            <MenuItem key={element._id} value={element._id}>
+              {element.name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
+
       {/* Occupancy Filter */}
       <FormControl
         sx={{
@@ -121,36 +124,45 @@ const FilterComponent = ({ setLeadsData }) => {
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
           <MenuItem value="">
-            <em>None</em> {/* Displayed as an option to clear selection */}
+            <em>None</em>
           </MenuItem>
           {occupancyOptions.map((item) => (
-            <MenuItem value={item.value}>{item.label}</MenuItem>
+            <MenuItem key={item.value} value={item.value}>
+              {item.label}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
-      {/* Closing Filter (changed to Input with same border radius) */}
+
+      {/* Closing Time Range Filter */}
       <FormControl
         sx={{
           minWidth: "185.79px",
-          height: "48.28px",
-          borderRadius: "16.65px",
-          flex: "1 1 auto",
+          display: "flex",
+          flexDirection: "row",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <TextField
-          value={closing}
-          label="Closing"
-          onChange={(event) => handleChange(event, setClosing)}
-          InputProps={{
-            sx: {
-              height: "48.28px",
-              borderRadius: "16.65px", // Applying the same border radius
-            },
-          }}
-          type="number"
-          sx={{ borderRadius: "16.65px" }} // Ensure the outer TextField component also has the borderRadius
+          value={startClosing}
+          label="Start Closing"
+          onChange={(event) => handleChange(event, setStartClosing)}
+          type="time"
+          InputLabelProps={{ shrink: true }}
+          sx={{ borderRadius: "16.65px", width: "50%" }}
+        />
+        <TextField
+          value={endClosing}
+          label="End Closing"
+          onChange={(event) => handleChange(event, setEndClosing)}
+          type="time"
+          InputLabelProps={{ shrink: true }}
+          sx={{ borderRadius: "16.65px", width: "50%" }}
         />
       </FormControl>
+
+      {/* Asking Price Filter */}
       <FormControl
         sx={{
           minWidth: "185.79px",
@@ -163,16 +175,17 @@ const FilterComponent = ({ setLeadsData }) => {
           value={askingPrice}
           label="Asking Price"
           onChange={(event) => handleChange(event, setAskingPrice)}
+          type="number"
           InputProps={{
             sx: {
               height: "48.28px",
-              borderRadius: "16.65px", // Applying the same border radius
+              borderRadius: "16.65px",
             },
           }}
-          type="number"
-          sx={{ borderRadius: "16.65px" }} // Ensure the outer TextField component also has the borderRadius
+          sx={{ borderRadius: "16.65px" }}
         />
       </FormControl>
+
       {/* Temperature Filter */}
       <FormControl
         sx={{
@@ -182,7 +195,7 @@ const FilterComponent = ({ setLeadsData }) => {
           flex: "1 1 auto",
         }}
       >
-        <InputLabel>lead Type</InputLabel>
+        <InputLabel>Lead Type</InputLabel>
         <Select
           value={temperature}
           label="Temperature"
@@ -190,13 +203,16 @@ const FilterComponent = ({ setLeadsData }) => {
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
           <MenuItem value="">
-            <em>None</em> {/* Displayed as an option to clear selection */}
+            <em>None</em>
           </MenuItem>
           {leadTemperatureOptions.map((item) => (
-            <MenuItem value={item.value}>{item.label}</MenuItem>
+            <MenuItem key={item.value} value={item.value}>
+              {item.label}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
+
       {/* Icon Filter Button */}
       <IconButton
         sx={{

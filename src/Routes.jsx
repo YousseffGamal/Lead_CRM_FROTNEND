@@ -8,7 +8,9 @@ import AddLead from "./Pages/AddLead/AddLead";
 import BlogsArticles from "./Pages/BlogsArticles/BlogsArticles";
 import AddBlog from "./Pages/AddBlog/AddBlog";
 
+// import ClientTable from "./Pages/ClientsPage/clients";
 import Profile from "./Pages/profile/profile";
+import ClientTable from "./Pages/ClientsPage/ClientsPage";
 
 const ProjectRoutes = () => {
   return (
@@ -18,9 +20,12 @@ const ProjectRoutes = () => {
           <Route element={<ProtectedRoute redirectTo="/" roles={["Admin"]} />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/addlead" element={<AddLead />} />
+
             <Route path="/addlead/:id" element={<AddLead />} />
 
             {/* <Route path="/addlead" element={<AddLead />} /> */}
+
+            <Route path="/clientPage" element={<ClientTable />} />
           </Route>
           <Route
             element={<ProtectedRoute redirectTo="/" roles={["Marketer"]} />}
@@ -46,6 +51,8 @@ const ProjectRoutes = () => {
 
           <Route path="/" element={<LoginPage />} />
           <Route path="/signuppage" element={<SignUpPage />} />
+
+          {/* <Route path="/clients" element={<Clients/>}/> */}
         </Routes>
       </Router>
     </React.Suspense>
