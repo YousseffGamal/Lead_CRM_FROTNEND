@@ -16,48 +16,56 @@ import {
 } from "../../Pages/AddLead/components/constants";
 
 const FilterComponent = ({ setLeadsData }) => {
+  // State variables for each filter option
   const [state, setState] = useState("");
   const [askingPrice, setAskingPrice] = useState("");
   const [occupancy, setOccupancy] = useState("");
-  const [startClosing, setStartClosing] = useState(""); // Start time for closing
-  const [endClosing, setEndClosing] = useState("");     // End time for closing
+  const [startClosing, setStartClosing] = useState("");
+  const [endClosing, setEndClosing] = useState("");
+  const [startAskingPrice, setStartAskingPrice] = useState("");
+  const [endAskingPrice, setEndAskingPrice] = useState("");
   const [temperature, setTemperature] = useState("");
   const [states, setStates] = useState([]);
 
-  // Fetch states function
-  const getStates = () => {
-    axiosInstance
-      .get("getAllStates")
-      .then((res) => setStates(res.data.states))
-      .catch((err) => console.log(err));
+  // Fetch states from the server
+  const getStates = async () => {
+    try {
+      const response = await axiosInstance.get("getAllStates");
+      setStates(response.data.states);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
   };
 
   useEffect(() => {
     getStates();
   }, []);
 
+  // Common handler for onChange events
   const handleChange = (event, setter) => {
     setter(event.target.value);
   };
 
+  // Handle filtering and setting data
   const handleFilter = async () => {
     try {
-      // Prepare the query parameters
+      // Define query parameters
       const queryParams = {
         state,
         occupancy,
         leadType: temperature,
-        askingPrice,
-        closing: `${startClosing}-${endClosing}`, // Combine start and end times
+        startAskingPrice,
+        endAskingPrice,
+        closing: `${startClosing}-${endClosing}`,
       };
 
-      // Make the API request
+      // Fetch filtered data from API
       const response = await axiosInstance.get(
         "http://localhost:4000/getLeadsFiltered",
         { params: queryParams }
       );
 
-      // Handle the response data
+      // Update the leads data with response
       setLeadsData(response.data.data);
     } catch (error) {
       console.error("Error fetching filtered leads:", error);
@@ -134,8 +142,8 @@ const FilterComponent = ({ setLeadsData }) => {
         </Select>
       </FormControl>
 
-      {/* Closing Time Range Filter */}
-      <FormControl
+     {/* Closing Days Range Filter */}
+     <FormControl
         sx={{
           minWidth: "185.79px",
           display: "flex",
@@ -146,45 +154,50 @@ const FilterComponent = ({ setLeadsData }) => {
       >
         <TextField
           value={startClosing}
-          label="Start Closing"
+          label="Start Closing (days)"
           onChange={(event) => handleChange(event, setStartClosing)}
-          type="time"
+          type="number"
           InputLabelProps={{ shrink: true }}
           sx={{ borderRadius: "16.65px", width: "50%" }}
         />
         <TextField
           value={endClosing}
-          label="End Closing"
+          label="End Closing (days)"
           onChange={(event) => handleChange(event, setEndClosing)}
-          type="time"
+          type="number"
           InputLabelProps={{ shrink: true }}
           sx={{ borderRadius: "16.65px", width: "50%" }}
         />
       </FormControl>
 
-      {/* Asking Price Filter */}
+      {/* Asking Price Range Filter */}
       <FormControl
         sx={{
           minWidth: "185.79px",
-          height: "48.28px",
-          borderRadius: "16.65px",
-          flex: "1 1 auto",
+          display: "flex",
+          flexDirection: "row",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <TextField
-          value={askingPrice}
-          label="Asking Price"
-          onChange={(event) => handleChange(event, setAskingPrice)}
+          value={startAskingPrice}
+          label="Start Price"
+          onChange={(event) => handleChange(event, setStartAskingPrice)}
           type="number"
-          InputProps={{
-            sx: {
-              height: "48.28px",
-              borderRadius: "16.65px",
-            },
-          }}
-          sx={{ borderRadius: "16.65px" }}
+          InputLabelProps={{ shrink: true }}
+          sx={{ borderRadius: "16.65px", width: "50%" }}
+        />
+        <TextField
+          value={endAskingPrice}
+          label="End Price"
+          onChange={(event) => handleChange(event, setEndAskingPrice)}
+          type="number"
+          InputLabelProps={{ shrink: true }}
+          sx={{ borderRadius: "16.65px", width: "50%" }}
         />
       </FormControl>
+
 
       {/* Temperature Filter */}
       <FormControl
@@ -213,7 +226,7 @@ const FilterComponent = ({ setLeadsData }) => {
         </Select>
       </FormControl>
 
-      {/* Icon Filter Button */}
+      {/* Filter Button */}
       <IconButton
         sx={{
           backgroundColor: "#000000",
