@@ -61,7 +61,7 @@ const FilterComponent = ({ setLeadsData }) => {
 
       // Fetch filtered data from API
       const response = await axiosInstance.get(
-        "http://localhost:4000/getLeadsFiltered",
+        "getLeadsFiltered",
         { params: queryParams }
       );
 
