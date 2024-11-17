@@ -6,6 +6,7 @@ import SignUpPage from "./Pages/SignUp/SignUp";
 import ProtectedRoute from "./utiliteis/protectedRoute";
 import AddLead from "./Pages/AddLead/AddLead";
 import BlogsArticles from "./Pages/BlogsArticles/BlogsArticles";
+import RelistedLeads from "./Pages/RelistedLeads/RelistedLeads";
 import AddBlog from "./Pages/AddBlog/AddBlog";
 
 // import ClientTable from "./Pages/ClientsPage/clients";
@@ -20,6 +21,7 @@ const ProjectRoutes = () => {
           <Route element={<ProtectedRoute redirectTo="/" roles={["Admin"]} />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/addlead" element={<AddLead />} />
+            <Route path="/relistedLeads" element={<RelistedLeads />} />
 
             <Route path="/addlead/:id" element={<AddLead />} />
 

@@ -8,6 +8,7 @@ import BlogCard from "../../component/Card/Card";
 import First from "../../assets/images/young-woman-working-laptop-library 1.png";
 import axiosInstance from "../../axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../store/authContext";
 
 const BlogsArticles = () => {
   // States of blogs
@@ -15,20 +16,22 @@ const BlogsArticles = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { auth } = useAuth();
+  const fetchBlogs = async () => {
+    try {
+      const response = await axiosInstance.get("/getallblogs");
+      console.log("response", response.data);
+      setBlogs(response.data.blogs);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+      setError("Failed to fetch blogs");
+      setLoading(false);
+    }
+  };
+
   // Fetch blogs
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await axiosInstance.get("/getallblogs");
-        setBlogs(response.data.blogs);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-        setError("Failed to fetch blogs");
-        setLoading(false);
-      }
-    };
-
     fetchBlogs();
   }, []);
 
@@ -58,7 +61,9 @@ const BlogsArticles = () => {
                   image={blog.image || First} // Use the default image if not provided
                   title={blog.name}
                   description={blog.description}
-                  handleClick={() => handleClick(blog._id)}
+                  handleClick={() =>
+                    auth.role === "Marketer" && handleClick(blog._id)
+                  }
                 />
               </Grid>
             ))

@@ -29,8 +29,8 @@ import axiosInstance from "../../axios";
 import { BorderClear } from "@mui/icons-material";
 import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/DeleteConfirmationModal";
 import moment from "moment/moment";
-import Boxs from "../../component/boxs/boxs"
-import Tables from "../../component/Tables/Tables"
+import Boxs from "../../component/boxs/boxs";
+import Tables from "../../component/Tables/Tables";
 import ClientTable from "../ClientsPage/ClientsPage";
 const style = {
   position: "absolute",
@@ -48,7 +48,7 @@ const style = {
 
 const Dashboard = () => {
   return (
-    <Layout>
+    <Layout pageType="Leads">
       <Box
         sx={{
           p: 3,
@@ -59,8 +59,6 @@ const Dashboard = () => {
       >
         <Boxs />
         <Tables />
-
-        
       </Box>
     </Layout>
   );

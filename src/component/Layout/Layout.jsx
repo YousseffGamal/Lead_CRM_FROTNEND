@@ -167,7 +167,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
           </Link>
         )}
 
-          {hasPermissions(["Admin"]) && (
+        {hasPermissions(["Admin"]) && (
           <Link to="/clientPage" style={{ textDecoration: "none" }}>
             <ListItem
               button
@@ -176,21 +176,21 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
                 width: "90%",
                 marginBottom: "23px",
                 backgroundColor:
-                  activeLink === "/clients" ? "#000000" : "transparent",
-                color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                  activeLink === "/clientPage" ? "#000000" : "transparent",
+                color: activeLink === "/clientPage" ? "#F1F1F1" : "#656565",
                 height: "77px",
                 borderRadius: "30px",
                 "&:hover": {
                   backgroundColor:
-                    activeLink === "/clients" ? "#000000" : "transparent", // Neutralize hover effect
-                  color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                    activeLink === "/clientPage" ? "#000000" : "transparent", // Neutralize hover effect
+                  color: activeLink === "/clientPage" ? "#F1F1F1" : "#656565",
                 },
               }}
             >
               <ListItemIcon>
                 <Dashboard
                   style={{
-                    color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                    color: activeLink === "/clientPage" ? "#F1F1F1" : "#656565",
                   }}
                 />
               </ListItemIcon>
@@ -198,7 +198,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
                 className="NavText"
                 primary="Clients Dashboard"
                 sx={{
-                  color: activeLink === "/clients" ? "#F1F1F1" : "#656565",
+                  color: activeLink === "/clientPage" ? "#F1F1F1" : "#656565",
                 }}
               />
             </ListItem>
@@ -212,6 +212,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
               onClick={() => handleLinkClick("/blogsarticles")}
               sx={{
                 width: "90%",
+                marginBottom: "23px",
                 backgroundColor:
                   activeLink === "/blogsarticles" ? "#000000" : "transparent",
                 color: activeLink === "/blogsarticles" ? "#F1F1F1" : "#656565",
@@ -239,6 +240,47 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
                 sx={{
                   color:
                     activeLink === "/blogsarticles" ? "#F1F1F1" : "#656565",
+                }}
+              />
+            </ListItem>
+          </Link>
+        )}
+        {/* relisted leads */}
+        {hasPermissions(["Admin"]) && (
+          <Link to="/relistedLeads" style={{ textDecoration: "none" }}>
+            <ListItem
+              button
+              onClick={() => handleLinkClick("/blogsarticles")}
+              sx={{
+                width: "90%",
+                marginBottom: "23px",
+                backgroundColor:
+                  activeLink === "/relistedLeads" ? "#000000" : "transparent",
+                color: activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                height: "77px",
+                borderRadius: "30px",
+                "&:hover": {
+                  backgroundColor:
+                    activeLink === "/relistedLeads" ? "#000000" : "transparent", // Neutralize hover effect
+                  color:
+                    activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                },
+              }}
+            >
+              <ListItemIcon>
+                <People
+                  style={{
+                    color:
+                      activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                className="NavText"
+                primary="Relisted Leads"
+                sx={{
+                  color:
+                    activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
                 }}
               />
             </ListItem>
@@ -292,7 +334,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
             {headerText || "Leads Dashboard"}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {pageType === "blogs" ? (
+            {pageType === "blogs" && (
               <>
                 {hasPermissions(["Marketer"]) && (
                   <Link
@@ -316,7 +358,9 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
                   </Link>
                 )}
               </>
-            ) : (
+            )}
+
+            {pageType === "Leads" && (
               <>
                 {hasPermissions(["Admin"]) && (
                   <Link
@@ -432,12 +476,16 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                <Link
-    to="/profile"
-    style={{ textDecoration: "none", color: "#000", width: "100%" }} // Ensure full width for click area
-  >
-    Profile
-  </Link>
+                  <Link
+                    to="/profile"
+                    style={{
+                      textDecoration: "none",
+                      color: "#000",
+                      width: "100%",
+                    }} // Ensure full width for click area
+                  >
+                    Profile
+                  </Link>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>

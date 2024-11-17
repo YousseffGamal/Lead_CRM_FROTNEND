@@ -49,150 +49,27 @@ const style = {
 };
 
 const Tables = () => {
-  const navigate = useNavigate();
-
-  // State for the active tab
-  const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients
-  const [statusFilter, setStatusFilter] = useState("All"); // State for status filter
-  const [clientsData, setClientsData] = useState([]);
   const [leadsData, setLeadsData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [currentUserId, setCurrentUserId] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentDeleteId, setCurrentDeleteId] = useState(null);
-  const [currentDeleteIndex, setCurrentDeleteIndex] = useState(null);
-  const [selectedLeadIdToAssignToAUser, setSelectedLeadIdToAssignToAUser] =
-    useState();
 
   // Fetch leads data
   const fetchLeads = async () => {
     try {
-      setLoading(true);
-      const response = await axiosInstance.get("/getAllLeads");
-      console.log(response)
+      const response = await axiosInstance.get("/getAllRelistedLeads");
       setLeadsData(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Error fetching leads:", error);
       setLeadsData([]);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Fetch clients data
-  const fetchClients = async () => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.get("/getallusers");
-      console.log("Full Response:", response);
-      console.log("Clients Data:", response.data.Allusers);
-      setClientsData(
-        Array.isArray(response.data.Allusers) ? response.data.Allusers : []
-      ); // Adjust this based on actual structure
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-      setClientsData([]);
-    } finally {
-      setLoading(false);
-    }
-  };
   const [menuIndex, setMenuIndex] = useState(null); // Keep track of which menu to open
   const handleClick = (event, idx) => {
     setAnchorEl(event.currentTarget);
     // setCurrentUserId(id);
     setMenuIndex(idx);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    // setCurrentUserId(null);
-    setMenuIndex(null);
-  };
-
-  const handleOpenModalLeads = (id, index) => {
-    setCurrentDeleteId(id);
-    setCurrentDeleteIndex(index);
-    setModalOpen(true);
-  };
-
-  const handleCloseModalLeads = () => {
-    setModalOpen(false);
-    setCurrentDeleteId(null);
-    setCurrentDeleteIndex(null);
-  };
-  const handleOpenModalConfirmation = (id, index) => {
-    setCurrentDeleteId(id);
-    setCurrentDeleteIndex(index);
-    setModalOpen(true);
-  };
-
-  const handleCloseModalConfirmation = () => {
-    setModalOpen(false);
-    setCurrentDeleteId(null);
-    setCurrentDeleteIndex(null);
-  };
-
-  const handleDelete = (id, index) => {
-    if (currentDeleteId !== null && currentDeleteIndex !== null) {
-      axiosInstance
-        .delete(`deleteLeadById/${currentDeleteId}`)
-        .then((res) => {
-          setLeadsData((prevLeadsData) => {
-            const newLeadsData = [...prevLeadsData];
-            newLeadsData.splice(currentDeleteIndex, 1);
-            return newLeadsData;
-          });
-          handleCloseModalLeads();
-        })
-        .catch(() => {
-          alert("An error occurred while deleting");
-        });
-    }
-  };
-  const handleDeleteClient = () => {
-    if (currentDeleteId !== null && currentDeleteIndex !== null) {
-      axiosInstance
-        .delete(`deleteuser/${currentDeleteId}`)
-        .then((res) => {
-          setLeadsData((prevLeadsData) => {
-            const newLeadsData = [...prevLeadsData];
-            newLeadsData.splice(currentDeleteIndex, 1);
-            return newLeadsData;
-          });
-          handleCloseModalConfirmation();
-        })
-        .catch(() => {
-          alert("An error occurred while deleting");
-        });
-    }
-  };
-
-  const getTemperatureStyles = (temperature) => {
-    switch (temperature) {
-      case "Cold":
-        return {
-          color: "#0466D4",
-          backgroundColor: "#f0f7ff",
-          borderRadius: "25.74px",
-        };
-      case "Hot":
-        return {
-          color: "#CB0A1D",
-          backgroundColor: "#ffebed",
-          borderRadius: "25.74px",
-        };
-      case "Warm":
-        return {
-          color: "#D0A704",
-          backgroundColor: "#fffae6",
-          borderRadius: "25.74px",
-        };
-      default:
-        return {};
-    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -203,155 +80,18 @@ const Tables = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  // Function to handle tab change
-  const handleSwitchChange = (event) => {
-    setActiveTab(event.target.checked ? 1 : 0); // Switch to Clients if checked, Leads if unchecked
-    setPage(0); // Reset to first page on switch change
-  };
-
-  // Handle status filter change
-  const handleStatusChange = (event) => {
-    setStatusFilter(event.target.value);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setMenuIndex(null);
   };
 
   // Fetch data based on activeTab when the component loads or activeTab changes
   useEffect(() => {
-    if (activeTab === 0) {
-      fetchLeads();
-    } else {
-      fetchClients();
-    }
-  }, [activeTab]);
-
-  const [states, setStates] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [openAssign, setOpenAssign] = useState(false);
-  const handleOpenAssignClient = (userId) => {
-    setOpenAssign(true);
-    setSelectedLeadIdToAssignToAUser(userId);
-  };
-  const handleOpen = (lead) => {
-    console.log(lead);
-    setFormData({
-      firstName: lead.firstName,
-      lastName: lead.lastName,
-      phone: lead.phone,
-      email: lead.email,
-      bestTimeForCallback: lead.bestTimeForCallback,
-      bedCount: lead.bedCount,
-      bathCount: lead.bathCount,
-      sqft: lead.sqft,
-      occupancy: lead.occupancy,
-      condition: lead.condition,
-      motivation: lead.motivation,
-      askingPrice: lead.askingPrice,
-      state: lead.state, // Make sure this is set correctly
-      closingTime: lead.closingTime,
-      leadType: lead.leadType, // Make sure this is set correctly
-      _id: lead._id, // Add this line to store the lead ID
-    });
-    getStates();
-    setOpen(true);
-  };
-
-  const handleApprove = (user) => {
-    navigate(`/addlead/${user}`);
-    console.log("herooooo");
-  };
-
-  const handleCloseModal = () => {
     fetchLeads();
-    setOpen(false);
-  };
-  const handleCloseModalAssign = () => {
-    fetchLeads();
-    setOpenAssign(false);
-  };
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    bestTimeForCallback: "",
-    bedCount: "",
-    bathCount: "",
-    sqft: "",
-    occupancy: "",
-    condition: "",
-    motivation: "",
-    askingPrice: "",
-    state: "",
-    closingTime: "",
-    leadType: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-    if (name === "state" || name === "leadType") {
-      setFormData({ ...formData, [name]: { _id: value } });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  const handleSubmit = (id) => {
-    axiosInstance
-      .patch(`updateLeadById/${id}`, formData)
-      .then((res) => {
-        handleCloseModal();
-      })
-      .catch((err) => {
-        alert(" An Error happend");
-      });
-  };
-
-  const getStates = () => {
-    axiosInstance
-      .get("getAllStates")
-      .then((res) => {
-        setStates(res.data.states);
-
-        console.log(res.data.states);
-      })
-      .catch((err) => {
-        alert(" An Error happend");
-      });
-  };
+  }, []);
 
   return (
     <>
-      <DeleteConfirmationModal
-        open={modalOpen}
-        onClose={handleCloseModalConfirmation}
-        onConfirm={handleDeleteClient}
-      />
-
-      <DeleteConfirmationModal
-        open={modalOpen}
-        onClose={handleCloseModalLeads}
-        onConfirm={handleDelete}
-      />
-      <LeadModal
-        open={open}
-        handleCloseModal={handleCloseModal}
-        formData={formData}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        states={states}
-      />
-      <AssignToClient
-        leadId={selectedLeadIdToAssignToAUser}
-        open={openAssign}
-        handleCloseModal={handleCloseModalAssign}
-        formData={formData}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        states={states}
-      />
-
       <Box
         sx={{
           p: 3,
@@ -360,45 +100,6 @@ const Tables = () => {
           marginTop: "35px",
         }}
       >
-        {/* <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              mb: 4,
-              flexDirection: { xs: "column", sm: "row" },
-            }}
-          ></Box> */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-            mb: 2,
-            gap: 2,
-            flexWrap: "wrap",
-            "@media (max-width: 600px)": {
-              flexDirection: "column",
-              alignItems: "flex-start",
-            },
-          }}
-        >
-          {/* Conditionally render the Filters component based on the active tab */}
-
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 2,
-              "@media (max-width: 600px)": {
-                width: "100%",
-                justifyContent: "flex-start",
-              },
-            }}
-          >
-            <Filters setLeadsData={setLeadsData} />
-          </Box>
-        </Box>
-
         {/* Table based on active tab */}
         <TableContainer
           component={Paper}
@@ -589,34 +290,6 @@ const Tables = () => {
                         >
                           Delete
                         </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            handleOpen(user);
-                            handleClose();
-                          }}
-                        >
-                          Edit
-                        </MenuItem>
-                        {!user.buyer && !user.winner && (
-                          <MenuItem
-                            onClick={() => {
-                              handleOpenAssignClient(user._id);
-                              // handleClose();
-                            }}
-                          >
-                            Assign
-                          </MenuItem>
-                        )}
-
-                        {!user.isApproved && (
-                          <MenuItem
-                            onClick={() => {
-                              handleApprove(user._id);
-                            }}
-                          >
-                            Approve
-                          </MenuItem>
-                        )}
                       </Menu>
                     </TableCell>
                   </TableRow>
@@ -628,9 +301,7 @@ const Tables = () => {
                   <TablePagination
                     rowsPerPageOptions={[]} // Removes the "Rows per page" selector
                     component="div"
-                    count={
-                      activeTab === 0 ? leadsData.length : clientsData.length
-                    }
+                    count={leadsData.length}
                     rowsPerPage={rowsPerPage} // Still controls pagination size, but without UI
                     page={page}
                     onPageChange={handleChangePage}
