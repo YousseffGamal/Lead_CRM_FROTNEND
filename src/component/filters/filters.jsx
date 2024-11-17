@@ -16,6 +16,7 @@ import {
 } from "../../Pages/AddLead/components/constants";
 
 const FilterComponent = ({ setLeadsData }) => {
+  // State variables for each filter option
   const [state, setState] = useState("");
   const [leadStatus, setLeadStatus] = useState("");
   const [startAskingPrice, setStartAskingPrice] = useState("");
@@ -23,28 +24,33 @@ const FilterComponent = ({ setLeadsData }) => {
   const [occupancy, setOccupancy] = useState("");
   const [startClosing, setStartClosing] = useState(""); // Start time for closing
   const [endClosing, setEndClosing] = useState(""); // End time for closing
+
   const [temperature, setTemperature] = useState("");
   const [states, setStates] = useState([]);
 
-  // Fetch states function
-  const getStates = () => {
-    axiosInstance
-      .get("getAllStates")
-      .then((res) => setStates(res.data.states))
-      .catch((err) => console.log(err));
+  // Fetch states from the server
+  const getStates = async () => {
+    try {
+      const response = await axiosInstance.get("getAllStates");
+      setStates(response.data.states);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
   };
 
   useEffect(() => {
     getStates();
   }, []);
 
+  // Common handler for onChange events
   const handleChange = (event, setter) => {
     setter(event.target.value);
   };
 
+  // Handle filtering and setting data
   const handleFilter = async () => {
     try {
-      // Prepare the query parameters
+      // Define query parameters
       const queryParams = {
         state,
         occupancy,
@@ -57,12 +63,13 @@ const FilterComponent = ({ setLeadsData }) => {
       };
       console.log("queryParams", queryParams);
       // Make the API request
-      const response = await axiosInstance.get(
-        "http://localhost:4000/getLeadsFiltered",
-        { params: queryParams }
-      );
+
+      const response = await axiosInstance.get("getLeadsFiltered", {
+        params: queryParams,
+      });
       console.log(response.data);
       // Handle the response data
+
       setLeadsData(response.data.data);
     } catch (error) {
       console.error("Error fetching filtered leads:", error);
@@ -166,7 +173,7 @@ const FilterComponent = ({ setLeadsData }) => {
         </Select>
       </FormControl>
 
-      {/* Closing Time Range Filter */}
+      {/* Closing Days Range Filter */}
       <FormControl
         sx={{
           minWidth: "185.79px",
@@ -178,7 +185,7 @@ const FilterComponent = ({ setLeadsData }) => {
       >
         <TextField
           value={startClosing}
-          label="Start Closing"
+          label="Start Closing (days)"
           onChange={(event) => handleChange(event, setStartClosing)}
           type="number"
           InputProps={{
@@ -191,7 +198,7 @@ const FilterComponent = ({ setLeadsData }) => {
         />
         <TextField
           value={endClosing}
-          label="End Closing"
+          label="End Closing (days)"
           onChange={(event) => handleChange(event, setEndClosing)}
           type="number"
           InputProps={{
@@ -204,7 +211,7 @@ const FilterComponent = ({ setLeadsData }) => {
         />
       </FormControl>
 
-      {/* Asking Price Filter */}
+      {/* Asking Price Range Filter */}
       <FormControl
         sx={{
           minWidth: "185.79px",
@@ -232,13 +239,16 @@ const FilterComponent = ({ setLeadsData }) => {
           label="Max Asking Price"
           onChange={(event) => handleChange(event, setEndAskingPrice)}
           type="number"
-          InputProps={{
-            sx: {
-              height: "48.28px",
-              borderRadius: "16.65px",
-            },
-          }}
-          sx={{ borderRadius: "16.65px" }}
+          InputLabelProps={{ shrink: true }}
+          sx={{ borderRadius: "16.65px", width: "50%" }}
+        />
+        <TextField
+          value={endAskingPrice}
+          label="End Price"
+          onChange={(event) => handleChange(event, setEndAskingPrice)}
+          type="number"
+          InputLabelProps={{ shrink: true }}
+          sx={{ borderRadius: "16.65px", width: "50%" }}
         />
       </FormControl>
 
@@ -269,7 +279,7 @@ const FilterComponent = ({ setLeadsData }) => {
         </Select>
       </FormControl>
 
-      {/* Icon Filter Button */}
+      {/* Filter Button */}
       <IconButton
         sx={{
           backgroundColor: "#000000",
