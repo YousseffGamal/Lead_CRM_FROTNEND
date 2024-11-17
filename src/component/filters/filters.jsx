@@ -17,10 +17,12 @@ import {
 
 const FilterComponent = ({ setLeadsData }) => {
   const [state, setState] = useState("");
-  const [askingPrice, setAskingPrice] = useState("");
+  const [leadStatus, setLeadStatus] = useState("");
+  const [startAskingPrice, setStartAskingPrice] = useState("");
+  const [endAskingPrice, setEndAskingPrice] = useState("");
   const [occupancy, setOccupancy] = useState("");
   const [startClosing, setStartClosing] = useState(""); // Start time for closing
-  const [endClosing, setEndClosing] = useState("");     // End time for closing
+  const [endClosing, setEndClosing] = useState(""); // End time for closing
   const [temperature, setTemperature] = useState("");
   const [states, setStates] = useState([]);
 
@@ -47,16 +49,19 @@ const FilterComponent = ({ setLeadsData }) => {
         state,
         occupancy,
         leadType: temperature,
-        askingPrice,
-        closing: `${startClosing}-${endClosing}`, // Combine start and end times
+        startAskingPrice,
+        endAskingPrice,
+        startClosing,
+        endClosing,
+        isApproved: leadStatus,
       };
-
+      console.log("queryParams", queryParams);
       // Make the API request
       const response = await axiosInstance.get(
         "http://localhost:4000/getLeadsFiltered",
         { params: queryParams }
       );
-
+      console.log(response.data);
       // Handle the response data
       setLeadsData(response.data.data);
     } catch (error) {
@@ -89,11 +94,38 @@ const FilterComponent = ({ setLeadsData }) => {
           flex: "1 1 auto",
         }}
       >
+        <InputLabel>Lead Stauts</InputLabel>
+        <Select
+          value={leadStatus}
+          label="State"
+          onChange={(event) => handleChange(event, setLeadStatus)}
+          sx={{ height: "48.28px", borderRadius: "16.65px" }}
+        >
+          <MenuItem key="1" value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem key="2" value="false">
+            pending Leads
+          </MenuItem>
+          <MenuItem key="3" value="true">
+            Approved Leads
+          </MenuItem>
+        </Select>
+      </FormControl>
+      {/* State Filter */}
+      <FormControl
+        sx={{
+          minWidth: "185.79px",
+          height: "48.28px",
+          borderRadius: "16.65px",
+          flex: "1 1 auto",
+        }}
+      >
         <InputLabel>State</InputLabel>
         <Select
           value={state}
           label="State"
-          onChange={(event) => handleChange(event, setState)}
+          onChange={(event) => handleChange(event, setLeadStatus)}
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
           <MenuItem value="">
@@ -148,17 +180,27 @@ const FilterComponent = ({ setLeadsData }) => {
           value={startClosing}
           label="Start Closing"
           onChange={(event) => handleChange(event, setStartClosing)}
-          type="time"
-          InputLabelProps={{ shrink: true }}
-          sx={{ borderRadius: "16.65px", width: "50%" }}
+          type="number"
+          InputProps={{
+            sx: {
+              height: "48.28px",
+              borderRadius: "16.65px",
+            },
+          }}
+          sx={{ borderRadius: "16.65px" }}
         />
         <TextField
           value={endClosing}
           label="End Closing"
           onChange={(event) => handleChange(event, setEndClosing)}
-          type="time"
-          InputLabelProps={{ shrink: true }}
-          sx={{ borderRadius: "16.65px", width: "50%" }}
+          type="number"
+          InputProps={{
+            sx: {
+              height: "48.28px",
+              borderRadius: "16.65px",
+            },
+          }}
+          sx={{ borderRadius: "16.65px" }}
         />
       </FormControl>
 
@@ -166,15 +208,29 @@ const FilterComponent = ({ setLeadsData }) => {
       <FormControl
         sx={{
           minWidth: "185.79px",
-          height: "48.28px",
-          borderRadius: "16.65px",
-          flex: "1 1 auto",
+          display: "flex",
+          flexDirection: "row",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <TextField
-          value={askingPrice}
-          label="Asking Price"
-          onChange={(event) => handleChange(event, setAskingPrice)}
+          value={startAskingPrice}
+          label="Min Asking Price"
+          onChange={(event) => handleChange(event, setStartAskingPrice)}
+          type="number"
+          InputProps={{
+            sx: {
+              height: "48.28px",
+              borderRadius: "16.65px",
+            },
+          }}
+          sx={{ borderRadius: "16.65px" }}
+        />
+        <TextField
+          value={endAskingPrice}
+          label="Max Asking Price"
+          onChange={(event) => handleChange(event, setEndAskingPrice)}
           type="number"
           InputProps={{
             sx: {

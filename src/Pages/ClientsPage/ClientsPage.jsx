@@ -21,10 +21,11 @@ import Layout from "../../component/Layout/Layout";
 import axiosInstance from "../../axios";
 import DeleteConfirmationModal from "../../component/DeleteConfirmationModal/DeleteConfirmationModal";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Filters from "../../component/filters/clientFilters";
 
 const ClientTable = () => {
   const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -39,9 +40,9 @@ const ClientTable = () => {
         const response = await axiosInstance.get("/getallusers");
         const clientData = response?.data?.Allusers || [];
         setClients(clientData);
+        console.log(clientData);
       } catch (err) {
         console.error("Error fetching clients:", err);
-        setError("Failed to load clients");
       } finally {
         setLoading(false);
       }
@@ -58,7 +59,9 @@ const ClientTable = () => {
   const handleDelete = async (clientId) => {
     try {
       await axiosInstance.delete(`/deleteuser/${clientId}`);
-      setClients((prevClients) => prevClients.filter((client) => client._id !== clientId));
+      setClients((prevClients) =>
+        prevClients.filter((client) => client._id !== clientId)
+      );
       setDeleteModalOpen(false);
     } catch (err) {
       console.error("Error deleting client:", err);
@@ -86,7 +89,6 @@ const ClientTable = () => {
     setMenuIndex(null);
   };
 
-  if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
@@ -99,6 +101,19 @@ const ClientTable = () => {
           marginTop: "65px",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 2,
+            "@media (max-width: 600px)": {
+              width: "100%",
+              justifyContent: "flex-start",
+            },
+          }}
+        >
+          <Filters setClientsData={setClients} />
+        </Box>
         <TableContainer
           component={Paper}
           sx={{
@@ -112,12 +127,30 @@ const ClientTable = () => {
           <Table sx={{ minWidth: 650 }} aria-label="client table">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ color: "#667085", textAlign: "center" }}>First Name</TableCell>
-                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Last Name</TableCell>
-                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Email</TableCell>
-                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Phone</TableCell>
-                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Date Joined</TableCell>
-                <TableCell sx={{ color: "#667085", textAlign: "center" }}>Actions</TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  First Name
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Last Name
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Email
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Phone
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Money Spent
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Investor Category
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Date Joined
+                </TableCell>
+                <TableCell sx={{ color: "#667085", textAlign: "center" }}>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -130,7 +163,13 @@ const ClientTable = () => {
                       <TableCell>{client.lastName}</TableCell>
                       <TableCell>{client.email}</TableCell>
                       <TableCell>{client.phone}</TableCell>
-                      <TableCell>{moment(client.createdAt).format("MM/DD/YYYY")}</TableCell>
+                      <TableCell>
+                        {client.MoneySpent ? client.MoneySpent : " - "}
+                      </TableCell>
+                      <TableCell>{client.investorCategory}</TableCell>
+                      <TableCell>
+                        {moment(client.createdAt).format("MM/DD/YYYY")}
+                      </TableCell>
                       <TableCell>
                         <Button
                           onClick={(event) => handleClick(event, index)}

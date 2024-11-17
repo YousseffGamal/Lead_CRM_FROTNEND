@@ -32,6 +32,7 @@ import moment from "moment/moment";
 
 import Filters from "../filters/filters";
 import LeadModal from "../LeadModal/LeadModal";
+import AssignToClient from "../AssignToClient/AssignToClient";
 import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
@@ -63,27 +64,8 @@ const Tables = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDeleteId, setCurrentDeleteId] = useState(null);
   const [currentDeleteIndex, setCurrentDeleteIndex] = useState(null);
-
-  const stats = [
-    {
-      title: "No. Of Leads",
-      value: 150,
-      bgColor: "#0177FB",
-      textColor: "#fff",
-    },
-    {
-      title: "No. Of Clients",
-      value: 80,
-      bgColor: "#FFFFFF",
-      textColor: "#000000",
-    },
-    {
-      title: "No. Of Sold Leads",
-      value: 25,
-      bgColor: "#FFFFFF",
-      textColor: "#000000",
-    },
-  ];
+  const [selectedLeadIdToAssignToAUser, setSelectedLeadIdToAssignToAUser] =
+    useState();
 
   // Fetch leads data
   const fetchLeads = async () => {
@@ -243,6 +225,11 @@ const Tables = () => {
 
   const [states, setStates] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openAssign, setOpenAssign] = useState(false);
+  const handleOpenAssignClient = (userId) => {
+    setOpenAssign(true);
+    setSelectedLeadIdToAssignToAUser(userId);
+  };
   const handleOpen = (lead) => {
     console.log(lead);
     setFormData({
@@ -275,6 +262,10 @@ const Tables = () => {
   const handleCloseModal = () => {
     fetchLeads();
     setOpen(false);
+  };
+  const handleCloseModalAssign = () => {
+    fetchLeads();
+    setOpenAssign(false);
   };
 
   const [formData, setFormData] = useState({
@@ -350,6 +341,15 @@ const Tables = () => {
         handleSubmit={handleSubmit}
         states={states}
       />
+      <AssignToClient
+        leadId={selectedLeadIdToAssignToAUser}
+        open={openAssign}
+        handleCloseModal={handleCloseModalAssign}
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        states={states}
+      />
 
       <Box
         sx={{
@@ -381,49 +381,21 @@ const Tables = () => {
             },
           }}
         >
+          {/* Conditionally render the Filters component based on the active tab */}
+
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
-              gap: 1,
+              flexWrap: "wrap",
+              gap: 2,
+              "@media (max-width: 600px)": {
+                width: "100%",
+                justifyContent: "flex-start",
+              },
             }}
           >
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 0 ? "#0177FB" : "#000", mr: 2 }}
-            >
-              Leads
-            </Typography>
-            <Switch
-              checked={activeTab === 1}
-              onChange={handleSwitchChange}
-              inputProps={{ "aria-label": "Switch between Leads and Clients" }}
-            />
-            <Typography
-              variant="h6"
-              sx={{ color: activeTab === 1 ? "#0177FB" : "#000", ml: 2 }}
-            >
-              Clients
-            </Typography>
+            <Filters setLeadsData={setLeadsData} />
           </Box>
-
-          {/* Conditionally render the Filters component based on the active tab */}
-          {activeTab === 0 && ( // Render Filters only if on Leads tab
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 2,
-                "@media (max-width: 600px)": {
-                  width: "100%",
-                  justifyContent: "flex-start",
-                },
-              }}
-            >
-              <Filters setLeadsData={setLeadsData} />
-            </Box>
-          )}
         </Box>
 
         {/* Table based on active tab */}
@@ -440,314 +412,214 @@ const Tables = () => {
           <Table sx={{ minWidth: 650 }} aria-label="user table">
             <TableHead>
               <TableRow>
-                {activeTab === 0 ? (
-                  <>
+                <>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Seller First Name
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Seller second Name
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{
+                      color: "#667085",
+                      textAlign: "center",
+                      width: "140px",
+                    }}
+                  >
+                    Phone
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Condition
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Asking Price
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Date Added
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    State
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Approval Status
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Status
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Temperature
+                  </TableCell>
+                  <TableCell
+                    className="TableHeader"
+                    sx={{ color: "#667085", textAlign: "center" }}
+                  >
+                    Action
+                  </TableCell>
+                </>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {leadsData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user, index) => (
+                  <TableRow key={user._id}>
                     <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Seller First Name
-                    </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Seller second Name
-                    </TableCell>
-                    <TableCell
-                      className="TableHeader"
+                      className="TableData"
                       sx={{
-                        color: "#667085",
+                        color: "#101828",
                         textAlign: "center",
                         width: "140px",
                       }}
                     >
-                      Phone
+                      {user.firstName}
                     </TableCell>
                     <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
+                      className="TableData"
+                      sx={{
+                        color: "#101828",
+                        textAlign: "center",
+                        width: "140px",
+                      }}
                     >
-                      Condition
+                      {user.lastName}
                     </TableCell>
                     <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
+                      sx={{
+                        color: "#101828",
+                        textAlign: "center",
+                        width: "10px",
+                      }}
                     >
-                      Asking Price
+                      {user.phone}
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Date Added
+                    <TableCell sx={{ color: "#101828" }}>
+                      {user.condition}
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      State
+                    <TableCell sx={{ color: "#101828" }}>
+                      {user.askingPrice}
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Closing Time
+                    <TableCell className="TableDataS" sx={{ color: "#101828" }}>
+                      {moment(user.createdAt).format("YYYY-MM-DD")}
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Temperature
+                    <TableCell className="TableDataS" sx={{ color: "#101828" }}>
+                      {user.state.name}
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Action
+                    <TableCell className="TableDataS" sx={{ color: "#101828" }}>
+                      {user.isApproved ? "Approved" : "Pending"}
                     </TableCell>
-                  </>
-                ) : (
-                  <>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      First Name
+                    <TableCell className="TableDataS" sx={{ color: "#101828" }}>
+                      {user.isBidding == true ? user.status : " - "}
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Last Name
+                    <TableCell className="TableDataS" sx={{ color: "#101828" }}>
+                      <Box
+                        sx={{
+                          padding: "8px",
+                          display: "inline-block",
+                          backgroundColor:
+                            user.leadType.name === "Cold"
+                              ? "#f0f7ff"
+                              : user.leadType.name === "Warm"
+                              ? "#fffae6"
+                              : user.leadType.name === "Hot"
+                              ? "#ffebed"
+                              : "transparent",
+                          borderRadius: "25.74px",
+                          color:
+                            user.leadType.name === "Cold"
+                              ? "#0466D4"
+                              : user.leadType.name === "Warm"
+                              ? "#D0A704"
+                              : user.leadType.name === "Hot"
+                              ? "#CB0A1D"
+                              : "#000",
+                        }}
+                      >
+                        {user.leadType.name}
+                      </Box>
                     </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Investor Category
-                    </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Email
-                    </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Date Joined
-                    </TableCell>
-                    <TableCell
-                      className="TableHeader"
-                      sx={{ color: "#667085", textAlign: "center" }}
-                    >
-                      Action
-                    </TableCell>
-                  </>
-                )}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {activeTab === 0
-                ? leadsData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((user, index) => (
-                      <TableRow key={user._id}>
-                        <TableCell
-                          className="TableData"
-                          sx={{
-                            color: "#101828",
-                            textAlign: "center",
-                            width: "140px",
+                    <TableCell sx={{ color: "#101828" }}>
+                      <Button
+                        onClick={(event) => handleClick(event, index)}
+                        sx={{ minWidth: "36px", padding: 0 }}
+                        aria-controls={anchorEl ? "simple-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={anchorEl ? "true" : undefined}
+                      >
+                        <MoreVertIcon />
+                      </Button>
+                      <Menu
+                        anchorEl={menuIndex === index ? anchorEl : null}
+                        open={menuIndex === index && Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem
+                          onClick={() => {
+                            handleOpenModalLeads(user._id, index);
+                            handleClose();
                           }}
                         >
-                          {user.firstName}
-                        </TableCell>
-                        <TableCell
-                          className="TableData"
-                          sx={{
-                            color: "#101828",
-                            textAlign: "center",
-                            width: "140px",
+                          Delete
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleOpen(user);
+                            handleClose();
                           }}
                         >
-                          {user.lastName}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            color: "#101828",
-                            textAlign: "center",
-                            width: "10px",
-                          }}
-                        >
-                          {user.phone}
-                        </TableCell>
-                        <TableCell sx={{ color: "#101828" }}>
-                          {user.condition}
-                        </TableCell>
-                        <TableCell sx={{ color: "#101828" }}>
-                          {user.askingPrice}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          {moment(user.createdAt).format("YYYY-MM-DD")}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.state.name}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          {moment(user.closingTime).format("YYYY-MM-DD")}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          <Box
-                            sx={{
-                              padding: "8px",
-                              display: "inline-block",
-                              backgroundColor:
-                                user.leadType.name === "Cold"
-                                  ? "#f0f7ff"
-                                  : user.leadType.name === "Warm"
-                                  ? "#fffae6"
-                                  : user.leadType.name === "Hot"
-                                  ? "#ffebed"
-                                  : "transparent",
-                              borderRadius: "25.74px",
-                              color:
-                                user.leadType.name === "Cold"
-                                  ? "#0466D4"
-                                  : user.leadType.name === "Warm"
-                                  ? "#D0A704"
-                                  : user.leadType.name === "Hot"
-                                  ? "#CB0A1D"
-                                  : "#000",
+                          Edit
+                        </MenuItem>
+                        {!user.buyer && !user.winner && (
+                          <MenuItem
+                            onClick={() => {
+                              handleOpenAssignClient(user._id);
+                              // handleClose();
                             }}
                           >
-                            {user.leadType.name}
-                          </Box>
-                        </TableCell>
-                        <TableCell sx={{ color: "#101828" }}>
-                          <Button
-                            onClick={(event) => handleClick(event, index)}
-                            sx={{ minWidth: "36px", padding: 0 }}
-                            aria-controls={anchorEl ? "simple-menu" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={anchorEl ? "true" : undefined}
-                          >
-                            <MoreVertIcon />
-                          </Button>
-                          <Menu
-                            anchorEl={menuIndex === index ? anchorEl : null}
-                            open={menuIndex === index && Boolean(anchorEl)}
-                            onClose={handleClose}
-                          >
-                            <MenuItem
-                              onClick={() => {
-                                handleOpenModalLeads(user._id, index);
-                                handleClose();
-                              }}
-                            >
-                              Delete
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() => {
-                                handleOpen(user);
-                                handleClose();
-                              }}
-                            >
-                              Edit
-                            </MenuItem>
+                            Assign
+                          </MenuItem>
+                        )}
 
-                            <MenuItem
-                              onClick={() => {
-                                // handleOpen(user);
-                                // handleClose();
-
-                                handleApprove(user._id);
-                              }}
-                            >
-                              Approve
-                            </MenuItem>
-                          </Menu>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                : clientsData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((user, index) => (
-                      <TableRow key={user.id}>
-                        <TableCell
-                          className="TableData"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.firstName}
-                        </TableCell>
-                        <TableCell
-                          className="TableData"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.lastName}
-                        </TableCell>
-                        <TableCell
-                          className="TableData"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.investorCategory}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.email}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          {user.createdAt}
-                        </TableCell>
-                        <TableCell
-                          className="TableDataS"
-                          sx={{ color: "#101828" }}
-                        >
-                          <Button
-                            onClick={(event) => handleClick(event, index)}
-                            sx={{ minWidth: "36px", padding: 0 }}
-                            aria-controls={anchorEl ? "simple-menu" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={anchorEl ? "true" : undefined}
+                        {!user.isApproved && (
+                          <MenuItem
+                            onClick={() => {
+                              handleApprove(user._id);
+                            }}
                           >
-                            <MoreVertIcon />
-                          </Button>
-                          <Menu
-                            anchorEl={menuIndex === index ? anchorEl : null}
-                            open={menuIndex === index && Boolean(anchorEl)}
-                            onClose={handleClose}
-                          >
-                            <MenuItem
-                              onClick={() => {
-                                handleOpenModalConfirmation(user._id, index);
-                                handleClose();
-                              }}
-                            >
-                              Delete
-                            </MenuItem>
-                          </Menu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                            Approve
+                          </MenuItem>
+                        )}
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
             <TableFooter>
               <TableRow>

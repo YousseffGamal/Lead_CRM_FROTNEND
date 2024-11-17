@@ -19,7 +19,7 @@ import {
   CallingBackTime,
 } from "./components/constants";
 import FormValidation from "./components/FormValidation";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddLead = () => {
   const [activeTab, setActiveTab] = useState(0); // 0 for Leads, 1 for Clients
@@ -220,15 +220,29 @@ const AddLead = () => {
 
     setActiveTab(event.target.checked ? 1 : 0); // Switch to Clients if checked, Leads if unchecked
   };
-
+  const navigate = useNavigate();
   const handleApprove = async () => {
+    setErrors({});
     console.log("heyyy1");
-    axiosInstance
-      .post(`approveLead`, formData)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
+    const newErrors = FormValidation({
+      formData,
+      isBidding: formData.isBidding,
+    });
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors); // Set the errors if validation fails
+    } else {
+      axiosInstance
+        .post(`approveLead`, formData)
+        .then((res) => {
+          if (res.data.success) {
+            console.log(res.data);
+            navigate("/dashboard");
+          }
+        })
+        .catch((err) => {
+          setErrorMessage(err.response.data.message);
+        });
+    }
   };
 
   return (
