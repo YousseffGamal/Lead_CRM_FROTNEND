@@ -93,7 +93,7 @@ const AddLead = () => {
           additionalNotes: res.data.data.additionalNotes,
           condition: res.data.data.condition,
           isBidding: false,
-          LeadPrice: "",
+          LeadPrice: res.data.data.LeadPrice,
           biddingStartingDate: "",
           duration: "",
           biddingIncreasePercentage: "",
@@ -314,6 +314,17 @@ const AddLead = () => {
               <span style={{ color: "red" }}>{errors.lastName}</span>
             )}
           </Box>
+        </Box>
+        {/* New row for leadPrice input */}
+        <Box sx={{ marginTop: "25px", position: "relative" }}>
+          <InputField
+            fieldName={"LeadPrice"}
+            state={formData.LeadPrice}
+            handleChange={handleChange}
+            label={" Lead Price"}
+            placeHolder={"Lead Price"}
+          />
+          {errors.LeadPrice && <span style={{ color: "red" }}>{errors.LeadPrice}</span>}
         </Box>
         {/* New row for email input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>
