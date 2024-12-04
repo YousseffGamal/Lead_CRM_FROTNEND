@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       (error) => {
         if (error.response && error.response.status === 401) {
           // Token expired or unauthorized
-          console.log("hola form log out");
+          console.log("hola form log   out");
           logout(); // Logout the user and redirect to login page
         }
         return Promise.reject(error);

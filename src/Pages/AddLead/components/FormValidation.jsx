@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormValidation = ({ formData, isBidding }) => {
+const FormValidation = ({ formData }) => {
   const errors = {};
 
   // Validation logic
@@ -71,25 +71,25 @@ const FormValidation = ({ formData, isBidding }) => {
     errors.condition = "Condition is required.";
   }
 
-  if (isBidding === true) {
-    if (!formData.biddingStartingDate) {
-      errors.biddingStartingDate = "Bidding Starting Date is required.";
-    }
-    if (!formData.duration) {
-      errors.duration = "Duration is required.";
-    }
-    if (!formData.biddingIncreasePercentage) {
-      errors.biddingIncreasePercentage =
-        "Bidding Increase Percentage is required.";
-    }
-    if (!formData.intialBiddingPrice) {
-      errors.intialBiddingPrice = "Intial Bidding Price is required.";
-    }
-  } else {
-    if (!formData.LeadPrice) {
-      errors.LeadPrice = "Lead Price is required.";
-    }
-  }
+  // if (isBidding === true) {
+  //   if (!formData.biddingStartingDate) {
+  //     errors.biddingStartingDate = "Bidding Starting Date is required.";
+  //   }
+  //   if (!formData.duration) {
+  //     errors.duration = "Duration is required.";
+  //   }
+  //   if (!formData.biddingIncreasePercentage) {
+  //     errors.biddingIncreasePercentage =
+  //       "Bidding Increase Percentage is required.";
+  //   }
+  //   if (!formData.intialBiddingPrice) {
+  //     errors.intialBiddingPrice = "Intial Bidding Price is required.";
+  //   }
+  // } else {
+  //   if (!formData.LeadPrice) {
+  //     errors.LeadPrice = "Lead Price is required.";
+  //   }
+  // }
 
   return errors; // Return errors object
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormValidation = ({ formData, isBidding }) => {
+const ApprovelFormValidation = ({ formData, isBidding }) => {
   const errors = {};
 
   // Validation logic
@@ -94,4 +94,4 @@ const FormValidation = ({ formData, isBidding }) => {
   return errors; // Return errors object
 };
 
-export default FormValidation;
+export default ApprovelFormValidation;

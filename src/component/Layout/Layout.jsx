@@ -58,7 +58,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
-
+    console.log("came here");
     navigate("/");
   };
 

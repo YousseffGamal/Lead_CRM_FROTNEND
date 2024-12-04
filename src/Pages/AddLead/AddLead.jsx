@@ -19,6 +19,7 @@ import {
   CallingBackTime,
 } from "./components/constants";
 import FormValidation from "./components/FormValidation";
+import ApprovelFormValidation from "./components/ApprovelFormValidation";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AddLead = () => {
@@ -58,14 +59,14 @@ const AddLead = () => {
     duration: "",
     biddingIncreasePercentage: "",
     intialBiddingPrice: "",
-    isApproved: true,
+    isApproved: false,
   };
   const { id } = useParams();
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (id) {
-      axiosInstance.get(`/getLeadById/${id}`).then((res) => {
+      axiosInstance.get(`/getLeadByIdForAdmin/${id}`).then((res) => {
         console.log(res.data);
         console.log("counting");
         setFormData({
@@ -92,13 +93,13 @@ const AddLead = () => {
           zillowEstimate: res.data.data.zillowEstimate,
           additionalNotes: res.data.data.additionalNotes,
           condition: res.data.data.condition,
-          isBidding: false,
           LeadPrice: "",
           biddingStartingDate: "",
           duration: "",
           biddingIncreasePercentage: "",
           intialBiddingPrice: "",
           leadId: id,
+          isApproved: true,
         });
         getCounty(res.data.data.state);
       });
@@ -183,7 +184,6 @@ const AddLead = () => {
     setErrorMessage("");
     const newErrors = FormValidation({
       formData,
-      isBidding: formData.isBidding,
     });
     setOpen(true); // Open the modal
     if (Object.keys(newErrors).length > 0) {
@@ -196,7 +196,7 @@ const AddLead = () => {
       axiosInstance
         .post("createLead", formData)
         .then((res) => {
-          console.log(res.data);
+          console.log("success", res.data);
           setFormData(initialFormData);
         })
         .catch((err) => {
@@ -224,7 +224,7 @@ const AddLead = () => {
   const handleApprove = async () => {
     setErrors({});
     console.log("heyyy1");
-    const newErrors = FormValidation({
+    const newErrors = ApprovelFormValidation({
       formData,
       isBidding: formData.isBidding,
     });
