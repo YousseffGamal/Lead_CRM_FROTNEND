@@ -200,7 +200,9 @@ const AddLead = () => {
         .post("createLead", formData)
         .then((res) => {
           console.log("success", res.data);
+
           setFormData(initialFormData);
+          navigate("/dashboard");
         })
         .catch((err) => {
           setErrorMessage(err.response.data.message);
