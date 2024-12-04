@@ -870,8 +870,10 @@ const AddLead = () => {
                   backgroundColor: "#333333",
                 },
               }}
-              onClick={handleClick}
-            >
+              onClick={() => {
+                handleClick(); // Assuming this handles the lead addition logic
+                navigate('/dashboard'); // Redirects to the Dashboard page
+              }}            >
               Add Lead
             </Button>
           )}
