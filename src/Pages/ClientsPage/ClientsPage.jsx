@@ -207,15 +207,31 @@ const ClientTable = () => {
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[10, 25, 50]}
-                  count={clients.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                />
+              <TableCell colSpan={9} sx={{ textAlign: "right", padding: 0 }}>
+              <TablePagination
+                    rowsPerPageOptions={[]} // Removes the "Rows per page" selector
+                    count={clients.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handlePageChange}
+                    onRowsPerPageChange={handleRowsPerPageChange}
+                    sx={{
+                      display: "flex", // Flexbox for alignment
+                      justifyContent: "flex-end", // Align pagination to the right
+                      alignItems: "center", // Vertically center pagination buttons
+                      width: "100%",
+                      paddingRight: "16px", // Adds space between pagination and table edge
+                      "& .MuiTablePagination-toolbar": {
+                        margin: 0, // Remove margin from pagination text
+                        padding: 0, // Optional: remove padding if needed
+                      },
+                    }}
+                  />
+              </TableCell>
+
+                 
               </TableRow>
+              
             </TableFooter>
           </Table>
 
