@@ -874,7 +874,6 @@ const AddLead = () => {
               }}
               onClick={() => {
                 handleClick(); // Assuming this handles the lead addition logic
-                navigate("/dashboard"); // Redirects to the Dashboard page
               }}
             >
               Add Lead
