@@ -315,6 +315,19 @@ const AddLead = () => {
             )}
           </Box>
         </Box>
+        {/* New row for leadPrice input */}
+        <Box sx={{ marginTop: "25px", position: "relative" }}>
+          <InputField
+            fieldName={"LeadPrice"}
+            state={formData.LeadPrice}
+            handleChange={handleChange}
+            label={" Lead Price"}
+            placeHolder={"Lead Price"}
+          />
+          {errors.LeadPrice && (
+            <span style={{ color: "red" }}>{errors.LeadPrice}</span>
+          )}
+        </Box>
         {/* New row for email input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>
           <InputField
