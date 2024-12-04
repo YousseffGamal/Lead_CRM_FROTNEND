@@ -78,8 +78,8 @@ const AddLead = () => {
           phone: res.data.data.phone,
           addressLine: res.data.data.additionalNotes,
           city: res.data.data.city,
-          county: res.data.data.county,
-          state: res.data.data.state,
+          county: res.data.data.county._id,
+          state: res.data.data.state._id,
           zip: res.data.data.zip,
           bedCount: res.data.data.bedCount,
           bathCount: res.data.data.bathCount,
@@ -101,7 +101,7 @@ const AddLead = () => {
           leadId: id,
           isApproved: true,
         });
-        getCounty(res.data.data.state);
+        getCounty(res.data.data.state._id);
       });
       setDisabled(false);
     }
@@ -111,7 +111,10 @@ const AddLead = () => {
   const getStates = () => {
     axiosInstance
       .get("getAllStates")
-      .then((res) => setStates(res.data.states))
+      .then((res) => {
+        console.log("state response", res.data.states);
+        setStates(res.data.states);
+      })
       .catch((err) => console.log(err));
   };
   //function to get counties by state ID
@@ -265,7 +268,6 @@ const AddLead = () => {
             marginTop: "25px",
           }}
         >
-          {id}
           <Box sx={{ flex: 1, position: "relative" }}>
             <InputField
               fieldName={"askingPrice"}
@@ -872,8 +874,9 @@ const AddLead = () => {
               }}
               onClick={() => {
                 handleClick(); // Assuming this handles the lead addition logic
-                navigate('/dashboard'); // Redirects to the Dashboard page
-              }}            >
+                navigate("/dashboard"); // Redirects to the Dashboard page
+              }}
+            >
               Add Lead
             </Button>
           )}
