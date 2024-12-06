@@ -57,10 +57,9 @@ const FilterComponent = ({ setLeadsData }) => {
       };
       console.log("queryParams", queryParams);
       // Make the API request
-      const response = await axiosInstance.get(
-        "http://localhost:4000/getLeadsFiltered",
-        { params: queryParams }
-      );
+      const response = await axiosInstance.get("/getAllLeads", {
+        params: queryParams,
+      });
       console.log(response.data);
       // Handle the response data
       setLeadsData(response.data.data);
@@ -125,7 +124,7 @@ const FilterComponent = ({ setLeadsData }) => {
         <Select
           value={state}
           label="State"
-          onChange={(event) => handleChange(event, setLeadStatus)}
+          onChange={(event) => handleChange(event, setState)}
           sx={{ height: "48.28px", borderRadius: "16.65px" }}
         >
           <MenuItem value="">

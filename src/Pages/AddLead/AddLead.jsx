@@ -184,6 +184,7 @@ const AddLead = () => {
   const handleClick = () => {
     console.log("heyyy1");
     setErrors({});
+
     setErrorMessage("");
     const newErrors = FormValidation({
       formData,
@@ -228,10 +229,12 @@ const AddLead = () => {
   const handleApprove = async () => {
     setErrors({});
     console.log("heyyy1");
+
     const newErrors = ApprovelFormValidation({
       formData,
       isBidding: formData.isBidding,
     });
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors); // Set the errors if validation fails
     } else {
