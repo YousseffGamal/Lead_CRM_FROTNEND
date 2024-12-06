@@ -53,7 +53,7 @@ const Tables = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const navigate = useNavigate();
   // Fetch leads data
   const fetchLeads = async () => {
     try {
@@ -65,6 +65,10 @@ const Tables = () => {
     }
   };
 
+  const handleApprove = (user) => {
+    navigate(`/addlead/${user}`);
+    console.log("herooooo");
+  };
   const [menuIndex, setMenuIndex] = useState(null); // Keep track of which menu to open
   const handleClick = (event, idx) => {
     setAnchorEl(event.currentTarget);
@@ -289,6 +293,14 @@ const Tables = () => {
                           }}
                         >
                           Delete
+                        </MenuItem>
+
+                        <MenuItem
+                          onClick={() => {
+                            handleApprove(user._id);
+                          }}
+                        >
+                          ReList
                         </MenuItem>
                       </Menu>
                     </TableCell>
