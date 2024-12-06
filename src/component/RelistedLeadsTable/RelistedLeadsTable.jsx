@@ -300,7 +300,7 @@ const Tables = () => {
                             handleApprove(user._id);
                           }}
                         >
-                          ReList
+                          reApprove
                         </MenuItem>
                       </Menu>
                     </TableCell>
