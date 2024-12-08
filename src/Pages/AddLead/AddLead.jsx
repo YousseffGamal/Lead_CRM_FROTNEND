@@ -36,6 +36,7 @@ const AddLead = () => {
     lastName: "",
     email: "",
     phone: "",
+    houseNumber: "",
     addressLine: "",
     city: "",
     county: "",
@@ -372,6 +373,20 @@ const AddLead = () => {
               <span style={{ color: "red" }}>{errors.leadType}</span>
             )}
           </Box>
+        </Box>
+                {/* House Number input */}
+
+        <Box sx={{ marginTop: "25px", position: "relative" }}>
+          <InputField
+            fieldName={"houseNumber"}
+            state={formData.houseNumber}
+            handleChange={handleChange}
+            label={" House Number"}
+            placeHolder={"31 House Number"}
+          />
+          {errors.houseNumber && (
+            <span style={{ color: "red" }}>{errors.houseNumber}</span>
+          )}
         </Box>
         {/* Seller Address input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>

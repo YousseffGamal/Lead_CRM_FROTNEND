@@ -244,7 +244,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
               />
             </ListItem>
           </Link>
-        )}
+        )}  
         {hasPermissions(["Admin", "Marketer"]) && (
           <Link to="/blogsarticles" style={{ textDecoration: "none" }}>
             <ListItem
