@@ -204,7 +204,47 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
             </ListItem>
           </Link>
         )}
-
+      {/* relisted leads */}
+      {hasPermissions(["Admin"]) && (
+          <Link to="/relistedLeads" style={{ textDecoration: "none" }}>
+            <ListItem
+              button
+              onClick={() => handleLinkClick("/blogsarticles")}
+              sx={{
+                width: "90%",
+                marginBottom: "23px",
+                backgroundColor:
+                  activeLink === "/relistedLeads" ? "#000000" : "transparent",
+                color: activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                height: "77px",
+                borderRadius: "30px",
+                "&:hover": {
+                  backgroundColor:
+                    activeLink === "/relistedLeads" ? "#000000" : "transparent", // Neutralize hover effect
+                  color:
+                    activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                },
+              }}
+            >
+              <ListItemIcon>
+                <People
+                  style={{
+                    color:
+                      activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                className="NavText"
+                primary="Relisted Leads"
+                sx={{
+                  color:
+                    activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
+                }}
+              />
+            </ListItem>
+          </Link>
+        )}
         {hasPermissions(["Admin", "Marketer"]) && (
           <Link to="/blogsarticles" style={{ textDecoration: "none" }}>
             <ListItem
@@ -245,47 +285,7 @@ const Layout = ({ children, headerText, pageType, BlogId }) => {
             </ListItem>
           </Link>
         )}
-        {/* relisted leads */}
-        {hasPermissions(["Admin"]) && (
-          <Link to="/relistedLeads" style={{ textDecoration: "none" }}>
-            <ListItem
-              button
-              onClick={() => handleLinkClick("/blogsarticles")}
-              sx={{
-                width: "90%",
-                marginBottom: "23px",
-                backgroundColor:
-                  activeLink === "/relistedLeads" ? "#000000" : "transparent",
-                color: activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
-                height: "77px",
-                borderRadius: "30px",
-                "&:hover": {
-                  backgroundColor:
-                    activeLink === "/relistedLeads" ? "#000000" : "transparent", // Neutralize hover effect
-                  color:
-                    activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
-                },
-              }}
-            >
-              <ListItemIcon>
-                <People
-                  style={{
-                    color:
-                      activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                className="NavText"
-                primary="Relisted Leads"
-                sx={{
-                  color:
-                    activeLink === "/relistedLeads" ? "#F1F1F1" : "#656565",
-                }}
-              />
-            </ListItem>
-          </Link>
-        )}
+  
       </List>
     </div>
   );
