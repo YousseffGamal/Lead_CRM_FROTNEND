@@ -34,10 +34,9 @@ const clientFilters = ({ setClientsData }) => {
       };
 
       // Make the API request
-      const response = await axiosInstance.get(
-        "http://localhost:4000/getClientsFiltered",
-        { params: queryParams }
-      );
+      const response = await axiosInstance.get("/getClientsFiltered", {
+        params: queryParams,
+      });
 
       // Handle the response data
       setClientsData(response.data.Allusers);

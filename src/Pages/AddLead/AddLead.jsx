@@ -36,6 +36,7 @@ const AddLead = () => {
     lastName: "",
     email: "",
     phone: "",
+    houseNumber: "",
     addressLine: "",
     city: "",
     county: "",
@@ -60,6 +61,7 @@ const AddLead = () => {
     biddingIncreasePercentage: "",
     intialBiddingPrice: "",
     isApproved: false,
+    status: "Closed",
   };
   const { id } = useParams();
   const [formData, setFormData] = useState(initialFormData);
@@ -78,8 +80,8 @@ const AddLead = () => {
           phone: res.data.data.phone,
           addressLine: res.data.data.additionalNotes,
           city: res.data.data.city,
-          county: res.data.data.county,
-          state: res.data.data.state,
+          county: res.data.data.county._id,
+          state: res.data.data.state._id,
           zip: res.data.data.zip,
           bedCount: res.data.data.bedCount,
           bathCount: res.data.data.bathCount,
@@ -101,7 +103,7 @@ const AddLead = () => {
           leadId: id,
           isApproved: true,
         });
-        getCounty(res.data.data.state);
+        getCounty(res.data.data.state._id);
       });
       setDisabled(false);
     }
@@ -111,7 +113,10 @@ const AddLead = () => {
   const getStates = () => {
     axiosInstance
       .get("getAllStates")
-      .then((res) => setStates(res.data.states))
+      .then((res) => {
+        console.log("state response", res.data.states);
+        setStates(res.data.states);
+      })
       .catch((err) => console.log(err));
   };
   //function to get counties by state ID
@@ -181,6 +186,7 @@ const AddLead = () => {
   const handleClick = () => {
     console.log("heyyy1");
     setErrors({});
+
     setErrorMessage("");
     const newErrors = FormValidation({
       formData,
@@ -197,6 +203,7 @@ const AddLead = () => {
         .post("createLead", formData)
         .then((res) => {
           console.log("success", res.data);
+
           setFormData(initialFormData);
         })
         .catch((err) => {
@@ -224,10 +231,12 @@ const AddLead = () => {
   const handleApprove = async () => {
     setErrors({});
     console.log("heyyy1");
+
     const newErrors = ApprovelFormValidation({
       formData,
       isBidding: formData.isBidding,
     });
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors); // Set the errors if validation fails
     } else {
@@ -265,7 +274,6 @@ const AddLead = () => {
             marginTop: "25px",
           }}
         >
-          {id}
           <Box sx={{ flex: 1, position: "relative" }}>
             <InputField
               fieldName={"askingPrice"}
@@ -316,18 +324,7 @@ const AddLead = () => {
           </Box>
         </Box>
         {/* New row for leadPrice input */}
-        <Box sx={{ marginTop: "25px", position: "relative" }}>
-          <InputField
-            fieldName={"LeadPrice"}
-            state={formData.LeadPrice}
-            handleChange={handleChange}
-            label={" Lead Price"}
-            placeHolder={"Lead Price"}
-          />
-          {errors.LeadPrice && (
-            <span style={{ color: "red" }}>{errors.LeadPrice}</span>
-          )}
-        </Box>
+
         {/* New row for email input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>
           <InputField
@@ -376,6 +373,20 @@ const AddLead = () => {
               <span style={{ color: "red" }}>{errors.leadType}</span>
             )}
           </Box>
+        </Box>
+                {/* House Number input */}
+
+        <Box sx={{ marginTop: "25px", position: "relative" }}>
+          <InputField
+            fieldName={"houseNumber"}
+            state={formData.houseNumber}
+            handleChange={handleChange}
+            label={" House Number"}
+            placeHolder={"31 House Number"}
+          />
+          {errors.houseNumber && (
+            <span style={{ color: "red" }}>{errors.houseNumber}</span>
+          )}
         </Box>
         {/* Seller Address input */}
         <Box sx={{ marginTop: "25px", position: "relative" }}>
@@ -870,7 +881,9 @@ const AddLead = () => {
                   backgroundColor: "#333333",
                 },
               }}
-              onClick={handleClick}
+              onClick={() => {
+                handleClick(); // Assuming this handles the lead addition logic
+              }}
             >
               Add Lead
             </Button>

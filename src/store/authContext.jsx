@@ -40,7 +40,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("user");
       })
       .catch((err) => {
-        console.log(err);
+        console.log("errorBigo", err);
+        // setAuth({ token: "", user: "" }); // Reset permissions state
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("user");
       });
   };
 
@@ -52,9 +55,9 @@ export const AuthProvider = ({ children }) => {
     const interceptor = axiosInstance.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response && error.response.status === 401) {
+        if (error.response && error.response.status == 401) {
           // Token expired or unauthorized
-          console.log("hola form log   out");
+          console.log("hola form logout");
           logout(); // Logout the user and redirect to login page
         }
         return Promise.reject(error);
