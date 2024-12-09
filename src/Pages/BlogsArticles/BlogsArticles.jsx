@@ -17,6 +17,8 @@ const BlogsArticles = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { auth } = useAuth();
+
+    // Fetch all blogs
   const fetchBlogs = async () => {
     try {
       const response = await axiosInstance.get("/getallblogs");
@@ -30,14 +32,70 @@ const BlogsArticles = () => {
     }
   };
 
-  // Fetch blogs
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+//  // Toggle blog active status
+//  const toggleBlogStatus = async (id, currentStatus) => {
+//   try {
+//     const response = await axiosInstance.patch(`/toggleblog/${id}`,{        isActive: !currentStatus,
+//       isActive: !currentStatus,
+//     });
+//     const updatedBlog = response.data.blog;
+//     setBlogs((prevBlogs) =>
+//       prevBlogs.map((blog) =>
+//         blog._id === id ? { ...blog, isActive: updatedBlog.isActive } : blog
+//       )
+//     );
+//     alert(`Blog is now ${updatedBlog.isActive ? "active" : "inactive"}`);
+//   } catch (error) {
+//     console.error("Error toggling blog status:", error);
+//     alert("Failed to toggle blog status");
+//   }
+// };
 
-  const handleClick = (id) => {
-    navigate(`/addblog/${id}`);
-  };
+
+// Update blog details
+// const updateBlogDetails = async (id, updatedDetails) => {
+//   try {
+//     const response = await axiosInstance.patch(`/updateblog/${id}`, updatedDetails);
+//     const updatedBlog = response.data.blog;
+//     setBlogs((prevBlogs) =>
+//       prevBlogs.map((blog) =>
+//         blog._id === id ? { ...blog, ...updatedBlog } : blog
+//       )
+//     );
+//     alert("Blog updated successfully!");
+//   } catch (error) {
+//     console.error("Error updating blog:", error);
+//     alert("Failed to update blog");
+//   }
+// };
+
+ // Toggle blog active status
+ const toggleBlogStatus = async (id, currentStatus) => {
+  try {
+    const response = await axiosInstance.patch(`/updateblog/${id}`, {
+      isActive: !currentStatus,
+    });
+    const updatedBlog = response.data.blog;
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((blog) =>
+        blog._id === id ? { ...blog, isActive: updatedBlog.isActive } : blog
+      )
+    );
+  } catch (error) {
+    console.error("Error toggling blog status:", error);
+    alert("Failed to toggle blog status");
+  }
+};
+
+// Handle navigation to edit blog
+const handleClick = (id) => {
+  navigate(`/addblog/${id}`);
+};
+
+// Fetch blogs on mount
+useEffect(() => {
+  fetchBlogs();
+}, []);
 
   return (
     <Layout headerText="Blogs & Articles" pageType="blogs">
@@ -58,13 +116,12 @@ const BlogsArticles = () => {
             blogs.map((blog) => (
               <Grid item xs={12} sm={6} md={4} key={blog._id}>
                 <BlogCard
-                  image={blog.image || First} // Use the default image if not provided
-                  title={blog.name}
-                  description={blog.description}
-                  handleClick={() =>
-                    auth.role === "Marketer" && handleClick(blog._id)
-                  }
-                />
+                   image={blog.image || First} // Use the default image if not provided
+                   title={blog.name}
+                   description={blog.description}
+                   isActive={blog.isActive}
+                   toggleStatus={() => toggleBlogStatus(blog._id, blog.isActive)}
+                 />
               </Grid>
             ))
           ) : (
