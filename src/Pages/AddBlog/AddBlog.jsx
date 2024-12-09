@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
-  InputLabel,
-  TextField,
-  IconButton,
+  Switch,
   Typography,
   Button,
+  IconButton,
 } from "@mui/material";
 import Layout from "../../component/Layout/Layout";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
@@ -25,12 +24,15 @@ const AddBlog = () => {
   const [thumbnail, setThumbnail] = useState(First);
   const [openModal, setOpenModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isActive, setIsActive] = useState(true); // Add isActive state
+
   const intialData = {
     name: "",
     previewText: "",
     description: "",
   };
   const [formData, setFormData] = useState(intialData);
+
   useEffect(() => {
     if (id) {
       axiosInstance
@@ -43,13 +45,13 @@ const AddBlog = () => {
             previewText: data.previewText,
             description: data.description.map((item) => item).join(" - "),
           });
+          setIsActive(data.isActive); // Set isActive from the blog data
         })
         .catch((err) => {
           console.log(err);
         });
-      console.log("hello");
     }
-  }, []);
+  }, [id]);
 
   const handleThumbnailChange = (event) => {
     const file = event.target.files[0];
@@ -70,7 +72,6 @@ const AddBlog = () => {
     }));
   };
 
-  // Function to handle the Add Blog button click and send data to the API
   const handleAddBlog = async () => {
     try {
       const blogData = {
@@ -78,6 +79,7 @@ const AddBlog = () => {
         description: formData.description,
         previewText: formData.previewText,
         images: thumbnail,
+        isActive, // Include isActive in the blog data
       };
 
       const response = await axiosInstance.post("/createblog", blogData);
@@ -93,14 +95,15 @@ const AddBlog = () => {
       setErrorMessage("Failed to create blog. Please try again.");
     }
   };
-  // Function to handle the Add Blog button click and send data to the API
-  const handleupdateBlog = async () => {
+
+  const handleUpdateBlog = async () => {
     try {
       const blogData = {
         name: formData.name,
         description: formData.description,
         previewText: formData.previewText,
         images: thumbnail,
+        isActive, // Include isActive in the blog data
       };
 
       const response = await axiosInstance.patch(`/updateblog/${id}`, blogData);
@@ -112,8 +115,8 @@ const AddBlog = () => {
         setErrorMessage(response.data.message);
       }
     } catch (error) {
-      console.error("Failed to create blog", error);
-      setErrorMessage("Failed to create blog. Please try again.");
+      console.error("Failed to update blog", error);
+      setErrorMessage("Failed to update blog. Please try again.");
     }
   };
 
@@ -168,8 +171,6 @@ const AddBlog = () => {
                   objectFit: "cover",
                 }}
               />
-
-              {/* Centered Upload Button */}
               <IconButton
                 component="label"
                 sx={{
@@ -202,55 +203,56 @@ const AddBlog = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {/* Name Input */}
-              <Box sx={{ position: "relative" }}>
-                <InputField
-                  fieldName={"name"}
-                  state={formData.name}
-                  label={"Name"}
-                  placeHolder={"Name"}
-                  type={"string"}
-                  handleChange={handleChange}
-                />
-              </Box>
-
-              {/* Preview Text Input */}
-              <Box sx={{ position: "relative" }}>
-                <InputField
-                  fieldName={"previewText"}
-                  state={formData.previewText}
-                  label={"Preview Text"}
-                  placeHolder={"Preview Text"}
-                  type={"string"}
-                  handleChange={handleChange}
-                />
-              </Box>
-            </Box>
-          </Grid>
-
-          {/* New Row for Description Text Area */}
-          <Grid item xs={12}>
-            <Box sx={{ position: "relative" }}>
               <InputField
-                fieldName={"description"}
-                state={formData.description}
-                label={"Description"}
-                placeHolder={"What Are Non-Core Business Activities?"}
+                fieldName={"name"}
+                state={formData.name}
+                label={"Name"}
+                placeHolder={"Name"}
                 type={"string"}
                 handleChange={handleChange}
-                multiline={true}
-                minRows={6}
-                fullWidth
-                variant="outlined"
+              />
+
+              <InputField
+                fieldName={"previewText"}
+                state={formData.previewText}
+                label={"Preview Text"}
+                placeHolder={"Preview Text"}
+                type={"string"}
+                handleChange={handleChange}
               />
             </Box>
           </Grid>
 
-          {/* Button to Add Blog */}
+          <Grid item xs={12}>
+            <InputField
+              fieldName={"description"}
+              state={formData.description}
+              label={"Description"}
+              placeHolder={"What Are Non-Core Business Activities?"}
+              type={"string"}
+              handleChange={handleChange}
+              multiline={true}
+              minRows={6}
+              fullWidth
+              variant="outlined"
+            />
+          </Grid>
+
+          {/* isActive Toggle */}
+          <Grid item xs={12}>
+            <Box display="flex" alignItems="center" justifyContent="space-between">
+              <Typography variant="subtitle1">Active:</Typography>
+              <Switch
+                checked={isActive}
+                onChange={(e) => setIsActive(e.target.checked)}
+                color="primary"
+              />
+            </Box>
+          </Grid>
+
           <Grid item xs={12}>
             {!id ? (
               <Button
-                className="AddLeadBtn"
                 variant="contained"
                 sx={{
                   width: "100%",
@@ -259,9 +261,7 @@ const AddBlog = () => {
                   fontSize: "30px",
                   borderRadius: "20px",
                   padding: "5px 15px",
-                  "&:hover": {
-                    backgroundColor: "#333333",
-                  },
+                  "&:hover": { backgroundColor: "#333333" },
                 }}
                 onClick={handleAddBlog}
               >
@@ -269,7 +269,6 @@ const AddBlog = () => {
               </Button>
             ) : (
               <Button
-                className="AddLeadBtn"
                 variant="contained"
                 sx={{
                   width: "100%",
@@ -278,11 +277,9 @@ const AddBlog = () => {
                   fontSize: "30px",
                   borderRadius: "20px",
                   padding: "5px 15px",
-                  "&:hover": {
-                    backgroundColor: "#333333",
-                  },
+                  "&:hover": { backgroundColor: "#333333" },
                 }}
-                onClick={handleupdateBlog}
+                onClick={handleUpdateBlog}
               >
                 Update Blog
               </Button>
@@ -290,18 +287,13 @@ const AddBlog = () => {
           </Grid>
         </Grid>
 
-        {/* Error Message */}
         {errorMessage && (
-          <Typography
-            color="error"
-            sx={{ textAlign: "center", marginTop: "20px" }}
-          >
+          <Typography color="error" sx={{ textAlign: "center", marginTop: "20px" }}>
             {errorMessage}
           </Typography>
         )}
       </Box>
 
-      {/* Success Modal */}
       <SuccessModal open={openModal} handleClose={handleCloseModal} />
     </Layout>
   );
