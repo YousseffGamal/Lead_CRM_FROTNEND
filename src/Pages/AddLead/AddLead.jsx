@@ -73,6 +73,7 @@ const AddLead = () => {
         console.log("counting");
         setFormData({
           ...formData,
+          houseNumber: res.data.data.houseNumber,
           askingPrice: res.data.data.askingPrice,
           firstName: res.data.data.firstName,
           lastName: res.data.data.lastName,
@@ -374,7 +375,7 @@ const AddLead = () => {
             )}
           </Box>
         </Box>
-                {/* House Number input */}
+        {/* House Number input */}
 
         <Box sx={{ marginTop: "25px", position: "relative" }}>
           <InputField
