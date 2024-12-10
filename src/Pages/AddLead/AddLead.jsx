@@ -79,7 +79,7 @@ const AddLead = () => {
           lastName: res.data.data.lastName,
           email: res.data.data.email,
           phone: res.data.data.phone,
-          addressLine: res.data.data.additionalNotes,
+          addressLine: res.data.data.addressLine,
           city: res.data.data.city,
           county: res.data.data.county._id,
           state: res.data.data.state._id,
